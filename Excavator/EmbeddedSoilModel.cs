@@ -23,7 +23,6 @@ namespace Excavator
         const int NumStatesLoad = 2;
         const float Max_V_Load = 7200;
 
-        const int sidelen = 60;				//length of the sides of the box
 
         const float YGround = 0;
         const float YTrenchBottom = YGround - MaxDepth; // inches (defined in SoilParam)
@@ -1244,8 +1243,8 @@ namespace Excavator
 
 
 
-
-        public const float _FloatBoxZ = 100, _FloatBoxX = 70, boxheight = 18;
+        public const float dimBoxWidth_Inches = 60, dimBoxHeight_Inches = 18, dimBoxThickness_Inches = 1;
+        public const float dimBoxZ_Inches = 100, dimBoxX_Inches = 70;
         private volatile float soilheightL = 1;
         private volatile float soilheightR = 1;
 
@@ -1259,9 +1258,9 @@ namespace Excavator
                     xScale: StaticMethods.Conversion_Meters_To_Inches,
                     yScale: StaticMethods.Conversion_Meters_To_Inches,
                     zScale: StaticMethods.Conversion_Meters_To_Inches,
-                    xOff: -EmbeddedSoilModel._FloatBoxX,
+                    xOff: -EmbeddedSoilModel.dimBoxX_Inches,
                     yOff: 0.0f,
-                    zOff: -EmbeddedSoilModel._FloatBoxZ);
+                    zOff: -EmbeddedSoilModel.dimBoxZ_Inches);
 
                 EmbeddedSoilModel._CadObjectBoxL.setColor(System.Drawing.Color.White, 0.15f, 0.5f, 0f, 0f);
                 FormBase._FormBase.addCadItem(EmbeddedSoilModel._CadObjectBoxL);            
@@ -1276,18 +1275,18 @@ namespace Excavator
                     xScale: StaticMethods.Conversion_Meters_To_Inches,
                     yScale: StaticMethods.Conversion_Meters_To_Inches,
                     zScale: StaticMethods.Conversion_Meters_To_Inches,
-                    xOff: EmbeddedSoilModel._FloatBoxX,
+                    xOff: EmbeddedSoilModel.dimBoxX_Inches,
                     yOff: 0.0f,
-                    zOff: -EmbeddedSoilModel._FloatBoxZ);
+                    zOff: -EmbeddedSoilModel.dimBoxZ_Inches);
 
                 EmbeddedSoilModel._CadObjectBoxR.setColor(System.Drawing.Color.White, 0.15f, 0.5f, 0f, 0f);
                 FormBase._FormBase.addCadItem(EmbeddedSoilModel._CadObjectBoxR);
             }
             else EmbeddedSoilModel._CadObjectBoxR.draw(!ShadowBufferDraw);
 
-            const float sidelen2 = sidelen / 2f;
-            const float z = EmbeddedSoilModel._FloatBoxZ;
-            float x = EmbeddedSoilModel._FloatBoxX;
+            const float sidelen2 = dimBoxWidth_Inches / 2f;
+            const float z = EmbeddedSoilModel.dimBoxZ_Inches;
+            float x = EmbeddedSoilModel.dimBoxX_Inches;
 
             EmbeddedSoilModel.setColorDirt();
 
@@ -1370,8 +1369,8 @@ namespace Excavator
                         }
                     }
 
-                    xdiff = xpile - EmbeddedSoilModel._FloatBoxZ;
-                    ydiff = ypile - EmbeddedSoilModel._FloatBoxX * (ypile < 0 ? -1 : 1);
+                    xdiff = xpile - EmbeddedSoilModel.dimBoxZ_Inches;
+                    ydiff = ypile - EmbeddedSoilModel.dimBoxX_Inches * (ypile < 0 ? -1 : 1);
                     rdiff = (float)Math.Sqrt(xdiff * xdiff + ydiff * ydiff);
 
                     PileData dat = new PileData();
@@ -1389,27 +1388,27 @@ namespace Excavator
                         this._IntPileDex %= this._PileData.Length;
                     }
 
-                    if ((xpile > (EmbeddedSoilModel._FloatBoxZ - (sidelen / 2))) &&
-                        (xpile < (EmbeddedSoilModel._FloatBoxZ + (sidelen / 2))) &&
-                        (ypile > (EmbeddedSoilModel._FloatBoxX - (sidelen / 2))) &&
-                        (ypile < (EmbeddedSoilModel._FloatBoxX + (sidelen / 2))))
+                    if ((xpile > (EmbeddedSoilModel.dimBoxZ_Inches - (dimBoxWidth_Inches / 2))) &&
+                        (xpile < (EmbeddedSoilModel.dimBoxZ_Inches + (dimBoxWidth_Inches / 2))) &&
+                        (ypile > (EmbeddedSoilModel.dimBoxX_Inches - (dimBoxWidth_Inches / 2))) &&
+                        (ypile < (EmbeddedSoilModel.dimBoxX_Inches + (dimBoxWidth_Inches / 2))))
                     {
-                        soilheightL += amtpile / (sidelen * sidelen);
+                        soilheightL += amtpile / (dimBoxWidth_Inches * dimBoxWidth_Inches);
 
-                        if (soilheightL >= boxheight) soilheightL = boxheight;
+                        if (soilheightL >= dimBoxHeight_Inches) soilheightL = dimBoxHeight_Inches;
 
                         this._VolumeLeftBin += amtpile;
 
                         return TrialSaver.File2_DataType.inBinLeft;
                     }
-                    else if ((xpile > (EmbeddedSoilModel._FloatBoxZ - (sidelen / 2))) &&
-                            (xpile < (EmbeddedSoilModel._FloatBoxZ + (sidelen / 2))) &&
-                            (ypile > (-EmbeddedSoilModel._FloatBoxX - (sidelen / 2))) &&
-                            (ypile < (-EmbeddedSoilModel._FloatBoxX + (sidelen / 2))))
+                    else if ((xpile > (EmbeddedSoilModel.dimBoxZ_Inches - (dimBoxWidth_Inches / 2))) &&
+                            (xpile < (EmbeddedSoilModel.dimBoxZ_Inches + (dimBoxWidth_Inches / 2))) &&
+                            (ypile > (-EmbeddedSoilModel.dimBoxX_Inches - (dimBoxWidth_Inches / 2))) &&
+                            (ypile < (-EmbeddedSoilModel.dimBoxX_Inches + (dimBoxWidth_Inches / 2))))
                     {
-                        soilheightR += amtpile / (sidelen * sidelen);
+                        soilheightR += amtpile / (dimBoxWidth_Inches * dimBoxWidth_Inches);
 
-                        if (soilheightR >= boxheight) soilheightR = boxheight;
+                        if (soilheightR >= dimBoxHeight_Inches) soilheightR = dimBoxHeight_Inches;
 
                         this._VolumeRightBin += amtpile;
 
@@ -1423,8 +1422,8 @@ namespace Excavator
                 }
                 else //dumped into trench (amtpile is negative)
                 {
-                    xdiff = xpile - EmbeddedSoilModel._FloatBoxZ;
-                    ydiff = ypile - EmbeddedSoilModel._FloatBoxX;
+                    xdiff = xpile - EmbeddedSoilModel.dimBoxZ_Inches;
+                    ydiff = ypile - EmbeddedSoilModel.dimBoxX_Inches;
                     rdiff = (float)Math.Sqrt(xdiff * xdiff + ydiff * ydiff);
                     if (amtpile > 144)
                     {

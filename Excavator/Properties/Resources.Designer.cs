@@ -552,20 +552,16 @@ namespace Excavator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to varying vec4 ShadowCoord;
+        ///   Looks up a localized string similar to varying vec4 vertex_shadow;
         ///uniform sampler2D ShadowMap; // Shadow
-        ///
-        ///varying vec2 texCoords;
-        ///uniform sampler2D tex0; // Grass
         ///
         ///varying vec4 ambColor;
         ///varying vec4 difColor;
+        ///varying float shadow_intensity;
         ///
         ///void main()
         ///{		
-        /// 	float shadow = 1.0;
-        ///
-        ///	vec4 shadowCoordinateWdivide = ShadowCoord / ShadowCoord.w ;
+        ///	vec4 shadowCoordinateWdivide = vertex_shadow / vertex_shadow.w ;
         ///
         ///	bool b1 = shadowCoordinateWdivide.x &gt; 0 &amp;&amp; shadowCoordinateWdivide.x &lt; 1;
         ///	bool b2 = shadowCoordinateWdivide.y &gt; 0 &amp;&amp; shadowCoordinateWdivide.y &lt; 1;
@@ -574,7 +570,7 @@ namespace Excavator.Properties {
         ///	{
         ///		shadowCoordinateWdivide.z -= 0.0001;
         ///
-        ///		float  [rest of string was truncated]&quot;;.
+        ///		float distanceFromLight = texture(ShadowMap, shadowCo [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ShadowFragment {
             get {
@@ -584,25 +580,22 @@ namespace Excavator.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to // Used for shadow lookup
-        ///varying vec4 ShadowCoord;
-        ///varying vec2 texCoords;
-        ///
+        ///varying vec4 vertex_shadow;
         ///varying vec3 vertex_light_position;
-        ///varying vec3 vertex_light_half_vector;
         ///varying vec3 vertex_normal;
         ///
         ///varying vec4 ambColor;
         ///varying vec4 difColor;
+        ///varying float shadow_intensity;
         ///
         ///void main()
         ///{
-        ///	gl_Position = ftransform();
-        ///	texCoords = gl_MultiTexCoord0.st;
+        ///	ambColor = gl_FrontMaterial.ambient * (gl_LightSource[0].ambient +  gl_LightModel.ambient);
+        ///    difColor = gl_FrontMaterial.diffuse * gl_LightSource[0].diffuse;
         ///
-        ///	ShadowCoord = gl_TextureMatrix[7] * gl_Vertex;  
-        ///
-        ///    vertex_light_half_vector = normalize(gl_LightSource[0].halfVector.xyz);
-        ///    vertex_normal = normalize(gl_NormalMatrix * gl_Normal); [rest of string was truncated]&quot;;.
+        ///	gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
+        ///	vertex_shadow = gl_TextureMatrix[7] * gl_Vertex;  
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ShadowVertex {
             get {
@@ -611,30 +604,26 @@ namespace Excavator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to varying vec4 ShadowCoord;
-        ///uniform sampler2D ShadowMap; // Shadow
-        ///
+        ///   Looks up a localized string similar to varying vec4 vertex_shadow;
         ///varying vec2 texCoords;
-        ///
-        ///uniform sampler2D tex0; // Soil
         ///
         ///varying vec4 ambColor;
         ///varying vec4 difColor;
+        ///varying float shadow_intensity;
+        ///
+        ///uniform sampler2D ShadowMap; // Shadow
+        ///uniform sampler2D tex0; // Soil
         ///
         ///void main()
         ///{		
-        /// 	float shadow = 1.0;
-        ///
-        ///	vec4 shadowCoordinateWdivide = ShadowCoord / ShadowCoord.w ;
+        ///	vec4 shadowCoordinateWdivide = vertex_shadow / vertex_shadow.w ;
         ///
         ///	bool b1 = shadowCoordinateWdivide.x &gt; 0 &amp;&amp; shadowCoordinateWdivide.x &lt; 1;
         ///	bool b2 = shadowCoordinateWdivide.y &gt; 0 &amp;&amp; shadowCoordinateWdivide.y &lt; 1;
         ///
         ///	if (b1 &amp;&amp; b2)
         ///	{
-        ///		shadowCoordinateWdivide.z -= 0.0001;
-        ///
-        ///		float [rest of string was truncated]&quot;;.
+        ///		shadowCoordinateWdivide.z -= 0.0001 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SoilFragment {
             get {
@@ -644,26 +633,22 @@ namespace Excavator.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to // Used for shadow lookup
-        ///varying vec4 ShadowCoord;
-        ///varying vec2 texCoords;
-        ///
+        ///varying vec4 vertex_shadow;
         ///varying vec3 vertex_light_position;
-        ///varying vec3 vertex_light_half_vector;
         ///varying vec3 vertex_normal;
+        ///varying vec2 texCoords;
         ///
         ///varying vec4 ambColor;
         ///varying vec4 difColor;
+        ///varying float shadow_intensity;
         ///
         ///void main()
         ///{
-        ///	gl_Position = ftransform();
+        ///	ambColor = gl_FrontMaterial.ambient * (gl_LightSource[0].ambient +  gl_LightModel.ambient);
+        ///    difColor = gl_FrontMaterial.diffuse * gl_LightSource[0].diffuse;
         ///
-        ///	texCoords = vec2(gl_Vertex[0] / 10, gl_Vertex[2] / 10);
-        ///
-        ///	ShadowCoord = gl_TextureMatrix[7] * gl_Vertex;  
-        ///
-        ///    vertex_light_half_vector = normalize(gl_LightSource[0].halfVector.xyz);
-        ///    vertex_normal = normalize(gl_No [rest of string was truncated]&quot;;.
+        ///	gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
+        ///	vertex_shadow = gl_TextureM [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SoilVertex {
             get {

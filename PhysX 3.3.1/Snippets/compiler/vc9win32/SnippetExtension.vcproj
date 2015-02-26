@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+ProjectType="Visual C++"
+Version="9.00"
+Name="SnippetExtension"
+>
+<Platforms>
+	<Platform Name="Win32"/>
+</Platforms>
+<Configurations>
+  <Configuration
+    Name="debug|Win32"
+    OutputDirectory="./../../../bin/win32"
+    IntermediateDirectory="./Win32/SnippetExtension/debug"
+    ConfigurationType="1"
+    InheritedPropertySheets=""
+    CharacterSet=""
+    >
+    <Tool
+      Name="VCCLCompilerTool"
+      AdditionalIncludeDirectories="&quot;./../../../Include&quot;;&quot;./../../../Source/foundation/include&quot;;&quot;./../../../Source/Common/src&quot;;&quot;./../../../Source/GeomUtils/src&quot;;&quot;./../../../Source/GeomUtils/headers&quot;;&quot;./../../../Source/GeomUtils/include&quot;;&quot;./../../../Source/GeomUtils/src/contact&quot;;&quot;./../../../Source/GeomUtils/src/common&quot;;&quot;./../../../Source/GeomUtils/src/convex&quot;;&quot;./../../../Source/GeomUtils/src/distance&quot;;&quot;./../../../Source/GeomUtils/src/gjk&quot;;&quot;./../../../Source/GeomUtils/src/intersection&quot;;&quot;./../../../Source/GeomUtils/src/mesh&quot;;&quot;./../../../Source/GeomUtils/src/hf&quot;;&quot;./../../../Source/GeomUtils/src/Ice&quot;;&quot;./../../../Source/GeomUtils/src/pcm&quot;;&quot;./../../SnippetRender&quot;;&quot;./../../Graphics/include/win32/GL&quot;;&quot;./../../../Include/extensions&quot;;&quot;./../../../Include/foundation&quot;;&quot;./../../../Include/common&quot;;&quot;./../../../Include/pvd&quot;;&quot;./../../../Include/cloth&quot;;&quot;./../../../Include/physxvisualdebuggersdk&quot;;&quot;./../../../Include/physxprofilesdk&quot;;&quot;./../../../Include/geometry&quot;;&quot;./../../../Source/PvdRuntime/src&quot;;&quot;./../../../Source/PhysXProfileSDK&quot;;&quot;./../../../Source/PhysXMetaData/core/include&quot;;&quot;./../../../Source/PhysXMetaData/extensions/include&quot;;&quot;./../../../Source/PhysXExtensions/src/serialization/Xml&quot;;&quot;./../../../Source/PhysXExtensions/src&quot;;&quot;./../../SnippetExtension/include&quot;;&quot;./../../SnippetExtension/src&quot;;&quot;./../../SnippetExtension/src/PhysXMetaData/include&quot;;&quot;./../../SnippetExtension/src/PhysXMetaData/src&quot;;&quot;./../../SnippetExtension/PhysXMetaDataGenerator&quot;;"
+      PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;RENDER_SNIPPET;_DEBUG;PX_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;"
+      WarningLevel="4"
+      FloatingPointModel="2"
+      BasicRuntimeChecks="2"
+      EnableEnhancedInstructionSet="2"
+      DebugInformationFormat="3"
+      StringPooling="true"
+      RuntimeTypeInfo="false"
+      WarnAsError="true"
+      BufferSecurityCheck="false"
+      Optimization="0"
+      AdditionalOptions="/MP"
+      ExceptionHandling="0"
+      RuntimeLibrary="1"
+      UsePrecompiledHeader="0"
+      PrecompiledHeaderThrough=""
+      />
+    <Tool Name="VCCustomBuildTool"/>
+    <Tool 
+      Name="VCLinkerTool" 
+      OutputFile="$(OutDir)/$(ProjectName)DEBUG.exe" 
+      ProgramDatabaseFile="$(OutDir)/$(ProjectName)DEBUG.exe.pdb" 
+      AdditionalOptions="/LIBPATH:../../../Lib/win32 PhysX3CommonDEBUG_x86.lib PhysX3DEBUG_x86.lib PhysX3CookingDEBUG_x86.lib PhysX3CharacterKinematicDEBUG_x86.lib PhysX3ExtensionsDEBUG.lib PhysX3VehicleDEBUG.lib PhysXProfileSDKDEBUG.lib PhysXVisualDebuggerSDKDEBUG.lib PxTaskDEBUG.lib /DEBUG /MACHINE:X86"
+      AdditionalDependencies="&quot;Winmm.lib&quot; &quot;OpenGL32.lib&quot; &quot;glut32.lib&quot; "
+      AdditionalLibraryDirectories="&quot;./../../../Common/lib/win32&quot;;&quot;./../../lib/win32&quot;;&quot;./../../Graphics/lib/win32/glut&quot;;"
+      ImportLibrary="$(OutDir)/$(TargetName).lib"
+      MapFileName="$(OutDir)/$(ProjectName)DEBUG.exe.map"
+      SubSystem="1"
+      />
+    <Tool Name="VCMIDLTool"/>
+    <Tool Name="VCPreBuildEventTool"/>
+    <Tool Name="VCPostBuildEventTool"/>
+    <Tool Name="VCPreLinkEventTool"/>
+    <Tool Name="VCResourceCompilerTool"/>
+    <Tool Name="VCWebServiceProxyGeneratorTool"/>
+    <Tool Name="VCXMLDataGeneratorTool"/>
+    <Tool Name="VCWebDeploymentTool"/>
+    <Tool Name="VCManagedWrapperGeneratorTool"/>
+    <Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+  </Configuration>
+  <Configuration
+    Name="checked|Win32"
+    OutputDirectory="./../../../bin/win32"
+    IntermediateDirectory="./Win32/SnippetExtension/checked"
+    ConfigurationType="1"
+    InheritedPropertySheets=""
+    CharacterSet=""
+    >
+    <Tool
+      Name="VCCLCompilerTool"
+      AdditionalIncludeDirectories="&quot;./../../../Include&quot;;&quot;./../../../Source/foundation/include&quot;;&quot;./../../../Source/Common/src&quot;;&quot;./../../../Source/GeomUtils/src&quot;;&quot;./../../../Source/GeomUtils/headers&quot;;&quot;./../../../Source/GeomUtils/include&quot;;&quot;./../../../Source/GeomUtils/src/contact&quot;;&quot;./../../../Source/GeomUtils/src/common&quot;;&quot;./../../../Source/GeomUtils/src/convex&quot;;&quot;./../../../Source/GeomUtils/src/distance&quot;;&quot;./../../../Source/GeomUtils/src/gjk&quot;;&quot;./../../../Source/GeomUtils/src/intersection&quot;;&quot;./../../../Source/GeomUtils/src/mesh&quot;;&quot;./../../../Source/GeomUtils/src/hf&quot;;&quot;./../../../Source/GeomUtils/src/Ice&quot;;&quot;./../../../Source/GeomUtils/src/pcm&quot;;&quot;./../../SnippetRender&quot;;&quot;./../../Graphics/include/win32/GL&quot;;&quot;./../../../Include/extensions&quot;;&quot;./../../../Include/foundation&quot;;&quot;./../../../Include/common&quot;;&quot;./../../../Include/pvd&quot;;&quot;./../../../Include/cloth&quot;;&quot;./../../../Include/physxvisualdebuggersdk&quot;;&quot;./../../../Include/physxprofilesdk&quot;;&quot;./../../../Include/geometry&quot;;&quot;./../../../Source/PvdRuntime/src&quot;;&quot;./../../../Source/PhysXProfileSDK&quot;;&quot;./../../../Source/PhysXMetaData/core/include&quot;;&quot;./../../../Source/PhysXMetaData/extensions/include&quot;;&quot;./../../../Source/PhysXExtensions/src/serialization/Xml&quot;;&quot;./../../../Source/PhysXExtensions/src&quot;;&quot;./../../SnippetExtension/include&quot;;&quot;./../../SnippetExtension/src&quot;;&quot;./../../SnippetExtension/src/PhysXMetaData/include&quot;;&quot;./../../SnippetExtension/src/PhysXMetaData/src&quot;;&quot;./../../SnippetExtension/PhysXMetaDataGenerator&quot;;"
+      PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;RENDER_SNIPPET;NDEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;"
+      WarningLevel="4"
+      FloatingPointModel="2"
+      EnableEnhancedInstructionSet="2"
+      StringPooling="true"
+      RuntimeTypeInfo="false"
+      WarnAsError="true"
+      BufferSecurityCheck="false"
+      Optimization="3"
+      AdditionalOptions="/MP"
+      ExceptionHandling="0"
+      RuntimeLibrary="0"
+      UsePrecompiledHeader="0"
+      PrecompiledHeaderThrough=""
+      />
+    <Tool Name="VCCustomBuildTool"/>
+    <Tool 
+      Name="VCLinkerTool" 
+      OutputFile="$(OutDir)/$(ProjectName)CHECKED.exe" 
+      ProgramDatabaseFile="$(OutDir)/$(ProjectName)CHECKED.exe.pdb" 
+      AdditionalOptions="/LIBPATH:../../../Lib/win32 PhysX3CommonCHECKED_x86.lib PhysX3CHECKED_x86.lib PhysX3CookingCHECKED_x86.lib PhysX3CharacterKinematicCHECKED_x86.lib PhysX3ExtensionsCHECKED.lib PhysX3VehicleCHECKED.lib PhysXProfileSDKCHECKED.lib PhysXVisualDebuggerSDKCHECKED.lib PxTaskCHECKED.lib /MACHINE:X86"
+      AdditionalDependencies="&quot;Winmm.lib&quot; &quot;OpenGL32.lib&quot; &quot;glut32.lib&quot; "
+      AdditionalLibraryDirectories="&quot;./../../../Common/lib/win32&quot;;&quot;./../../lib/win32&quot;;&quot;./../../Graphics/lib/win32/glut&quot;;"
+      ImportLibrary="$(OutDir)/$(TargetName).lib"
+      MapFileName="$(OutDir)/$(ProjectName)CHECKED.exe.map"
+      SubSystem="1"
+      />
+    <Tool Name="VCMIDLTool"/>
+    <Tool Name="VCPreBuildEventTool"/>
+    <Tool Name="VCPostBuildEventTool"/>
+    <Tool Name="VCPreLinkEventTool"/>
+    <Tool Name="VCResourceCompilerTool"/>
+    <Tool Name="VCWebServiceProxyGeneratorTool"/>
+    <Tool Name="VCXMLDataGeneratorTool"/>
+    <Tool Name="VCWebDeploymentTool"/>
+    <Tool Name="VCManagedWrapperGeneratorTool"/>
+    <Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+  </Configuration>
+  <Configuration
+    Name="profile|Win32"
+    OutputDirectory="./../../../bin/win32"
+    IntermediateDirectory="./Win32/SnippetExtension/profile"
+    ConfigurationType="1"
+    InheritedPropertySheets=""
+    CharacterSet=""
+    >
+    <Tool
+      Name="VCCLCompilerTool"
+      AdditionalIncludeDirectories="&quot;./../../../Include&quot;;&quot;./../../../Source/foundation/include&quot;;&quot;./../../../Source/Common/src&quot;;&quot;./../../../Source/GeomUtils/src&quot;;&quot;./../../../Source/GeomUtils/headers&quot;;&quot;./../../../Source/GeomUtils/include&quot;;&quot;./../../../Source/GeomUtils/src/contact&quot;;&quot;./../../../Source/GeomUtils/src/common&quot;;&quot;./../../../Source/GeomUtils/src/convex&quot;;&quot;./../../../Source/GeomUtils/src/distance&quot;;&quot;./../../../Source/GeomUtils/src/gjk&quot;;&quot;./../../../Source/GeomUtils/src/intersection&quot;;&quot;./../../../Source/GeomUtils/src/mesh&quot;;&quot;./../../../Source/GeomUtils/src/hf&quot;;&quot;./../../../Source/GeomUtils/src/Ice&quot;;&quot;./../../../Source/GeomUtils/src/pcm&quot;;&quot;./../../SnippetRender&quot;;&quot;./../../Graphics/include/win32/GL&quot;;&quot;./../../../Include/extensions&quot;;&quot;./../../../Include/foundation&quot;;&quot;./../../../Include/common&quot;;&quot;./../../../Include/pvd&quot;;&quot;./../../../Include/cloth&quot;;&quot;./../../../Include/physxvisualdebuggersdk&quot;;&quot;./../../../Include/physxprofilesdk&quot;;&quot;./../../../Include/geometry&quot;;&quot;./../../../Source/PvdRuntime/src&quot;;&quot;./../../../Source/PhysXProfileSDK&quot;;&quot;./../../../Source/PhysXMetaData/core/include&quot;;&quot;./../../../Source/PhysXMetaData/extensions/include&quot;;&quot;./../../../Source/PhysXExtensions/src/serialization/Xml&quot;;&quot;./../../../Source/PhysXExtensions/src&quot;;&quot;./../../SnippetExtension/include&quot;;&quot;./../../SnippetExtension/src&quot;;&quot;./../../SnippetExtension/src/PhysXMetaData/include&quot;;&quot;./../../SnippetExtension/src/PhysXMetaData/src&quot;;&quot;./../../SnippetExtension/PhysXMetaDataGenerator&quot;;"
+      PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;RENDER_SNIPPET;NDEBUG;PX_PROFILE;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;"
+      WarningLevel="4"
+      FloatingPointModel="2"
+      EnableEnhancedInstructionSet="2"
+      StringPooling="true"
+      RuntimeTypeInfo="false"
+      WarnAsError="true"
+      BufferSecurityCheck="false"
+      Optimization="3"
+      AdditionalOptions="/MP"
+      ExceptionHandling="0"
+      RuntimeLibrary="0"
+      UsePrecompiledHeader="0"
+      PrecompiledHeaderThrough=""
+      />
+    <Tool Name="VCCustomBuildTool"/>
+    <Tool 
+      Name="VCLinkerTool" 
+      OutputFile="$(OutDir)/$(ProjectName)PROFILE.exe" 
+      ProgramDatabaseFile="$(OutDir)/$(ProjectName)PROFILE.exe.pdb" 
+      AdditionalOptions="/INCREMENTAL:NO /LIBPATH:../../../Lib/win32 PhysX3CommonPROFILE_x86.lib PhysX3PROFILE_x86.lib PhysX3CookingPROFILE_x86.lib PhysX3CharacterKinematicPROFILE_x86.lib PhysX3ExtensionsPROFILE.lib PhysX3VehiclePROFILE.lib PhysXProfileSDKPROFILE.lib PhysXVisualDebuggerSDKPROFILE.lib PxTaskPROFILE.lib /DEBUG /MACHINE:X86"
+      AdditionalDependencies="&quot;Winmm.lib&quot; &quot;OpenGL32.lib&quot; &quot;glut32.lib&quot; "
+      AdditionalLibraryDirectories="&quot;./../../../Common/lib/win32&quot;;&quot;./../../lib/win32&quot;;&quot;./../../Graphics/lib/win32/glut&quot;;"
+      ImportLibrary="$(OutDir)/$(TargetName).lib"
+      MapFileName="$(OutDir)/$(ProjectName)PROFILE.exe.map"
+      SubSystem="1"
+      />
+    <Tool Name="VCMIDLTool"/>
+    <Tool Name="VCPreBuildEventTool"/>
+    <Tool Name="VCPostBuildEventTool"/>
+    <Tool Name="VCPreLinkEventTool"/>
+    <Tool Name="VCResourceCompilerTool"/>
+    <Tool Name="VCWebServiceProxyGeneratorTool"/>
+    <Tool Name="VCXMLDataGeneratorTool"/>
+    <Tool Name="VCWebDeploymentTool"/>
+    <Tool Name="VCManagedWrapperGeneratorTool"/>
+    <Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+  </Configuration>
+  <Configuration
+    Name="release|Win32"
+    OutputDirectory="./../../../bin/win32"
+    IntermediateDirectory="./Win32/SnippetExtension/release"
+    ConfigurationType="1"
+    InheritedPropertySheets=""
+    CharacterSet=""
+    >
+    <Tool
+      Name="VCCLCompilerTool"
+      AdditionalIncludeDirectories="&quot;./../../../Include&quot;;&quot;./../../../Source/foundation/include&quot;;&quot;./../../../Source/Common/src&quot;;&quot;./../../../Source/GeomUtils/src&quot;;&quot;./../../../Source/GeomUtils/headers&quot;;&quot;./../../../Source/GeomUtils/include&quot;;&quot;./../../../Source/GeomUtils/src/contact&quot;;&quot;./../../../Source/GeomUtils/src/common&quot;;&quot;./../../../Source/GeomUtils/src/convex&quot;;&quot;./../../../Source/GeomUtils/src/distance&quot;;&quot;./../../../Source/GeomUtils/src/gjk&quot;;&quot;./../../../Source/GeomUtils/src/intersection&quot;;&quot;./../../../Source/GeomUtils/src/mesh&quot;;&quot;./../../../Source/GeomUtils/src/hf&quot;;&quot;./../../../Source/GeomUtils/src/Ice&quot;;&quot;./../../../Source/GeomUtils/src/pcm&quot;;&quot;./../../SnippetRender&quot;;&quot;./../../Graphics/include/win32/GL&quot;;&quot;./../../../Include/extensions&quot;;&quot;./../../../Include/foundation&quot;;&quot;./../../../Include/common&quot;;&quot;./../../../Include/pvd&quot;;&quot;./../../../Include/cloth&quot;;&quot;./../../../Include/physxvisualdebuggersdk&quot;;&quot;./../../../Include/physxprofilesdk&quot;;&quot;./../../../Include/geometry&quot;;&quot;./../../../Source/PvdRuntime/src&quot;;&quot;./../../../Source/PhysXProfileSDK&quot;;&quot;./../../../Source/PhysXMetaData/core/include&quot;;&quot;./../../../Source/PhysXMetaData/extensions/include&quot;;&quot;./../../../Source/PhysXExtensions/src/serialization/Xml&quot;;&quot;./../../../Source/PhysXExtensions/src&quot;;&quot;./../../SnippetExtension/include&quot;;&quot;./../../SnippetExtension/src&quot;;&quot;./../../SnippetExtension/src/PhysXMetaData/include&quot;;&quot;./../../SnippetExtension/src/PhysXMetaData/src&quot;;&quot;./../../SnippetExtension/PhysXMetaDataGenerator&quot;;"
+      PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;PHYSX_PROFILE_SDK;RENDER_SNIPPET;NDEBUG;"
+      WarningLevel="4"
+      FloatingPointModel="2"
+      EnableEnhancedInstructionSet="2"
+      StringPooling="true"
+      RuntimeTypeInfo="false"
+      WarnAsError="true"
+      BufferSecurityCheck="false"
+      Optimization="3"
+      AdditionalOptions="/MP"
+      ExceptionHandling="0"
+      RuntimeLibrary="0"
+      UsePrecompiledHeader="0"
+      PrecompiledHeaderThrough=""
+      />
+    <Tool Name="VCCustomBuildTool"/>
+    <Tool 
+      Name="VCLinkerTool" 
+      OutputFile="$(OutDir)/$(ProjectName).exe" 
+      ProgramDatabaseFile="$(OutDir)/$(ProjectName).exe.pdb" 
+      AdditionalOptions="/INCREMENTAL:NO /LIBPATH:../../../Lib/win32 PhysX3Common_x86.lib PhysX3_x86.lib PhysX3Cooking_x86.lib PhysX3CharacterKinematic_x86.lib PhysX3Extensions.lib PhysX3Vehicle.lib PhysXProfileSDK.lib PhysXVisualDebuggerSDK.lib PxTask.lib /MACHINE:X86"
+      AdditionalDependencies="&quot;Winmm.lib&quot; &quot;OpenGL32.lib&quot; &quot;glut32.lib&quot; "
+      AdditionalLibraryDirectories="&quot;./../../../Common/lib/win32&quot;;&quot;./../../lib/win32&quot;;&quot;./../../Graphics/lib/win32/glut&quot;;"
+      ImportLibrary="$(OutDir)/$(TargetName).lib"
+      MapFileName="$(OutDir)/$(ProjectName).exe.map"
+      SubSystem="1"
+      />
+    <Tool Name="VCMIDLTool"/>
+    <Tool Name="VCPreBuildEventTool"/>
+    <Tool Name="VCPostBuildEventTool"/>
+    <Tool Name="VCPreLinkEventTool"/>
+    <Tool Name="VCResourceCompilerTool"/>
+    <Tool Name="VCWebServiceProxyGeneratorTool"/>
+    <Tool Name="VCXMLDataGeneratorTool"/>
+    <Tool Name="VCWebDeploymentTool"/>
+    <Tool Name="VCManagedWrapperGeneratorTool"/>
+    <Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+  </Configuration>
+</Configurations>
+<References></References>
+<Files>
+  <Filter Name="Source Files" Filter=""> <!--  -->
+    <Filter Name="include" Filter=""> <!--  -->
+      <File RelativePath="..\..\SnippetExtension\include\CustomPulleyJoint.h">
+      </File>
+    </Filter>
+    <Filter Name="src" Filter=""> <!--  -->
+      <File RelativePath="..\..\SnippetExtension\src\ExtPulleyJoint.h">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\ExtPulleyJointExtension.h">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\ExtPulleyJointPVD.h">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\ExtPulleyJoint.cpp">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\ExtPulleyJointBinaryExtension.cpp">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\ExtPulleyJointPVD.cpp">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\ExtPulleyJointRepXExtension.cpp">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\ExtPulleyJointSolverPrep.cpp">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\SnippetExtension.cpp">
+      </File>
+    </Filter>
+  </Filter>
+  <Filter Name="metadata" Filter=""> <!--  -->
+    <Filter Name="include" Filter=""> <!--  -->
+      <File RelativePath="..\..\SnippetExtension\src\PhysXMetaData\include\PxSnippetExtensionAutoGeneratedMetaDataObjectNames.h">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\PhysXMetaData\include\PxSnippetExtensionAutoGeneratedMetaDataObjects.h">
+      </File>
+      <File RelativePath="..\..\SnippetExtension\src\PhysXMetaData\include\PxSnippetExtensionMetaDataObjects.h">
+      </File>
+    </Filter>
+    <Filter Name="src" Filter=""> <!--  -->
+      <File RelativePath="..\..\SnippetExtension\src\PhysXMetaData\src\PxSnippetExtensionAutoGeneratedMetaDataObjects.cpp">
+      </File>
+    </Filter>
+  </Filter>
+</Files>
+<Globals></Globals>
+</VisualStudioProject>

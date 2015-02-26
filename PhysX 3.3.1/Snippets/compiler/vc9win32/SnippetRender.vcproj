@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+ProjectType="Visual C++"
+Version="9.00"
+Name="SnippetRender"
+>
+<Platforms>
+	<Platform Name="Win32"/>
+</Platforms>
+<Configurations>
+  <Configuration
+    Name="debug|Win32"
+    OutputDirectory="./../../lib/win32"
+    IntermediateDirectory="./Win32/SnippetRender/debug"
+    ConfigurationType="4"
+    InheritedPropertySheets=""
+    CharacterSet=""
+    >
+    <Tool
+      Name="VCCLCompilerTool"
+      AdditionalIncludeDirectories="&quot;./../../Graphics/include/win32/GL&quot;;&quot;./../../../Include&quot;;&quot;./../../../Source/foundation/include&quot;;&quot;./../../../Source/Common/src&quot;;&quot;./../../../Source/GeomUtils/src&quot;;&quot;./../../../Source/GeomUtils/headers&quot;;&quot;./../../../Source/GeomUtils/include&quot;;&quot;./../../../Source/GeomUtils/src/contact&quot;;&quot;./../../../Source/GeomUtils/src/common&quot;;&quot;./../../../Source/GeomUtils/src/convex&quot;;&quot;./../../../Source/GeomUtils/src/distance&quot;;&quot;./../../../Source/GeomUtils/src/gjk&quot;;&quot;./../../../Source/GeomUtils/src/intersection&quot;;&quot;./../../../Source/GeomUtils/src/mesh&quot;;&quot;./../../../Source/GeomUtils/src/hf&quot;;&quot;./../../../Source/GeomUtils/src/Ice&quot;;&quot;./../../../Source/GeomUtils/src/pcm&quot;;"
+      PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;_DEBUG;PX_DEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;PX_PHYSX_DLL_NAME_POSTFIX=DEBUG;"
+      WarningLevel="4"
+      FloatingPointModel="2"
+      BasicRuntimeChecks="2"
+      EnableEnhancedInstructionSet="2"
+      DebugInformationFormat="3"
+      StringPooling="true"
+      RuntimeTypeInfo="false"
+      WarnAsError="true"
+      BufferSecurityCheck="false"
+      Optimization="0"
+      AdditionalOptions="/MP"
+      ExceptionHandling="0"
+      RuntimeLibrary="1"
+      UsePrecompiledHeader="0"
+      PrecompiledHeaderThrough=""
+      />
+    <Tool Name="VCCustomBuildTool"/>
+    <Tool 
+      Name="VCLibrarianTool" 
+      OutputFile="$(OutDir)/$(ProjectName)DEBUG.lib" 
+      ProgramDatabaseFile="$(OutDir)/$(ProjectName)DEBUG.lib.pdb" 
+      LinkLibraryDependencies="true"
+      AdditionalOptions="/MACHINE:X86"
+      AdditionalDependencies="&quot;glut32.lib&quot; "
+      AdditionalLibraryDirectories="&quot;./../../Graphics/lib/win32/glut&quot;;"
+      />
+    <Tool Name="VCMIDLTool"/>
+    <Tool Name="VCPreBuildEventTool"/>
+    <Tool Name="VCPostBuildEventTool"/>
+    <Tool Name="VCPreLinkEventTool"/>
+    <Tool Name="VCResourceCompilerTool"/>
+    <Tool Name="VCWebServiceProxyGeneratorTool"/>
+    <Tool Name="VCXMLDataGeneratorTool"/>
+    <Tool Name="VCWebDeploymentTool"/>
+    <Tool Name="VCManagedWrapperGeneratorTool"/>
+    <Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+  </Configuration>
+  <Configuration
+    Name="checked|Win32"
+    OutputDirectory="./../../lib/win32"
+    IntermediateDirectory="./Win32/SnippetRender/checked"
+    ConfigurationType="4"
+    InheritedPropertySheets=""
+    CharacterSet=""
+    >
+    <Tool
+      Name="VCCLCompilerTool"
+      AdditionalIncludeDirectories="&quot;./../../Graphics/include/win32/GL&quot;;&quot;./../../../Include&quot;;&quot;./../../../Source/foundation/include&quot;;&quot;./../../../Source/Common/src&quot;;&quot;./../../../Source/GeomUtils/src&quot;;&quot;./../../../Source/GeomUtils/headers&quot;;&quot;./../../../Source/GeomUtils/include&quot;;&quot;./../../../Source/GeomUtils/src/contact&quot;;&quot;./../../../Source/GeomUtils/src/common&quot;;&quot;./../../../Source/GeomUtils/src/convex&quot;;&quot;./../../../Source/GeomUtils/src/distance&quot;;&quot;./../../../Source/GeomUtils/src/gjk&quot;;&quot;./../../../Source/GeomUtils/src/intersection&quot;;&quot;./../../../Source/GeomUtils/src/mesh&quot;;&quot;./../../../Source/GeomUtils/src/hf&quot;;&quot;./../../../Source/GeomUtils/src/Ice&quot;;&quot;./../../../Source/GeomUtils/src/pcm&quot;;"
+      PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;NDEBUG;PX_CHECKED;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;PX_PHYSX_DLL_NAME_POSTFIX=CHECKED;"
+      WarningLevel="4"
+      FloatingPointModel="2"
+      EnableEnhancedInstructionSet="2"
+      StringPooling="true"
+      RuntimeTypeInfo="false"
+      WarnAsError="true"
+      BufferSecurityCheck="false"
+      Optimization="3"
+      AdditionalOptions="/MP"
+      ExceptionHandling="0"
+      RuntimeLibrary="0"
+      UsePrecompiledHeader="0"
+      PrecompiledHeaderThrough=""
+      />
+    <Tool Name="VCCustomBuildTool"/>
+    <Tool 
+      Name="VCLibrarianTool" 
+      OutputFile="$(OutDir)/$(ProjectName)CHECKED.lib" 
+      ProgramDatabaseFile="$(OutDir)/$(ProjectName)CHECKED.lib.pdb" 
+      LinkLibraryDependencies="true"
+      AdditionalOptions="/MACHINE:X86"
+      AdditionalDependencies="&quot;glut32.lib&quot; "
+      AdditionalLibraryDirectories="&quot;./../../Graphics/lib/win32/glut&quot;;"
+      />
+    <Tool Name="VCMIDLTool"/>
+    <Tool Name="VCPreBuildEventTool"/>
+    <Tool Name="VCPostBuildEventTool"/>
+    <Tool Name="VCPreLinkEventTool"/>
+    <Tool Name="VCResourceCompilerTool"/>
+    <Tool Name="VCWebServiceProxyGeneratorTool"/>
+    <Tool Name="VCXMLDataGeneratorTool"/>
+    <Tool Name="VCWebDeploymentTool"/>
+    <Tool Name="VCManagedWrapperGeneratorTool"/>
+    <Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+  </Configuration>
+  <Configuration
+    Name="profile|Win32"
+    OutputDirectory="./../../lib/win32"
+    IntermediateDirectory="./Win32/SnippetRender/profile"
+    ConfigurationType="4"
+    InheritedPropertySheets=""
+    CharacterSet=""
+    >
+    <Tool
+      Name="VCCLCompilerTool"
+      AdditionalIncludeDirectories="&quot;./../../Graphics/include/win32/GL&quot;;&quot;./../../../Include&quot;;&quot;./../../../Source/foundation/include&quot;;&quot;./../../../Source/Common/src&quot;;&quot;./../../../Source/GeomUtils/src&quot;;&quot;./../../../Source/GeomUtils/headers&quot;;&quot;./../../../Source/GeomUtils/include&quot;;&quot;./../../../Source/GeomUtils/src/contact&quot;;&quot;./../../../Source/GeomUtils/src/common&quot;;&quot;./../../../Source/GeomUtils/src/convex&quot;;&quot;./../../../Source/GeomUtils/src/distance&quot;;&quot;./../../../Source/GeomUtils/src/gjk&quot;;&quot;./../../../Source/GeomUtils/src/intersection&quot;;&quot;./../../../Source/GeomUtils/src/mesh&quot;;&quot;./../../../Source/GeomUtils/src/hf&quot;;&quot;./../../../Source/GeomUtils/src/Ice&quot;;&quot;./../../../Source/GeomUtils/src/pcm&quot;;"
+      PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;NDEBUG;PX_PROFILE;PX_SUPPORT_VISUAL_DEBUGGER;PX_NVTX;PX_PHYSX_DLL_NAME_POSTFIX=PROFILE;"
+      WarningLevel="4"
+      FloatingPointModel="2"
+      EnableEnhancedInstructionSet="2"
+      StringPooling="true"
+      RuntimeTypeInfo="false"
+      WarnAsError="true"
+      BufferSecurityCheck="false"
+      Optimization="3"
+      AdditionalOptions="/MP"
+      ExceptionHandling="0"
+      RuntimeLibrary="0"
+      UsePrecompiledHeader="0"
+      PrecompiledHeaderThrough=""
+      />
+    <Tool Name="VCCustomBuildTool"/>
+    <Tool 
+      Name="VCLibrarianTool" 
+      OutputFile="$(OutDir)/$(ProjectName)PROFILE.lib" 
+      ProgramDatabaseFile="$(OutDir)/$(ProjectName)PROFILE.lib.pdb" 
+      LinkLibraryDependencies="true"
+      AdditionalOptions="/INCREMENTAL:NO /MACHINE:X86"
+      AdditionalDependencies="&quot;glut32.lib&quot; "
+      AdditionalLibraryDirectories="&quot;./../../Graphics/lib/win32/glut&quot;;"
+      />
+    <Tool Name="VCMIDLTool"/>
+    <Tool Name="VCPreBuildEventTool"/>
+    <Tool Name="VCPostBuildEventTool"/>
+    <Tool Name="VCPreLinkEventTool"/>
+    <Tool Name="VCResourceCompilerTool"/>
+    <Tool Name="VCWebServiceProxyGeneratorTool"/>
+    <Tool Name="VCXMLDataGeneratorTool"/>
+    <Tool Name="VCWebDeploymentTool"/>
+    <Tool Name="VCManagedWrapperGeneratorTool"/>
+    <Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+  </Configuration>
+  <Configuration
+    Name="release|Win32"
+    OutputDirectory="./../../lib/win32"
+    IntermediateDirectory="./Win32/SnippetRender/release"
+    ConfigurationType="4"
+    InheritedPropertySheets=""
+    CharacterSet=""
+    >
+    <Tool
+      Name="VCCLCompilerTool"
+      AdditionalIncludeDirectories="&quot;./../../Graphics/include/win32/GL&quot;;&quot;./../../../Include&quot;;&quot;./../../../Source/foundation/include&quot;;&quot;./../../../Source/Common/src&quot;;&quot;./../../../Source/GeomUtils/src&quot;;&quot;./../../../Source/GeomUtils/headers&quot;;&quot;./../../../Source/GeomUtils/include&quot;;&quot;./../../../Source/GeomUtils/src/contact&quot;;&quot;./../../../Source/GeomUtils/src/common&quot;;&quot;./../../../Source/GeomUtils/src/convex&quot;;&quot;./../../../Source/GeomUtils/src/distance&quot;;&quot;./../../../Source/GeomUtils/src/gjk&quot;;&quot;./../../../Source/GeomUtils/src/intersection&quot;;&quot;./../../../Source/GeomUtils/src/mesh&quot;;&quot;./../../../Source/GeomUtils/src/hf&quot;;&quot;./../../../Source/GeomUtils/src/Ice&quot;;&quot;./../../../Source/GeomUtils/src/pcm&quot;;"
+      PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_ALLOW_MSC_VER_MISMATCH;_ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH;NDEBUG;"
+      WarningLevel="4"
+      FloatingPointModel="2"
+      EnableEnhancedInstructionSet="2"
+      StringPooling="true"
+      RuntimeTypeInfo="false"
+      WarnAsError="true"
+      BufferSecurityCheck="false"
+      Optimization="3"
+      AdditionalOptions="/MP"
+      ExceptionHandling="0"
+      RuntimeLibrary="0"
+      UsePrecompiledHeader="0"
+      PrecompiledHeaderThrough=""
+      />
+    <Tool Name="VCCustomBuildTool"/>
+    <Tool 
+      Name="VCLibrarianTool" 
+      OutputFile="$(OutDir)/$(ProjectName).lib" 
+      ProgramDatabaseFile="$(OutDir)/$(ProjectName).lib.pdb" 
+      LinkLibraryDependencies="true"
+      AdditionalOptions="/INCREMENTAL:NO /MACHINE:X86"
+      AdditionalDependencies="&quot;glut32.lib&quot; "
+      AdditionalLibraryDirectories="&quot;./../../Graphics/lib/win32/glut&quot;;"
+      />
+    <Tool Name="VCMIDLTool"/>
+    <Tool Name="VCPreBuildEventTool"/>
+    <Tool Name="VCPostBuildEventTool"/>
+    <Tool Name="VCPreLinkEventTool"/>
+    <Tool Name="VCResourceCompilerTool"/>
+    <Tool Name="VCWebServiceProxyGeneratorTool"/>
+    <Tool Name="VCXMLDataGeneratorTool"/>
+    <Tool Name="VCWebDeploymentTool"/>
+    <Tool Name="VCManagedWrapperGeneratorTool"/>
+    <Tool Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+  </Configuration>
+</Configurations>
+<References></References>
+<Files>
+  <Filter Name="Source Files" Filter=""> <!--  -->
+    <File RelativePath="..\..\SnippetRender\SnippetCamera.cpp">
+    </File>
+    <File RelativePath="..\..\SnippetRender\SnippetRender.cpp">
+    </File>
+    <File RelativePath="..\..\SnippetRender\SnippetCamera.h">
+    </File>
+    <File RelativePath="..\..\SnippetRender\SnippetRender.h">
+    </File>
+  </Filter>
+</Files>
+<Globals></Globals>
+</VisualStudioProject>

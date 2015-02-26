@@ -10,9 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Excavator</RootNamespace>
     <AssemblyName>Excavator</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <BaseIntermediateOutputPath>..\..\..\..\..\Build\Excavator</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -25,6 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\..\..\..\..\Build\Excavator\Release\</OutputPath>
@@ -37,6 +40,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +53,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -58,6 +63,10 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Excavator.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -200,10 +209,10 @@
       <DependentUpon>Trial.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <Content Include="CustomResources\Skybox\Skybox 1\skybox.xml">
+    <Content Include="Resources\Skybox\Skybox 1\skybox.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 2\skybox.xml">
+    <Content Include="Resources\Skybox\Skybox 2\skybox.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\Settings.settings">
@@ -217,86 +226,86 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CustomResources\Skybox\Skybox 1\Back.jpg">
+    <Content Include="Resources\Skybox\Skybox 1\Back.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 1\Bottom.jpg">
+    <Content Include="Resources\Skybox\Skybox 1\Bottom.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 1\Front.jpg">
+    <Content Include="Resources\Skybox\Skybox 1\Front.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 1\Left.jpg">
+    <Content Include="Resources\Skybox\Skybox 1\Left.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 1\Right.jpg">
+    <Content Include="Resources\Skybox\Skybox 1\Right.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 1\Top.jpg">
+    <Content Include="Resources\Skybox\Skybox 1\Top.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 2\Back.jpg">
+    <Content Include="Resources\Skybox\Skybox 2\Back.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 2\Base.jpg">
+    <Content Include="Resources\Skybox\Skybox 2\Base.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 2\Bottom.jpg">
+    <Content Include="Resources\Skybox\Skybox 2\Bottom.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 2\Front.jpg">
+    <Content Include="Resources\Skybox\Skybox 2\Front.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 2\Left.jpg">
+    <Content Include="Resources\Skybox\Skybox 2\Left.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 2\Right.jpg">
+    <Content Include="Resources\Skybox\Skybox 2\Right.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 2\Top.jpg">
+    <Content Include="Resources\Skybox\Skybox 2\Top.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 3\Back.png">
+    <Content Include="Resources\Skybox\Skybox 3\Back.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 3\Base.png">
+    <Content Include="Resources\Skybox\Skybox 3\Base.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 3\Front.png">
+    <Content Include="Resources\Skybox\Skybox 3\Front.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 3\Left.png">
+    <Content Include="Resources\Skybox\Skybox 3\Left.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 3\Right.png">
+    <Content Include="Resources\Skybox\Skybox 3\Right.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 3\skybox.xml">
+    <Content Include="Resources\Skybox\Skybox 3\skybox.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 3\Top.png">
+    <Content Include="Resources\Skybox\Skybox 3\Top.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 0\Back.png">
+    <Content Include="Resources\Skybox\Skybox 0\Back.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 0\Base.jpg">
+    <Content Include="Resources\Skybox\Skybox 0\Base.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 0\Front.png">
+    <Content Include="Resources\Skybox\Skybox 0\Front.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 0\Left.png">
+    <Content Include="Resources\Skybox\Skybox 0\Left.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 0\Right.png">
+    <Content Include="Resources\Skybox\Skybox 0\Right.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 0\skybox.xml">
+    <Content Include="Resources\Skybox\Skybox 0\skybox.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="CustomResources\Skybox\Skybox 0\Top.png">
+    <Content Include="Resources\Skybox\Skybox 0\Top.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Images\dirt1.jpg" />
@@ -313,51 +322,51 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NAudio\NAudio\NAudio.csproj">
+    <ProjectReference Include="..\NAudio\NAudio\NAudio.csproj">
       <Project>{DA4F02E3-0B5E-42CD-B8D9-5583FA51D66E}</Project>
       <Name>NAudio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OpenTK\Source\GLControl\OpenTK.GLControl.csproj">
+    <ProjectReference Include="..\OpenTK\Source\GLControl\OpenTK.GLControl.csproj">
       <Project>{A625BE88-0000-0000-0000-000000000000}</Project>
       <Name>OpenTK.GLControl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OpenTK\Source\OpenTK\OpenTK.csproj">
+    <ProjectReference Include="..\OpenTK\Source\OpenTK\OpenTK.csproj">
       <Project>{A37A7E14-0000-0000-0000-000000000000}</Project>
       <Name>OpenTK</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\PhysX.Net 3.2.4\PhysX.Net-3\PhysX.Net-3.vcxproj">
-      <Project>{FB145A7D-CDF2-417D-A006-F7591481D609}</Project>
+    <ProjectReference Include="..\PhysX.Net 3.3.1\PhysX.Net-3.3\PhysX.Net-3\PhysX.Net-3.vcxproj">
+      <Project>{fb145a7d-cdf2-417d-a006-f7591481d609}</Project>
       <Name>PhysX.Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser.csproj">
+    <ProjectReference Include="..\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser.csproj">
       <Project>{2414F4DD-734E-4A0B-9C95-C24B2CEE25F7}</Project>
       <Name>SamSeifert.ComplexFileParser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SamSeifert.DoubleBuffer\SamSeifert.DoubleBuffer.csproj">
+    <ProjectReference Include="..\SamSeifert.DoubleBuffer\SamSeifert.DoubleBuffer.csproj">
       <Project>{8BA6520E-9078-497C-BB20-E2D0A4F4EA1D}</Project>
       <Name>SamSeifert.DoubleBuffer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SamSeifert.GLE.CadViewer\SamSeifert.GLE.CadViewer.csproj">
-      <Project>{012184D6-08E1-4152-B2BB-409D4B5D7785}</Project>
+    <ProjectReference Include="..\SamSeifert.GLE.CadViewer\SamSeifert.GLE.CadViewer.csproj">
+      <Project>{012184d6-08e1-4152-b2bb-409d4b5d7785}</Project>
       <Name>SamSeifert.GLE.CadViewer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SamSeifert.GLE.Generics\SamSeifert.GLE.Generics\SamSeifert.GLE.Generics.csproj">
+    <ProjectReference Include="..\SamSeifert.GLE.Generics\SamSeifert.GLE.Generics\SamSeifert.GLE.Generics.csproj">
       <Project>{FB6E9B5D-7A20-45F2-9ADA-DDD12E70A967}</Project>
       <Name>SamSeifert.GLE.Generics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SamSeifert.GlobalEvent\SamSeifert.GlobalEvent\SamSeifert.GlobalEvents.csproj">
+    <ProjectReference Include="..\SamSeifert.GlobalEvent\SamSeifert.GlobalEvent\SamSeifert.GlobalEvents.csproj">
       <Project>{9B8D2FBB-0305-4DF6-A090-DB590DA3659A}</Project>
       <Name>SamSeifert.GlobalEvents</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SamSeifert.HeadTrackerWrapper\SamSeifert.HeadTracker.csproj">
+    <ProjectReference Include="..\SamSeifert.HeadTrackerWrapper\SamSeifert.HeadTracker.csproj">
       <Project>{717FBDDE-58A7-4A0E-AD39-F06505EEC2A2}</Project>
       <Name>SamSeifert.HeadTracker</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SamSeifert.ScreenPicker\SamSeifert.ScreenPicker\SamSeifert.ScreenPicker.csproj">
+    <ProjectReference Include="..\SamSeifert.ScreenPicker\SamSeifert.ScreenPicker\SamSeifert.ScreenPicker.csproj">
       <Project>{1ED5718E-67EB-40A5-A0A7-1E489ED544FC}</Project>
       <Name>SamSeifert.ScreenPicker</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Matlab Model\WrapperLibrary\WrapperLibrary.vcxproj">
+    <ProjectReference Include="Matlab Model\WrapperLibrary\WrapperLibrary.vcxproj">
       <Project>{33CE8AFC-E1C5-4A04-9204-9CD6F0C1F306}</Project>
       <Name>MatlabExcavatorWrapper</Name>
     </ProjectReference>

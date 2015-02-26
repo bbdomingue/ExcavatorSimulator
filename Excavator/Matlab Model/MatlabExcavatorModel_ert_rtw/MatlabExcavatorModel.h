@@ -5,7 +5,7 @@
  *
  * Model version                  : 1.227
  * Simulink Coder version         : 8.5 (R2013b) 08-Aug-2013
- * C/C++ source code generated on : Wed Feb 25 22:33:09 2015
+ * C/C++ source code generated on : Wed Feb 25 23:07:32 2015
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -137,7 +137,7 @@ typedef struct {
    *   '<S2>/S-Function3'
    *   '<S4>/S-Function'
    */
-  real_T pooled4[2];
+  real_T pooled5[2];
 
   /* Pooled Parameter (Expression: Ts)
    * Referenced by:
@@ -148,7 +148,7 @@ typedef struct {
    *   '<S2>/S-Function3'
    *   '<S4>/S-Function'
    */
-  real_T pooled5;
+  real_T pooled6;
 
   /* Computed Parameter: SFunction_P2_Size
    * Referenced by: '<S1>/S-Function'
@@ -173,32 +173,32 @@ typedef struct {
   /* Pooled Parameter (Expression: )
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled6[2];
+  real_T pooled7[2];
 
   /* Pooled Parameter (Mixed Expressions)
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled7;
+  real_T pooled8;
 
   /* Pooled Parameter (Expression: )
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled8[2];
+  real_T pooled9[2];
 
   /* Pooled Parameter (Mixed Expressions)
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled9;
+  real_T pooled10;
 
   /* Pooled Parameter (Expression: )
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled10[2];
+  real_T pooled11[2];
 
   /* Pooled Parameter (Mixed Expressions)
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled11;
+  real_T pooled12;
 
   /* Computed Parameter: SFunction_P11_Size
    * Referenced by: '<S1>/S-Function'
@@ -213,32 +213,32 @@ typedef struct {
   /* Pooled Parameter (Expression: )
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled12[2];
+  real_T pooled13[2];
 
   /* Pooled Parameter (Mixed Expressions)
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled13;
+  real_T pooled14;
 
   /* Pooled Parameter (Expression: )
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled14[2];
+  real_T pooled15[2];
 
   /* Pooled Parameter (Mixed Expressions)
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled15;
+  real_T pooled16;
 
   /* Pooled Parameter (Expression: )
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled16[2];
+  real_T pooled17[2];
 
   /* Pooled Parameter (Mixed Expressions)
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled17;
+  real_T pooled18;
 
   /* Computed Parameter: SFunction_P24_Size
    * Referenced by: '<S1>/S-Function'
@@ -253,12 +253,12 @@ typedef struct {
   /* Pooled Parameter (Expression: )
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled18[2];
+  real_T pooled19[2];
 
   /* Pooled Parameter (Mixed Expressions)
    * Referenced by: '<S1>/S-Function'
    */
-  real_T pooled19;
+  real_T pooled20;
 
   /* Computed Parameter: SFunction_P2_Size_n
    * Referenced by: '<S2>/S-Function'

@@ -25,10 +25,10 @@ float MatlabExcavatorWrapper::MatlabSimulation::SamUpdateClass(
 		Qd,
 		Flow,
 		// Back
-		Fuel, 
-		CylinderPositions, 
-		CylinderVelocities, 
-		JointTorques);
+		Fuel,
+		CylinderPositions,
+		CylinderVelocities,
+     	JointTorques);
 }
 
 void MatlabExcavatorWrapper::MatlabSimulation::SamTerminateClass()

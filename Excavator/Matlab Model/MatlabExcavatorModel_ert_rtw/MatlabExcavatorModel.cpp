@@ -5,7 +5,7 @@
  *
  * Model version                  : 1.227
  * Simulink Coder version         : 8.5 (R2013b) 08-Aug-2013
- * C/C++ source code generated on : Wed Feb 25 22:33:09 2015
+ * C/C++ source code generated on : Wed Feb 25 23:07:32 2015
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -1161,7 +1161,7 @@ void MatlabExcavatorModel_initialize(void)
           &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn0.params;
         ssSetSFcnParamsCount(rts, 1);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled4);
+        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
       }
 
       /* registration */
@@ -1328,37 +1328,37 @@ void MatlabExcavatorModel_initialize(void)
           &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.params;
         ssSetSFcnParamsCount(rts, 27);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled4);
+        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
         ssSetSFcnParam(rts, 1, (mxArray*)
                        MatlabExcavatorModel_ConstP.SFunction_P2_Size);
         ssSetSFcnParam(rts, 2, (mxArray*)
                        MatlabExcavatorModel_ConstP.SFunction_P3_Size);
-        ssSetSFcnParam(rts, 3, (mxArray*)MatlabExcavatorModel_ConstP.pooled6);
-        ssSetSFcnParam(rts, 4, (mxArray*)MatlabExcavatorModel_ConstP.pooled8);
-        ssSetSFcnParam(rts, 5, (mxArray*)MatlabExcavatorModel_ConstP.pooled6);
-        ssSetSFcnParam(rts, 6, (mxArray*)MatlabExcavatorModel_ConstP.pooled10);
-        ssSetSFcnParam(rts, 7, (mxArray*)MatlabExcavatorModel_ConstP.pooled6);
-        ssSetSFcnParam(rts, 8, (mxArray*)MatlabExcavatorModel_ConstP.pooled10);
-        ssSetSFcnParam(rts, 9, (mxArray*)MatlabExcavatorModel_ConstP.pooled8);
+        ssSetSFcnParam(rts, 3, (mxArray*)MatlabExcavatorModel_ConstP.pooled7);
+        ssSetSFcnParam(rts, 4, (mxArray*)MatlabExcavatorModel_ConstP.pooled9);
+        ssSetSFcnParam(rts, 5, (mxArray*)MatlabExcavatorModel_ConstP.pooled7);
+        ssSetSFcnParam(rts, 6, (mxArray*)MatlabExcavatorModel_ConstP.pooled11);
+        ssSetSFcnParam(rts, 7, (mxArray*)MatlabExcavatorModel_ConstP.pooled7);
+        ssSetSFcnParam(rts, 8, (mxArray*)MatlabExcavatorModel_ConstP.pooled11);
+        ssSetSFcnParam(rts, 9, (mxArray*)MatlabExcavatorModel_ConstP.pooled9);
         ssSetSFcnParam(rts, 10, (mxArray*)
                        MatlabExcavatorModel_ConstP.SFunction_P11_Size);
-        ssSetSFcnParam(rts, 11, (mxArray*)MatlabExcavatorModel_ConstP.pooled12);
-        ssSetSFcnParam(rts, 12, (mxArray*)MatlabExcavatorModel_ConstP.pooled12);
-        ssSetSFcnParam(rts, 13, (mxArray*)MatlabExcavatorModel_ConstP.pooled12);
-        ssSetSFcnParam(rts, 14, (mxArray*)MatlabExcavatorModel_ConstP.pooled12);
-        ssSetSFcnParam(rts, 15, (mxArray*)MatlabExcavatorModel_ConstP.pooled14);
-        ssSetSFcnParam(rts, 16, (mxArray*)MatlabExcavatorModel_ConstP.pooled14);
-        ssSetSFcnParam(rts, 17, (mxArray*)MatlabExcavatorModel_ConstP.pooled14);
-        ssSetSFcnParam(rts, 18, (mxArray*)MatlabExcavatorModel_ConstP.pooled14);
-        ssSetSFcnParam(rts, 19, (mxArray*)MatlabExcavatorModel_ConstP.pooled16);
-        ssSetSFcnParam(rts, 20, (mxArray*)MatlabExcavatorModel_ConstP.pooled16);
-        ssSetSFcnParam(rts, 21, (mxArray*)MatlabExcavatorModel_ConstP.pooled16);
-        ssSetSFcnParam(rts, 22, (mxArray*)MatlabExcavatorModel_ConstP.pooled16);
+        ssSetSFcnParam(rts, 11, (mxArray*)MatlabExcavatorModel_ConstP.pooled13);
+        ssSetSFcnParam(rts, 12, (mxArray*)MatlabExcavatorModel_ConstP.pooled13);
+        ssSetSFcnParam(rts, 13, (mxArray*)MatlabExcavatorModel_ConstP.pooled13);
+        ssSetSFcnParam(rts, 14, (mxArray*)MatlabExcavatorModel_ConstP.pooled13);
+        ssSetSFcnParam(rts, 15, (mxArray*)MatlabExcavatorModel_ConstP.pooled15);
+        ssSetSFcnParam(rts, 16, (mxArray*)MatlabExcavatorModel_ConstP.pooled15);
+        ssSetSFcnParam(rts, 17, (mxArray*)MatlabExcavatorModel_ConstP.pooled15);
+        ssSetSFcnParam(rts, 18, (mxArray*)MatlabExcavatorModel_ConstP.pooled15);
+        ssSetSFcnParam(rts, 19, (mxArray*)MatlabExcavatorModel_ConstP.pooled17);
+        ssSetSFcnParam(rts, 20, (mxArray*)MatlabExcavatorModel_ConstP.pooled17);
+        ssSetSFcnParam(rts, 21, (mxArray*)MatlabExcavatorModel_ConstP.pooled17);
+        ssSetSFcnParam(rts, 22, (mxArray*)MatlabExcavatorModel_ConstP.pooled17);
         ssSetSFcnParam(rts, 23, (mxArray*)
                        MatlabExcavatorModel_ConstP.SFunction_P24_Size);
-        ssSetSFcnParam(rts, 24, (mxArray*)MatlabExcavatorModel_ConstP.pooled18);
-        ssSetSFcnParam(rts, 25, (mxArray*)MatlabExcavatorModel_ConstP.pooled18);
-        ssSetSFcnParam(rts, 26, (mxArray*)MatlabExcavatorModel_ConstP.pooled18);
+        ssSetSFcnParam(rts, 24, (mxArray*)MatlabExcavatorModel_ConstP.pooled19);
+        ssSetSFcnParam(rts, 25, (mxArray*)MatlabExcavatorModel_ConstP.pooled19);
+        ssSetSFcnParam(rts, 26, (mxArray*)MatlabExcavatorModel_ConstP.pooled19);
       }
 
       /* work vectors */
@@ -1526,7 +1526,7 @@ void MatlabExcavatorModel_initialize(void)
           &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn2.params;
         ssSetSFcnParamsCount(rts, 4);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled4);
+        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
         ssSetSFcnParam(rts, 1, (mxArray*)
                        MatlabExcavatorModel_ConstP.SFunction_P2_Size_n);
         ssSetSFcnParam(rts, 2, (mxArray*)
@@ -1676,7 +1676,7 @@ void MatlabExcavatorModel_initialize(void)
           &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn3.params;
         ssSetSFcnParamsCount(rts, 3);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled4);
+        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
         ssSetSFcnParam(rts, 1, (mxArray*)
                        MatlabExcavatorModel_ConstP.SFunction1_P2_Size);
         ssSetSFcnParam(rts, 2, (mxArray*)
@@ -1824,7 +1824,7 @@ void MatlabExcavatorModel_initialize(void)
           &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn4.params;
         ssSetSFcnParamsCount(rts, 3);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled4);
+        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
         ssSetSFcnParam(rts, 1, (mxArray*)
                        MatlabExcavatorModel_ConstP.SFunction2_P2_Size);
         ssSetSFcnParam(rts, 2, (mxArray*)
@@ -1975,7 +1975,7 @@ void MatlabExcavatorModel_initialize(void)
           &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn5.params;
         ssSetSFcnParamsCount(rts, 3);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled4);
+        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
         ssSetSFcnParam(rts, 1, (mxArray*)
                        MatlabExcavatorModel_ConstP.SFunction3_P2_Size);
         ssSetSFcnParam(rts, 2, (mxArray*)
@@ -2062,16 +2062,16 @@ void MatlabExcavatorModel_initialize(void)
   }
 
   /* InitializeConditions for Delay: '<S3>/Integer Delay1' */
-  MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[0] = -18.436498977169066;
-  MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[1] = -76.232167057837543;
-  MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[2] = 343.74128035940817;
-  MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[3] = 108.94629020235492;
+  MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[0] = 435.11321399999997;
+  MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[1] = 435.11321399999997;
+  MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[2] = 435.11321399999997;
+  MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[3] = 435.11321399999997;
 
   /* InitializeConditions for Delay: '<S3>/Integer Delay2' */
-  MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[0] = 83.741195846393566;
-  MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[1] = 878.94577493525946;
-  MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[2] = 14.439234485262316;
-  MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[3] = 85.858030307856581;
+  MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[0] = 435.11321399999997;
+  MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[1] = 435.11321399999997;
+  MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[2] = 435.11321399999997;
+  MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[3] = 435.11321399999997;
 
   /* Level2 S-Function Block: '<S1>/S-Function' (cylmodel_435_ryder) */
   {

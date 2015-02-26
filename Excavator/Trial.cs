@@ -352,7 +352,7 @@ namespace Excavator
         public virtual void drawObjectsInShadow(bool ShadowBufferDraw)
         {
             if (FormBase._BoolDrawPhysX) this.drawPhysX();
-            else this._EmbeddedSoilModel.drawTrench(ShadowBufferDraw);
+//            else this._EmbeddedSoilModel.drawTrench(ShadowBufferDraw);
 
             this._EmbeddedSoilModel.drawBins(ShadowBufferDraw);
             this._EmbeddedSoilModel.drawPiles((float)this._StopWatchSimulateTotal.Elapsed.TotalSeconds);
@@ -447,14 +447,7 @@ namespace Excavator
 
         private SamSeifert.GLE.Color_GL _ColorGL = new Color_GL(Color.White);
 
-        float[] PillarHeight_Half = new float[6];
         private Scene _Scene;
-
-        RigidDynamic[] Pillars = new RigidDynamic[6];
-        const float dimPillarWidth_Meters = 1;
-        const float dimPillarHeight_Meters = 0.5f;
-        const float dimPillarLayoutRadius_Meters = 5;
-        const float dimPillarMass_Kilograms = 200;
 
         RigidDynamic xCab, xBoom, xArm, xBucket;
         
@@ -464,6 +457,13 @@ namespace Excavator
             {
                 Gravity = new Vector3_PhysX(0, -9.8f, 0)
             });
+
+            Vector3[] vss;
+            int[] iss;
+            var cat_material = Trial._Physics.CreateMaterial(0.1f, 0.1f, 0.0f);
+            var cooking = Trial._Physics.CreateCooking();
+
+
 
             var _MaterialCage = Trial._Physics.CreateMaterial(0.1f, 0.1f, 0.0f);
             var groundPlane = Trial._Physics.CreateRigidStatic();
@@ -475,9 +475,6 @@ namespace Excavator
 
 
 
-            Vector3[] vss;
-            int[] iss;
-            var cat_material = Trial._Physics.CreateMaterial(0.1f, 0.1f, 0.0f);
 
 
 
@@ -543,11 +540,7 @@ namespace Excavator
                 Matrix_PhysX.Identity,
                 this.xCab,
                 Matrix_PhysX.Translation(xset, dim_cab_thickness_o2, -dim_cab_radius));
-            jnt2.Limit = new JointLimitPair()
-            {
-                LowerLimit = -(float)this.Q2_Max_Radians,
-                UpperLimit = -(float)this.Q2_Min_Radians,
-            };
+            jnt2.Limit = new JointAngularLimitPair(-(float)this.Q2_Max_Radians, -(float)this.Q2_Min_Radians);
             jnt2.Flags |= RevoluteJointFlag.LimitEnabled;
             this.xBoom.SetMassAndUpdateInertia(Trial.m2);
             this._Scene.AddActor(xBoom);
@@ -582,11 +575,7 @@ namespace Excavator
                 Matrix_PhysX.Identity,
                 this.xBoom,
                 Matrix_PhysX.Translation(0, 0, -dim_boom_length_meters));
-            jnt3.Limit = new JointLimitPair()
-            {
-                LowerLimit = -(float)this.Q3_Max_Radians,
-                UpperLimit = -(float)this.Q3_Min_Radians,
-            };
+            jnt3.Limit = new JointAngularLimitPair(-(float)this.Q3_Max_Radians, -(float)this.Q3_Min_Radians);
             jnt3.Flags |= RevoluteJointFlag.LimitEnabled;
             this.xArm.SetMassAndUpdateInertia(Trial.m3);
             this._Scene.AddActor(this.xArm);
@@ -607,7 +596,6 @@ namespace Excavator
                 xOff: 0,
                 yOff: 0,
                 zOff: 0);
-            var cooking = Trial._Physics.CreateCooking();
             var stream = new System.IO.MemoryStream();
             var meshde = new ConvexMeshDesc() { Flags = ConvexFlag.ComputeConvex };
             var vss2 = new Vector3_PhysX[vss.Length];
@@ -631,73 +619,44 @@ namespace Excavator
                 Matrix_PhysX.Identity,
                 this.xArm,
                 Matrix_PhysX.Translation(0, 0, -dim_arm_length_meters));
-            jnt4.Limit = new JointLimitPair()
-            {
-                LowerLimit = -(float)this.Q4_Max_Radians,
-                UpperLimit = -(float)this.Q4_Min_Radians,
-            };
+            jnt4.Limit = new JointAngularLimitPair(-(float)this.Q4_Max_Radians, -(float)this.Q4_Min_Radians);
             jnt4.Flags |= RevoluteJointFlag.LimitEnabled;
             this.xBucket.SetMassAndUpdateInertia(Trial.m4);
             this._Scene.AddActor(this.xBucket);
 
 
 
-
-            CadObjectGenerator.TrianglesFromXAML(
-                out vss,
-                out iss,
-                Properties.Resources.Box,
-                xScale: StaticMethods.Conversion_Meters_To_Inches,
-                yScale: StaticMethods.Conversion_Meters_To_Inches,
-                zScale: StaticMethods.Conversion_Meters_To_Inches,
-                xOff: -EmbeddedSoilModel._FloatBoxX,
-                yOff: 0.0f,
-                zOff: -EmbeddedSoilModel._FloatBoxZ);
-
-            
-            CadObjectGenerator.TrianglesFromXAML(
-                out vss,
-                out iss,
-                Properties.Resources.Box,
-                xScale: StaticMethods.Conversion_Meters_To_Inches,
-                yScale: StaticMethods.Conversion_Meters_To_Inches,
-                zScale: StaticMethods.Conversion_Meters_To_Inches,
-                xOff: EmbeddedSoilModel._FloatBoxX,
-                yOff: 0.0f,
-                zOff: -EmbeddedSoilModel._FloatBoxZ);
-
-
-
-
-            var BallMaterial = Trial._Physics.CreateMaterial(0.1f, 0.1f, 0.0f);
-            int len = this.Pillars.Length;
-            float inc = 2 * StaticMethods._PIF / len;
-
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < 2; i++)
             {
-                float theta = (i + 0.5f) * inc;
-
-                this.PillarHeight_Half[i] = Trial.dimPillarHeight_Meters / 2;
-
-                this.Pillars[i] = Trial._Physics.CreateRigidDynamic(
+                var conv2 = StaticMethods.Conversion_Inches_To_Meters / 2;
+                var bin = Trial._Physics.CreateRigidStatic(
                     Matrix_PhysX.Translation(
-                    Trial.dimPillarLayoutRadius_Meters * (float)Math.Sin(theta),
-                    this.PillarHeight_Half[i],
-                    Trial.dimPillarLayoutRadius_Meters * -(float)Math.Cos(theta)));
+                        EmbeddedSoilModel.dimBoxX_Inches * StaticMethods.Conversion_Inches_To_Meters * (i * 2 - 1),
+                        EmbeddedSoilModel.dimBoxHeight_Inches * conv2,
+                        - EmbeddedSoilModel.dimBoxZ_Inches * StaticMethods.Conversion_Inches_To_Meters
+                    ));
 
-                this.Pillars[i].CreateShape(
-                    new BoxGeometry(
-                        Trial.dimPillarWidth_Meters / 2, 
-                        this.PillarHeight_Half[i],
-                        Trial.dimPillarWidth_Meters / 2),
-                    BallMaterial);
-
-                this.Pillars[i].SetMassAndUpdateInertia(dimPillarMass_Kilograms);
-
-                this.Pillars[i].LinearDamping = 0.01f;
-                this.Pillars[i].AngularDamping = 0.01f;
-                this._Scene.AddActor(this.Pillars[i]);
+                for (int j = 0; j < 4; j++)
+                {
+                    bin.CreateShape(
+                        new BoxGeometry(
+                            EmbeddedSoilModel.dimBoxWidth_Inches * conv2,
+                            EmbeddedSoilModel.dimBoxHeight_Inches * conv2,
+                            EmbeddedSoilModel.dimBoxThickness_Inches * conv2
+                            ),
+                        cat_material,
+                        Matrix_PhysX.Multiply(
+                            Matrix_PhysX.Translation(
+                                0,
+                                0,
+                                (EmbeddedSoilModel.dimBoxWidth_Inches - EmbeddedSoilModel.dimBoxThickness_Inches) * conv2),
+                            Matrix_PhysX.RotationY(j * StaticMethods._PIF / 2)));
+                }
+                this._Scene.AddActor(bin);
+               
             }
+
+
 
             for (int i = 0; i < 25; i++) this._Scene.Simulate(0.001f);
         }
@@ -715,14 +674,15 @@ namespace Excavator
                 foreach (var a in this._Scene.Actors)
                 {
                     var v = a as RigidActor;
-                    if (v != null) this.draw(v);
+                    if (v != null)
+                    this.draw(v.Shapes);
                 }
             }
         }
 
-        public void draw(RigidActor dyn)
+        private void draw(IEnumerable<Shape> enumerable)
         {
-            foreach (var shp in dyn.Shapes)
+            foreach (var shp in enumerable)
             {
                 GL_Handler.PushMatrix();
                 {
@@ -899,7 +859,7 @@ namespace Excavator
                             ref Q,
                             ref Qd);
 
-                        var pl = this._EmbeddedSoilModel.ForceModel_ReturnDump(
+/*                        var pl = this._EmbeddedSoilModel.ForceModel_ReturnDump(
                             ref Ybh,
                             ref Vbh,
                             ref Q,
@@ -911,7 +871,7 @@ namespace Excavator
                             this._FloatSimTime
                             );
 
-                        if (pl.Size > 0) if (this._TrialSaver != null) this._TrialSaver.update2(pl);
+                        if (pl.Size > 0) if (this._TrialSaver != null) this._TrialSaver.update2(pl);*/
 
                         Bobcat._FloatBucketSoilVolume = fBucketVolumeLoad;
                         fBucketMassLoad = fBucketVolumeLoad * 0.03149594f;
@@ -980,8 +940,10 @@ namespace Excavator
                             targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xBucket.GlobalPose);
                             cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
                             if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
-                            else newQ = (float)Math.Acos(Vector4_PhysX.Dot(targ1, targ2)) *
+                            else newQ = (float)
+                                Math.Acos(Math.Max(-1, Math.Min(1, Vector4_PhysX.Dot(targ1, targ2)))) *
                                 Math.Sign(Vector4_PhysX.Dot(new Vector4_PhysX(cross, 0), cabPerp));
+
                             Qd[3] = (newQ - Q[3]) / TimeStep;
                             Q[3] = newQ;
                         }
