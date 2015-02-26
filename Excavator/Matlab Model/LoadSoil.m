@@ -1,0 +1,10 @@
+soil.k_t = 120000/3;
+soil.k_n = 120000/3;
+soil.k_a = 0;
+soil.k_obj = 120000;
+soil.b_t = 0;
+soil.b_n = 0;
+soil.b_a = 0;
+soil.ShStr = 100000;
+soil.Tau_rt = 0.1;
+soil.Tau_rn = 0.5;

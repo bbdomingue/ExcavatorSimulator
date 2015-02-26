@@ -13,33 +13,71 @@ namespace Excavator
 {
     internal static class StaticMethods
     {
-
         internal const float _PIF = (float)Math.PI;
         internal const double _PID = Math.PI;
 
+
+
         internal static float toRadiansF(float f)
         {
-            return f * StaticMethods._PIF / 180.0f;
+            return f * StaticMethods._PIF / 180;
         }
+
+        internal static float toRadiansF(double d)
+        {
+            return StaticMethods.toRadiansF((float)d);
+        }
+
+
+
+        internal static double toRadiansD(int f)
+        {
+            return StaticMethods.toRadiansD((double)f);
+        }
+
+        internal static double toRadiansD(float f)
+        {
+            return StaticMethods.toRadiansD((double)f);
+        }
+
+        internal static double toRadiansD(double d)
+        {
+            return d * StaticMethods._PID / 180;
+        }
+
+        internal static double toRadiansD(decimal m)
+        {
+            return StaticMethods.toRadiansD((double)m);
+        }
+
+
+
+
+
+
+
+
 
         internal static float toDegreesF(float f)
         {
-            return f * 180.0f / StaticMethods._PIF;
+            return f * 180 / StaticMethods._PIF;
         }
 
-        internal static float toDegreesF(double f)
+        internal static float toDegreesF(double d)
         {
-            return (float)(f * 180.0 / StaticMethods._PID);
+            return StaticMethods.toDegreesF((float)d); ;
         }
 
-        internal static double toRadiansD(double f)
+
+
+        internal static double toDegreesD(float f)
         {
-            return f * StaticMethods._PID / 180.0f;
+            return StaticMethods.toDegreesD((double)f);
         }
 
-        internal static double toDegreesD(double f)
+        internal static double toDegreesD(double d)
         {
-            return f * 180.0f / StaticMethods._PID;
+            return d * 180 / StaticMethods._PID;
         }
 
         internal static Color getRandomColorForIndex(int index)
@@ -57,94 +95,14 @@ namespace Excavator
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        internal static void Rotate(float val, Vector3 v)
+        public static void setNudValue(System.Windows.Forms.NumericUpDown nud, float val)
         {
-            GL.Rotate(val, v);
-            if (StaticMethods._BoolTextureAlso)
-            {
-                GL.MatrixMode(StaticMethods._BoolMatrixModeModelTexture ? MatrixMode.Texture : MatrixMode.Modelview);
-                GL.Rotate(val, v);
-                StaticMethods._BoolMatrixModeModelTexture = !StaticMethods._BoolMatrixModeModelTexture;
-            }
+            StaticMethods.setNudValue(nud, (decimal)val);
         }
 
-        internal static void Rotate(float a, float x, float y, float z)
+        public static void setNudValue(System.Windows.Forms.NumericUpDown nud, decimal val)
         {
-            GL.Rotate(a, x, y, z);
-            if (StaticMethods._BoolTextureAlso)
-            {
-                GL.MatrixMode(StaticMethods._BoolMatrixModeModelTexture ? MatrixMode.Texture : MatrixMode.Modelview);
-                GL.Rotate(a, x, y, z);
-                StaticMethods._BoolMatrixModeModelTexture = !StaticMethods._BoolMatrixModeModelTexture;
-            }
+            nud.Value = Math.Max(nud.Minimum, Math.Min(nud.Maximum, val));
         }
-
-        internal static void Translate(float x, float y, float z)
-        {
-            GL.Translate(x, y, z);
-            if (StaticMethods._BoolTextureAlso)
-            {
-                GL.MatrixMode(StaticMethods._BoolMatrixModeModelTexture ? MatrixMode.Texture : MatrixMode.Modelview);
-                GL.Translate(x, y, z);
-                StaticMethods._BoolMatrixModeModelTexture = !StaticMethods._BoolMatrixModeModelTexture;
-            }
-        }
-
-        internal static void Translate(Vector3 v)
-        {
-            GL.Translate(v);
-            if (StaticMethods._BoolTextureAlso)
-            {
-                GL.MatrixMode(StaticMethods._BoolMatrixModeModelTexture ? MatrixMode.Texture : MatrixMode.Modelview);
-                GL.Translate(v);
-                StaticMethods._BoolMatrixModeModelTexture = !StaticMethods._BoolMatrixModeModelTexture;
-            }
-        }
-
-        internal static void PushMatrix()
-        {
-            GL.PushMatrix();
-            if (StaticMethods._BoolTextureAlso)
-            {
-                GL.MatrixMode(StaticMethods._BoolMatrixModeModelTexture ? MatrixMode.Texture : MatrixMode.Modelview);
-                GL.PushMatrix();
-                StaticMethods._BoolMatrixModeModelTexture = !StaticMethods._BoolMatrixModeModelTexture;
-            }
-        }
-
-        internal static void PopMatrix()
-        {
-            GL.PopMatrix();
-            if (StaticMethods._BoolTextureAlso)
-            {
-                GL.MatrixMode(StaticMethods._BoolMatrixModeModelTexture ? MatrixMode.Texture : MatrixMode.Modelview);
-                GL.PopMatrix();
-                StaticMethods._BoolMatrixModeModelTexture = !StaticMethods._BoolMatrixModeModelTexture;
-            }
-        }
-
-        internal static bool _BoolTextureAlso;
-        internal static bool _BoolMatrixModeModelTexture;
-
     }
 }

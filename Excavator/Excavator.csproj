@@ -14,48 +14,53 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\Build\Excavator\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\..\..\..\..\Build\Excavator\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\..\..\Build\Excavator\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>..\..\..\..\..\Build\Excavator\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -71,28 +76,41 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="ControlKeyboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlKeyboard.Designer.cs">
+      <DependentUpon>ControlKeyboard.cs</DependentUpon>
+    </Compile>
     <Compile Include="ControlPhantom.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ControlPhantom.Designer.cs">
       <DependentUpon>ControlPhantom.cs</DependentUpon>
     </Compile>
+    <Compile Include="ControlStick.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlStick.Designer.cs">
+      <DependentUpon>ControlStick.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlKeyboardCylinder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlKeyboardCylinder.Designer.cs">
+      <DependentUpon>ControlKeyboardCylinder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExcavatorSound.cs" />
     <Compile Include="FormBase.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormBase.Designer.cs">
       <DependentUpon>FormBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormPickScreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormPickScreen.Designer.cs">
-      <DependentUpon>FormPickScreen.cs</DependentUpon>
     </Compile>
     <Compile Include="FormPickTrial.cs">
       <SubType>Form</SubType>
@@ -100,26 +118,22 @@
     <Compile Include="FormPickTrial.Designer.cs">
       <DependentUpon>FormPickTrial.cs</DependentUpon>
     </Compile>
-    <Compile Include="GLControl3D.cs" />
+    <Compile Include="GL_Handler.cs" />
     <Compile Include="Bobcat.cs" />
-    <Compile Include="GLSphere.cs" />
+    <Compile Include="CabRotater.cs" />
+    <Compile Include="Matrix2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="PhysX3CharacterKinematicCHECKED_x86.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PhysX3CHECKED_x86.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PhysX3CommonCHECKED_x86.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PhysX3CookingCHECKED_x86.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PhysX3GpuCHECKED_x86.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Compile Include="TE_VelocityCylinderKeyboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TE_VelocityCylinderSticks.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="T_VelocityCylinderKeyboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="XPC.cs" />
     <Content Include="Resources\GL_Items\Arm.txt" />
     <Content Include="Resources\GL_Items\ArmCyl.txt" />
     <Content Include="Resources\GL_Items\ArmPiston.txt" />
@@ -141,18 +155,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="EmbeddedSoilModel.cs" />
     <Compile Include="StaticMethods.cs" />
+    <Compile Include="TE_FlowSticks.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Trial.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Trial.Designer.cs">
-      <DependentUpon>Trial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TrialJointControlKeyboard.cs">
+    <Compile Include="TrialEmbedBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TrialJointControlKeyboard.Designer.cs">
-      <DependentUpon>TrialJointControlKeyboard.cs</DependentUpon>
+    <Compile Include="TE_FlowKeyboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="T_FlowKeyboard.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="TrialMarkElton.cs">
       <SubType>UserControl</SubType>
@@ -160,16 +178,14 @@
     <Compile Include="TrialMarkElton.Designer.cs">
       <DependentUpon>TrialMarkElton.cs</DependentUpon>
     </Compile>
-    <Compile Include="TrialPillars.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TrialPillars.Designer.cs">
-      <DependentUpon>TrialPillars.cs</DependentUpon>
-    </Compile>
+    <Compile Include="TrialSaver.cs" />
     <Compile Include="WPFControlPhantom.xaml.cs">
       <DependentUpon>WPFControlPhantom.xaml</DependentUpon>
     </Compile>
-    <None Include="Resources\Images\ground2.bmp" />
+    <Content Include="Resources\Images\dirt5.jpg" />
+    <Content Include="Resources\Shaders\SoilFragment.c" />
+    <Content Include="Resources\Shaders\SoilVertex.c" />
+    <Content Include="Resources\Sounds\excavator_idle.wav" />
     <None Include="Resources\Images\green.jpg" />
     <None Include="Resources\Images\HeightMap.bmp" />
     <Content Include="Resources\GL_Trees\tree1.txt" />
@@ -182,14 +198,20 @@
     <Content Include="Resources\Shaders\GhostVertex.c" />
     <Content Include="Resources\Shaders\ShadowFragment.c" />
     <Content Include="Resources\Shaders\ShadowVertex.c" />
+    <EmbeddedResource Include="ControlKeyboard.resx">
+      <DependentUpon>ControlKeyboard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ControlPhantom.resx">
       <DependentUpon>ControlPhantom.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ControlStick.resx">
+      <DependentUpon>ControlStick.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlKeyboardCylinder.resx">
+      <DependentUpon>ControlKeyboardCylinder.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormBase.resx">
       <DependentUpon>FormBase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormPickScreen.resx">
-      <DependentUpon>FormPickScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormPickTrial.resx">
       <DependentUpon>FormPickTrial.cs</DependentUpon>
@@ -202,8 +224,8 @@
     <EmbeddedResource Include="Trial.resx">
       <DependentUpon>Trial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TrialJointControlKeyboard.resx">
-      <DependentUpon>TrialJointControlKeyboard.cs</DependentUpon>
+    <EmbeddedResource Include="TrialEmbedBase.resx">
+      <DependentUpon>TrialEmbedBase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TrialMarkElton.resx">
       <DependentUpon>TrialMarkElton.cs</DependentUpon>
@@ -316,12 +338,20 @@
     <Content Include="Resources\Images\grass1.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\GL_Items\Box.txt">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Content>
     <Page Include="WPFControlPhantom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NAudio\NAudio\NAudio.csproj">
+      <Project>{DA4F02E3-0B5E-42CD-B8D9-5583FA51D66E}</Project>
+      <Name>NAudio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenTK\Source\GLControl\OpenTK.GLControl.csproj">
       <Project>{A625BE88-0000-0000-0000-000000000000}</Project>
       <Name>OpenTK.GLControl</Name>
@@ -330,13 +360,13 @@
       <Project>{A37A7E14-0000-0000-0000-000000000000}</Project>
       <Name>OpenTK</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PhysX.Net 3.2.4\PhysX.Net-3\PhysX.Net-3.vcxproj">
-      <Project>{FB145A7D-CDF2-417D-A006-F7591481D609}</Project>
-      <Name>PhysX.Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser.csproj">
       <Project>{2414F4DD-734E-4A0B-9C95-C24B2CEE25F7}</Project>
       <Name>SamSeifert.ComplexFileParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SamSeifert.DoubleBuffer\SamSeifert.DoubleBuffer.csproj">
+      <Project>{8BA6520E-9078-497C-BB20-E2D0A4F4EA1D}</Project>
+      <Name>SamSeifert.DoubleBuffer</Name>
     </ProjectReference>
     <ProjectReference Include="..\SamSeifert.GLE.CadViewer\SamSeifert.GLE.CadViewer.csproj">
       <Project>{012184D6-08E1-4152-B2BB-409D4B5D7785}</Project>
@@ -350,8 +380,28 @@
       <Project>{9B8D2FBB-0305-4DF6-A090-DB590DA3659A}</Project>
       <Name>SamSeifert.GlobalEvents</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SamSeifert.HeadTrackerWrapper\SamSeifert.HeadTracker.csproj">
+      <Project>{717FBDDE-58A7-4A0E-AD39-F06505EEC2A2}</Project>
+      <Name>SamSeifert.HeadTracker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SamSeifert.ScreenPicker\SamSeifert.ScreenPicker\SamSeifert.ScreenPicker.csproj">
+      <Project>{1ED5718E-67EB-40A5-A0A7-1E489ED544FC}</Project>
+      <Name>SamSeifert.ScreenPicker</Name>
+    </ProjectReference>
+    <ProjectReference Include="Matlab Model\WrapperLibrary\WrapperLibrary.vcxproj">
+      <Project>{33CE8AFC-E1C5-4A04-9204-9CD6F0C1F306}</Project>
+      <Name>MatlabExcavatorWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>rmdir /S /Q "$(SolutionDir)bin\$(Configuration)T"
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -19,11 +19,8 @@ using SamSeifert.GLE;
 
 namespace Excavator
 {
-    internal partial class TrialMarkElton : Trial
+    public partial class TrialMarkElton : Trial
     {
-        const string XPC_IP = "192.168.0.2";
-        const string HOST_IP = "192.168.0.2";
-
         const int HOST_SEND_PHANTOM_INP = 42101; // Data leaves this port on here to
         const int XPC_PORT_PHANTOM_INP = 26451;  // get to this port on target
 
@@ -35,7 +32,7 @@ namespace Excavator
 
 
         [StructLayout(LayoutKind.Explicit, Pack = 1)]
-        internal unsafe struct PhantomDataSentToExcavator
+        public unsafe struct PhantomDataSentToExcavator
 	    {
             [FieldOffset(0)]
             public fixed byte data[56];
@@ -52,7 +49,7 @@ namespace Excavator
 	    };
 
         [StructLayout(LayoutKind.Explicit, Pack = 1)]
-        internal unsafe struct GraphicsDataRecievedFromExcavator
+        public unsafe struct GraphicsDataRecievedFromExcavator
         {		
             [FieldOffset(0)]
             public fixed byte data[141];
@@ -83,7 +80,7 @@ namespace Excavator
         };
 
         [StructLayout(LayoutKind.Explicit, Pack = 1)]
-        internal unsafe struct TimeDataSentToExcavator
+        public unsafe struct TimeDataSentToExcavator
         {
             [FieldOffset(0)]
             public fixed byte data[4];
@@ -103,16 +100,14 @@ namespace Excavator
 
 
 
-        private bool _BoolAlive = true;
-        private Thread t1, t2, t3;
         private bool _SetupTheNums = false;
 
-        internal TrialMarkElton() : base()
+        public TrialMarkElton() : base()
         {
             InitializeComponent();
         }
 
-        internal TrialMarkElton(FormBase fb)
+        public TrialMarkElton(FormBase fb)
             : base(fb)
         {
             InitializeComponent();
@@ -124,13 +119,10 @@ namespace Excavator
             this._SetupTheNums = true;
             this.numericUpDownPhantomScale_ValueChanged(null, EventArgs.Empty);
 
-            this.t1 = new Thread(new ThreadStart(this.SendPhantomData));
-            this.t2 = new Thread(new ThreadStart(this.SendTimeData));
-            this.t3 = new Thread(new ThreadStart(this.ReadSimData));
+            new Thread(new ThreadStart(this.SendPhantomData)).Start();
+            new Thread(new ThreadStart(this.SendTimeData)).Start();
+            new Thread(new ThreadStart(this.ReadSimData)).Start();
 
-            this.t1.Start();
-            this.t2.Start();
-            this.t3.Start();
 
             IPHostEntry host;
             string localIP = "?";
@@ -149,19 +141,18 @@ namespace Excavator
 
 
 
-        internal override bool hasGhost()
+        public override bool hasGhost()
         {
             return true;
         }
 
-        internal override void Deconstruct()
+        public override void Deconstruct()
         {
             base.Deconstruct();
-            this._BoolAlive = false;
             this.controlPhantom1._BoolKeepRunning = false;
         }
 
-        internal override void GLDelete()
+        public override void GLDelete()
         {
             base.GLDelete();
             if (this._BoolSetupGL4)
@@ -172,10 +163,6 @@ namespace Excavator
             }
         }
 
-
-        private int _IntCountUpdateGui = 0;
-        private int _IntCountUpdateGuiRefresh = 10;
-        private float _FPSFloatAccumulator = 0;
 
         private volatile int _FPS_IntSendTime = 0;
         private volatile int _FPS_IntSendPhantom = 0;
@@ -189,49 +176,47 @@ namespace Excavator
         private float _FPS_RGF = 0;
 
 
-        internal override void updateSim()
+        public override void updateSim()
         {
+            base.updateSim();
+
             if (this._BoolSetupGL4) this.updateGL4();
             else this.setupGL4();
-
-            if (this._IntCountUpdateGui++ == this._IntCountUpdateGuiRefresh)
-            {
-                this._IntCountUpdateGui = 0;
-                this.controlPhantom1.updateControlGUI();
-            }
-
-            this._FPSFloatAccumulator += this._TimeSpanF;
-
-            if (this._FPSFloatAccumulator > 0.33f)
-            {
-                this.controlPhantom1.updateFPS(this._FPSFloatAccumulator);
-
-                const float alpha = 0.05f;
-
-                this._FPS_ST = this._FPS_IntSendTime / this._FPSFloatAccumulator;
-                if (this._FPS_ST > this._FPS_STF * 1.1 || this._FPS_ST < this._FPS_STF * 0.9) this._FPS_STF = this._FPS_ST;
-                else this._FPS_STF = this._FPS_STF * (1 - alpha) + this._FPS_ST * alpha;
-                this.labelST.Text = this._FPS_STF.ToString("00");
-                this._FPS_IntSendTime = 0;
-
-                this._FPS_SP = this._FPS_IntSendPhantom / this._FPSFloatAccumulator;
-                if (this._FPS_SP > this._FPS_SPF * 1.1 || this._FPS_SP < this._FPS_SPF * 0.9) this._FPS_SPF = this._FPS_SP;
-                else this._FPS_SPF = this._FPS_SPF * (1 - alpha) + this._FPS_SP * alpha;
-                this.labelSP.Text = this._FPS_SPF.ToString("00");
-                this._FPS_IntSendPhantom = 0;
-
-                this._FPS_RG = this._FPS_IntRecieveGraphics / this._FPSFloatAccumulator;
-                if (this._FPS_RG > this._FPS_RGF * 1.1 || this._FPS_RG < this._FPS_RGF * 0.9) this._FPS_RGF = this._FPS_RG;
-                else this._FPS_RGF = this._FPS_RGF * (1 - alpha) + this._FPS_RG * alpha;
-                this.labelRG.Text = this._FPS_RGF.ToString("00");
-                this._FPS_IntRecieveGraphics = 0;
-                
-                this._FPSFloatAccumulator = 0;
-
-
-            }
         }
 
+        public override void Gui_Label_Tick(float accumulator)
+        {
+            base.Gui_Label_Tick(accumulator);
+
+            this.controlPhantom1.updateFPS(accumulator);
+
+            const float alpha = 0.05f;
+
+            this._FPS_ST = this._FPS_IntSendTime / accumulator;
+            if (this._FPS_ST > this._FPS_STF * 1.1 || this._FPS_ST < this._FPS_STF * 0.9) this._FPS_STF = this._FPS_ST;
+            else this._FPS_STF = this._FPS_STF * (1 - alpha) + this._FPS_ST * alpha;
+            this.labelST.Text = this._FPS_STF.ToString("00");
+            this._FPS_IntSendTime = 0;
+
+            this._FPS_SP = this._FPS_IntSendPhantom / accumulator;
+            if (this._FPS_SP > this._FPS_SPF * 1.1 || this._FPS_SP < this._FPS_SPF * 0.9) this._FPS_SPF = this._FPS_SP;
+            else this._FPS_SPF = this._FPS_SPF * (1 - alpha) + this._FPS_SP * alpha;
+            this.labelSP.Text = this._FPS_SPF.ToString("00");
+            this._FPS_IntSendPhantom = 0;
+
+            this._FPS_RG = this._FPS_IntRecieveGraphics / accumulator;
+            if (this._FPS_RG > this._FPS_RGF * 1.1 || this._FPS_RG < this._FPS_RGF * 0.9) this._FPS_RGF = this._FPS_RG;
+            else this._FPS_RGF = this._FPS_RGF * (1 - alpha) + this._FPS_RG * alpha;
+            this.labelRG.Text = this._FPS_RGF.ToString("00");
+            this._FPS_IntRecieveGraphics = 0;
+        }
+
+        public override void Gui_Draw_Tick()
+        {
+            base.Gui_Draw_Tick();
+
+            this.controlPhantom1.updateControlGUI();
+        }
 
 
 
@@ -260,7 +245,7 @@ namespace Excavator
             try
             {
                 UdpClient _UdpClient = new UdpClient(HOST_SEND_PHANTOM_INP);
-                _UdpClient.Connect(IPAddress.Parse(XPC_IP), XPC_PORT_PHANTOM_INP);
+                _UdpClient.Connect(IPAddress.Parse(XPC.XPC_IP), XPC_PORT_PHANTOM_INP);
 
                 while (FormBase._BoolThreadAlive && this._BoolAlive)
                 {
@@ -304,7 +289,7 @@ namespace Excavator
             try
             {
                 UdpClient _UdpClient = new UdpClient(HOST_SEND_TIME_INP);
-                _UdpClient.Connect(IPAddress.Parse(XPC_IP), XPC_PORT_TIME_INP);
+                _UdpClient.Connect(IPAddress.Parse(XPC.XPC_IP), XPC_PORT_TIME_INP);
 
                 while (FormBase._BoolThreadAlive && this._BoolAlive)
                 {
@@ -454,11 +439,11 @@ namespace Excavator
         {
             const int datal = 256;
 
-            internal int[] Depth = new int[datal];
-	        internal double Vload, Vpile, pilex, piley, pilez, pileamt;
-            internal UInt64 volume;
+            public int[] Depth = new int[datal];
+	        public double Vload, Vpile, pilex, piley, pilez, pileamt;
+            public UInt64 volume;
 
-	        internal DataStorage() 
+	        public DataStorage() 
 	        {
 		        for(int k = 0 ; k < datal ; k++ )
 		        {
@@ -466,9 +451,9 @@ namespace Excavator
 		        }	
 	        }
 	        
-            internal int getDepth(int n) { return Depth[n]; }
+            public int getDepth(int n) { return Depth[n]; }
 
-            internal unsafe void setDepthLoad(GraphicsDataRecievedFromExcavator msg)
+            public unsafe void setDepthLoad(GraphicsDataRecievedFromExcavator msg)
             { 
 		        uint based = (32*( msg.time % 8 ));
 		
@@ -535,16 +520,12 @@ namespace Excavator
 
         Vector3[] idata = new Vector3[_IntTopDrawPoints * 2];
 
-        internal const float XTextL = Trial._IntTextureDensity *
-            (0.5f + (XhalfL / (2 * Trial._FloatGroundPlaneDim)));
-        internal const float XTextR = Trial._IntTextureDensity *
-            (0.5f - (XhalfL / (2 * Trial._FloatGroundPlaneDim)));
-        internal const float ZTextBehind = Trial._IntTextureDensity *
-            (0.5f - (ZStartTrench / (2 * Trial._FloatGroundPlaneDim)));
-        internal const float ZTextFront = Trial._IntTextureDensity *
-            (0.5f - (ZEndTrench / (2 * Trial._FloatGroundPlaneDim)));
+        public const float XTextL = Trial._IntTextureDensity * (0.5f + (XhalfL / (2 * Trial._FloatGroundPlaneDim)));
+        public const float XTextR = Trial._IntTextureDensity * (0.5f - (XhalfL / (2 * Trial._FloatGroundPlaneDim)));
+        public const float ZTextBehind = Trial._IntTextureDensity * (0.5f - (ZStartTrench / (2 * Trial._FloatGroundPlaneDim)));
+        public const float ZTextFront = Trial._IntTextureDensity * (0.5f - (ZEndTrench / (2 * Trial._FloatGroundPlaneDim)));
 
-        internal override void drawObjectsInShadow(bool uselighting)
+        public override void drawObjectsInShadow(bool ShadowBufferDraw)
         {
             if (this._BoolSetupGL4) this.drawGL4();
                 
@@ -552,63 +533,53 @@ namespace Excavator
 
 //SAM            display_box(boxx, boxy, boxheight, soilheightL, soilheightR);
 
-            if (uselighting)
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, Trial._IntTextureGrass);
+
+            GL.Begin(BeginMode.Quads);
             {
-                if (Trial._IntTextureGrass == 0)
-                {
-                    Trial._IntTextureGrass = Textures.getGLTexture(Properties.Resources.grass1);
-                }
-                else
-                {
-                    GL.ActiveTexture(TextureUnit.Texture0);
-                    GL.BindTexture(TextureTarget.Texture2D, Trial._IntTextureGrass);
+                GL.TexCoord2(TrialMarkElton.XTextL, Trial._IntTextureDensity);
+                GL.Vertex3(XhalfL, YGround, Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(TrialMarkElton.XTextL, 0);
+                GL.Vertex3(XhalfL, YGround, -Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(0, 0);
+                GL.Vertex3(-Trial._FloatGroundPlaneDim, YGround, -Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(0, Trial._IntTextureDensity);
+                GL.Vertex3(-Trial._FloatGroundPlaneDim, YGround, Trial._FloatGroundPlaneDim);
 
-                    GL.Begin(BeginMode.Quads);
-                    {
-                        GL.TexCoord2(TrialMarkElton.XTextL, Trial._IntTextureDensity);
-                        GL.Vertex3(XhalfL, YGround, Trial._FloatGroundPlaneDim);
-                        GL.TexCoord2(TrialMarkElton.XTextL, 0);
-                        GL.Vertex3(XhalfL, YGround, -Trial._FloatGroundPlaneDim);
-                        GL.TexCoord2(0, 0);
-                        GL.Vertex3(-Trial._FloatGroundPlaneDim, YGround, -Trial._FloatGroundPlaneDim);
-                        GL.TexCoord2(0, Trial._IntTextureDensity);
-                        GL.Vertex3(-Trial._FloatGroundPlaneDim, YGround, Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(Trial._IntTextureDensity, Trial._IntTextureDensity);
+                GL.Vertex3(Trial._FloatGroundPlaneDim, YGround, Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(Trial._IntTextureDensity, 0);
+                GL.Vertex3(Trial._FloatGroundPlaneDim, YGround, -Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(TrialMarkElton.XTextR, 0);
+                GL.Vertex3(XhalfR, YGround, -Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(TrialMarkElton.XTextR, Trial._IntTextureDensity);
+                GL.Vertex3(XhalfR, YGround, Trial._FloatGroundPlaneDim);
 
-                        GL.TexCoord2(Trial._IntTextureDensity, Trial._IntTextureDensity);
-                        GL.Vertex3(Trial._FloatGroundPlaneDim, YGround, Trial._FloatGroundPlaneDim);
-                        GL.TexCoord2(Trial._IntTextureDensity, 0);
-                        GL.Vertex3(Trial._FloatGroundPlaneDim, YGround, -Trial._FloatGroundPlaneDim);
-                        GL.TexCoord2(TrialMarkElton.XTextR, 0);
-                        GL.Vertex3(XhalfR, YGround, -Trial._FloatGroundPlaneDim);
-                        GL.TexCoord2(TrialMarkElton.XTextR, Trial._IntTextureDensity);
-                        GL.Vertex3(XhalfR, YGround, Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(TrialMarkElton.XTextL, TrialMarkElton.ZTextBehind);
+                GL.Vertex3(XhalfL, YGround, -ZStartTrench);
+                GL.TexCoord2(TrialMarkElton.XTextL, Trial._IntTextureDensity);
+                GL.Vertex3(XhalfL, YGround, Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(TrialMarkElton.XTextR, Trial._IntTextureDensity);
+                GL.Vertex3(XhalfR, YGround, Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(TrialMarkElton.XTextR, TrialMarkElton.ZTextBehind);
+                GL.Vertex3(XhalfR, YGround, -ZStartTrench);
 
-                        GL.TexCoord2(TrialMarkElton.XTextL, TrialMarkElton.ZTextBehind);
-                        GL.Vertex3(XhalfL, YGround, -ZStartTrench);
-                        GL.TexCoord2(TrialMarkElton.XTextL, Trial._IntTextureDensity);
-                        GL.Vertex3(XhalfL, YGround, Trial._FloatGroundPlaneDim);
-                        GL.TexCoord2(TrialMarkElton.XTextR, Trial._IntTextureDensity);
-                        GL.Vertex3(XhalfR, YGround, Trial._FloatGroundPlaneDim);
-                        GL.TexCoord2(TrialMarkElton.XTextR, TrialMarkElton.ZTextBehind);
-                        GL.Vertex3(XhalfR, YGround, -ZStartTrench);
-
-                        GL.TexCoord2(TrialMarkElton.XTextL, 0);
-                        GL.Vertex3(XhalfL, YGround, -Trial._FloatGroundPlaneDim);
-                        GL.TexCoord2(TrialMarkElton.XTextL, TrialMarkElton.ZTextFront);
-                        GL.Vertex3(XhalfL, YGround, -ZEndTrench);
-                        GL.TexCoord2(TrialMarkElton.XTextR, TrialMarkElton.ZTextFront);
-                        GL.Vertex3(XhalfR, YGround, -ZEndTrench);
-                        GL.TexCoord2(TrialMarkElton.XTextR, 0);
-                        GL.Vertex3(XhalfR, YGround, -Trial._FloatGroundPlaneDim);
-                    }
-                    GL.End();
-
-                    GL.BindTexture(TextureTarget.Texture2D, 0);
-                    GL.ActiveTexture(TextureUnit.Texture7);
-
-                }
+                GL.TexCoord2(TrialMarkElton.XTextL, 0);
+                GL.Vertex3(XhalfL, YGround, -Trial._FloatGroundPlaneDim);
+                GL.TexCoord2(TrialMarkElton.XTextL, TrialMarkElton.ZTextFront);
+                GL.Vertex3(XhalfL, YGround, -ZEndTrench);
+                GL.TexCoord2(TrialMarkElton.XTextR, TrialMarkElton.ZTextFront);
+                GL.Vertex3(XhalfR, YGround, -ZEndTrench);
+                GL.TexCoord2(TrialMarkElton.XTextR, 0);
+                GL.Vertex3(XhalfR, YGround, -Trial._FloatGroundPlaneDim);
             }
-            else
+            GL.End();
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            GL.ActiveTexture(TextureUnit.Texture7);
+
+/*            else
             {
                 GL.Begin(BeginMode.Quads);
                 {
@@ -628,7 +599,7 @@ namespace Excavator
                     GL.Vertex3(XhalfR, YGround, -ZStartTrench);
                 }
                 GL.End();
-            }
+            }*/
 
         }
 

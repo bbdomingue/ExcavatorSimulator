@@ -133,12 +133,6 @@
   <data name="grass2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\images\grass2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ShadowFragment" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\shaders\shadowfragment.c;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="ShadowVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\shaders\shadowvertex.c;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="GhostFragment" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\shaders\ghostfragment.c;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -159,9 +153,6 @@
   </data>
   <data name="BoomPiston" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\gl_items\boompiston.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="Bucket" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\gl_items\bucket.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="BucketCyl" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\gl_items\bucketcyl.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
@@ -216,5 +207,32 @@
   </data>
   <data name="tree6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\gl_trees\tree6.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Box" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gl_items\box.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
+  </data>
+  <data name="Bucket" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\gl_items\bucket.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ShadowFragment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\shaders\shadowfragment.c;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ShadowVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\shaders\shadowvertex.c;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="excavator_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\sounds\excavator_idle.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SoilFragment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\shaders\soilfragment.c;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="SoilVertex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\shaders\soilvertex.c;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="dirt1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\images\dirt1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dirt5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\images\dirt5.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

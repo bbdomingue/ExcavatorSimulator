@@ -13,8 +13,8 @@ namespace Excavator
         [STAThread]
         static void Main()
         {
-//            SamSeifert.GLE.CadViewer.CadHandler._BoolAllowDelete = false;
-//            SamSeifert.GLE.CadViewer.CadHandler._BoolAllowNew = false;
+            SamSeifert.GLE.CadViewer.CadHandler._BoolAllowDelete = false;
+            SamSeifert.GLE.CadViewer.CadHandler._BoolAllowNew = false;
 //            SamSeifert.GLE.CadViewer.CadHandler._BoolAllowSaveAs = false;
 
             Application.EnableVisualStyles();

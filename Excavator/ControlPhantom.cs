@@ -10,10 +10,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-
 using Vector3 = OpenTK.Vector3;
 using Matrix4 = OpenTK.Matrix4;
-
 
 namespace Excavator
 {
@@ -39,7 +37,6 @@ namespace Excavator
             var CDM = Matrix4.CreateTranslation(CD) * Matrix4.CreateRotationX(StaticMethods.toRadiansF(90));
             var A = CDM * (BCM * ABM);
             this._Vector3Subtractor = new Vector3(A.M41, A.M42, A.M43);
-
         }
 
         private void comboBoxComPort_SelectedValueChanged(object sender, EventArgs e)

@@ -31,8 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBase));
             this.panelOuterGL = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.panelInnerGL = new System.Windows.Forms.Panel();
-            this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.checkBoxTrialPause = new System.Windows.Forms.CheckBox();
             this.buttonTrialReset = new System.Windows.Forms.Button();
             this.buttonTrialNew = new System.Windows.Forms.Button();
@@ -51,9 +51,13 @@
             this.labelFPSX = new System.Windows.Forms.Label();
             this.timerResize = new System.Windows.Forms.Timer(this.components);
             this.panelFill = new System.Windows.Forms.Panel();
-            this.checkBoxShowSide = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxCabRotater = new System.Windows.Forms.CheckBox();
             this.checkBoxAspectRatio = new System.Windows.Forms.CheckBox();
+            this.checkBoxMute = new System.Windows.Forms.CheckBox();
+            this.checkBoxShowSide = new System.Windows.Forms.CheckBox();
             this.panelRight = new System.Windows.Forms.Panel();
+            this.panelRightTrial = new System.Windows.Forms.Panel();
             this.panelRightTop = new System.Windows.Forms.Panel();
             this.panelRightTopFill = new System.Windows.Forms.Panel();
             this.labelTrial = new System.Windows.Forms.Label();
@@ -66,23 +70,16 @@
             this.labelHeadPitch = new System.Windows.Forms.Label();
             this.numericUpDownEyeSeperation = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownHeadYaw = new System.Windows.Forms.NumericUpDown();
-            this.labelFocalDistance = new System.Windows.Forms.Label();
-            this.numericUpDownFocalDistance = new System.Windows.Forms.NumericUpDown();
             this.tabPageScenery = new System.Windows.Forms.TabPage();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownSkyBoxDim = new System.Windows.Forms.NumericUpDown();
             this.labelSkyBoxDistance = new System.Windows.Forms.Label();
             this.labelSkyBox = new System.Windows.Forms.Label();
             this.comboBoxSkyBox = new System.Windows.Forms.ComboBox();
             this.tabPageOpenGL = new System.Windows.Forms.TabPage();
-            this.cadHandler1 = new SamSeifert.GLE.CadViewer.CadHandler();
             this.tabPageInterface = new System.Windows.Forms.TabPage();
             this.panelViewMode = new System.Windows.Forms.Panel();
+            this.numericUpDownOutsideDistance = new System.Windows.Forms.NumericUpDown();
             this.radioButtonEnvShadowBufferGraphics = new System.Windows.Forms.RadioButton();
-            this.radioButtonEnvSplitVert = new System.Windows.Forms.RadioButton();
             this.radioButtonEnvCatStereo = new System.Windows.Forms.RadioButton();
             this.label12 = new System.Windows.Forms.Label();
             this.radioButtonEnvCat = new System.Windows.Forms.RadioButton();
@@ -98,8 +95,17 @@
             this.radioButtonEnvVertSync = new System.Windows.Forms.RadioButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageHeadSpace = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.labelHT_O = new System.Windows.Forms.Label();
+            this.numericUpDownHT_O = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownHT_Z = new System.Windows.Forms.NumericUpDown();
+            this.labelHT_Z = new System.Windows.Forms.Label();
+            this.numericUpDownHT_Y = new System.Windows.Forms.NumericUpDown();
+            this.labelHT_Y = new System.Windows.Forms.Label();
+            this.numericUpDownHT_X = new System.Windows.Forms.NumericUpDown();
+            this.labelHT_X = new System.Windows.Forms.Label();
+            this.checkBoxHeadTrack = new System.Windows.Forms.CheckBox();
+            this.panelPinkTV = new System.Windows.Forms.Panel();
+            this.panelPinkTV2 = new System.Windows.Forms.Panel();
             this.numericUpDownHeadZ = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.numericUpDownHeadY = new System.Windows.Forms.NumericUpDown();
@@ -113,6 +119,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSwing)).BeginInit();
             this.panelFill.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.panelRight.SuspendLayout();
             this.panelRightTop.SuspendLayout();
             this.panelRightTopFill.SuspendLayout();
@@ -121,19 +128,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadPitch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEyeSeperation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadYaw)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFocalDistance)).BeginInit();
             this.tabPageScenery.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSkyBoxDim)).BeginInit();
-            this.tabPageOpenGL.SuspendLayout();
             this.tabPageInterface.SuspendLayout();
             this.panelViewMode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOutsideDistance)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPageHeadSpace.SuspendLayout();
-            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHT_O)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHT_Z)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHT_Y)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHT_X)).BeginInit();
+            this.panelPinkTV.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadX)).BeginInit();
@@ -142,18 +148,30 @@
             // panelOuterGL
             // 
             this.panelOuterGL.BackColor = System.Drawing.Color.Black;
+            this.panelOuterGL.Controls.Add(this.panel2);
             this.panelOuterGL.Controls.Add(this.panelInnerGL);
             this.panelOuterGL.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelOuterGL.Location = new System.Drawing.Point(10, 0);
             this.panelOuterGL.Margin = new System.Windows.Forms.Padding(0);
             this.panelOuterGL.Name = "panelOuterGL";
-            this.panelOuterGL.Size = new System.Drawing.Size(376, 562);
+            this.panelOuterGL.Size = new System.Drawing.Size(376, 557);
             this.panelOuterGL.TabIndex = 4;
             this.panelOuterGL.Resize += new System.EventHandler(this.panelOuterGL_Resize);
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.DimGray;
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 547);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(376, 10);
+            this.panel2.TabIndex = 75;
+            // 
             // panelInnerGL
             // 
-            this.panelInnerGL.Location = new System.Drawing.Point(23, 32);
+            this.panelInnerGL.BackColor = System.Drawing.Color.DarkRed;
+            this.panelInnerGL.Location = new System.Drawing.Point(87, 201);
             this.panelInnerGL.Name = "panelInnerGL";
             this.panelInnerGL.Size = new System.Drawing.Size(200, 100);
             this.panelInnerGL.TabIndex = 0;
@@ -255,12 +273,12 @@
             this.numericUpDownBucket.Location = new System.Drawing.Point(129, 170);
             this.numericUpDownBucket.Margin = new System.Windows.Forms.Padding(0);
             this.numericUpDownBucket.Maximum = new decimal(new int[] {
-            180,
+            33,
             0,
             0,
             0});
             this.numericUpDownBucket.Minimum = new decimal(new int[] {
-            180,
+            154,
             0,
             0,
             -2147483648});
@@ -292,12 +310,12 @@
             this.numericUpDownArm.Location = new System.Drawing.Point(129, 138);
             this.numericUpDownArm.Margin = new System.Windows.Forms.Padding(0);
             this.numericUpDownArm.Maximum = new decimal(new int[] {
-            180,
+            22,
             0,
             0,
-            0});
+            -2147483648});
             this.numericUpDownArm.Minimum = new decimal(new int[] {
-            180,
+            145,
             0,
             0,
             -2147483648});
@@ -334,12 +352,12 @@
             this.numericUpDownBoom.Location = new System.Drawing.Point(129, 106);
             this.numericUpDownBoom.Margin = new System.Windows.Forms.Padding(0);
             this.numericUpDownBoom.Maximum = new decimal(new int[] {
-            180,
+            66,
             0,
             0,
             0});
             this.numericUpDownBoom.Minimum = new decimal(new int[] {
-            180,
+            63,
             0,
             0,
             -2147483648});
@@ -376,12 +394,12 @@
             this.numericUpDownSwing.Location = new System.Drawing.Point(129, 42);
             this.numericUpDownSwing.Margin = new System.Windows.Forms.Padding(0);
             this.numericUpDownSwing.Maximum = new decimal(new int[] {
-            180,
+            90,
             0,
             0,
             0});
             this.numericUpDownSwing.Minimum = new decimal(new int[] {
-            180,
+            90,
             0,
             0,
             -2147483648});
@@ -394,7 +412,7 @@
             // 
             this.buttonFullScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonFullScreen.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonFullScreen.Location = new System.Drawing.Point(275, 616);
+            this.buttonFullScreen.Location = new System.Drawing.Point(258, 53);
             this.buttonFullScreen.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.buttonFullScreen.Name = "buttonFullScreen";
             this.buttonFullScreen.Size = new System.Drawing.Size(111, 26);
@@ -405,11 +423,11 @@
             // 
             // labelFPS
             // 
-            this.labelFPS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelFPS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelFPS.AutoSize = true;
             this.labelFPS.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFPS.ForeColor = System.Drawing.Color.White;
-            this.labelFPS.Location = new System.Drawing.Point(62, 620);
+            this.labelFPS.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelFPS.Location = new System.Drawing.Point(307, 33);
             this.labelFPS.Margin = new System.Windows.Forms.Padding(0);
             this.labelFPS.Name = "labelFPS";
             this.labelFPS.Size = new System.Drawing.Size(36, 18);
@@ -419,11 +437,11 @@
             // 
             // labelFPSX
             // 
-            this.labelFPSX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelFPSX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelFPSX.AutoSize = true;
             this.labelFPSX.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFPSX.ForeColor = System.Drawing.Color.White;
-            this.labelFPSX.Location = new System.Drawing.Point(10, 620);
+            this.labelFPSX.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelFPSX.Location = new System.Drawing.Point(255, 33);
             this.labelFPSX.Margin = new System.Windows.Forms.Padding(0);
             this.labelFPSX.Name = "labelFPSX";
             this.labelFPSX.Size = new System.Drawing.Size(52, 18);
@@ -438,41 +456,52 @@
             // panelFill
             // 
             this.panelFill.Controls.Add(this.panelOuterGL);
-            this.panelFill.Controls.Add(this.checkBoxShowSide);
-            this.panelFill.Controls.Add(this.checkBoxAspectRatio);
-            this.panelFill.Controls.Add(this.labelFPS);
-            this.panelFill.Controls.Add(this.buttonFullScreen);
-            this.panelFill.Controls.Add(this.labelFPSX);
+            this.panelFill.Controls.Add(this.panel1);
             this.panelFill.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelFill.Location = new System.Drawing.Point(305, 10);
             this.panelFill.Name = "panelFill";
-            this.panelFill.Padding = new System.Windows.Forms.Padding(10, 0, 10, 80);
+            this.panelFill.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.panelFill.Size = new System.Drawing.Size(396, 642);
             this.panelFill.TabIndex = 73;
             // 
-            // checkBoxShowSide
+            // panel1
             // 
-            this.checkBoxShowSide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxShowSide.AutoSize = true;
-            this.checkBoxShowSide.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxShowSide.ForeColor = System.Drawing.Color.White;
-            this.checkBoxShowSide.Location = new System.Drawing.Point(10, 595);
-            this.checkBoxShowSide.Name = "checkBoxShowSide";
-            this.checkBoxShowSide.Size = new System.Drawing.Size(130, 22);
-            this.checkBoxShowSide.TabIndex = 69;
-            this.checkBoxShowSide.Text = "Show Side Ortho";
-            this.checkBoxShowSide.UseVisualStyleBackColor = true;
-            this.checkBoxShowSide.CheckedChanged += new System.EventHandler(this.checkBoxShowSide_CheckedChanged);
+            this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.checkBoxCabRotater);
+            this.panel1.Controls.Add(this.checkBoxAspectRatio);
+            this.panel1.Controls.Add(this.checkBoxMute);
+            this.panel1.Controls.Add(this.labelFPS);
+            this.panel1.Controls.Add(this.checkBoxShowSide);
+            this.panel1.Controls.Add(this.buttonFullScreen);
+            this.panel1.Controls.Add(this.labelFPSX);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(10, 557);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(376, 85);
+            this.panel1.TabIndex = 74;
+            // 
+            // checkBoxCabRotater
+            // 
+            this.checkBoxCabRotater.AutoCheck = false;
+            this.checkBoxCabRotater.AutoSize = true;
+            this.checkBoxCabRotater.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.checkBoxCabRotater.Location = new System.Drawing.Point(7, 60);
+            this.checkBoxCabRotater.Name = "checkBoxCabRotater";
+            this.checkBoxCabRotater.Size = new System.Drawing.Size(94, 22);
+            this.checkBoxCabRotater.TabIndex = 89;
+            this.checkBoxCabRotater.Text = "Rotate Cab";
+            this.checkBoxCabRotater.UseVisualStyleBackColor = true;
+            this.checkBoxCabRotater.Click += new System.EventHandler(this.checkBoxCabRotater_Click);
             // 
             // checkBoxAspectRatio
             // 
-            this.checkBoxAspectRatio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxAspectRatio.AutoSize = true;
             this.checkBoxAspectRatio.Checked = true;
             this.checkBoxAspectRatio.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxAspectRatio.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxAspectRatio.ForeColor = System.Drawing.Color.White;
-            this.checkBoxAspectRatio.Location = new System.Drawing.Point(10, 567);
+            this.checkBoxAspectRatio.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.checkBoxAspectRatio.Location = new System.Drawing.Point(7, 4);
             this.checkBoxAspectRatio.Name = "checkBoxAspectRatio";
             this.checkBoxAspectRatio.Size = new System.Drawing.Size(171, 22);
             this.checkBoxAspectRatio.TabIndex = 71;
@@ -480,8 +509,37 @@
             this.checkBoxAspectRatio.UseVisualStyleBackColor = true;
             this.checkBoxAspectRatio.CheckedChanged += new System.EventHandler(this.checkBoxAspectRatio_CheckedChanged);
             // 
+            // checkBoxMute
+            // 
+            this.checkBoxMute.AutoSize = true;
+            this.checkBoxMute.Checked = true;
+            this.checkBoxMute.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxMute.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxMute.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.checkBoxMute.Location = new System.Drawing.Point(97, 32);
+            this.checkBoxMute.Name = "checkBoxMute";
+            this.checkBoxMute.Size = new System.Drawing.Size(60, 22);
+            this.checkBoxMute.TabIndex = 73;
+            this.checkBoxMute.Text = "Mute";
+            this.checkBoxMute.UseVisualStyleBackColor = true;
+            this.checkBoxMute.CheckedChanged += new System.EventHandler(this.checkBoxMute_CheckedChanged);
+            // 
+            // checkBoxShowSide
+            // 
+            this.checkBoxShowSide.AutoSize = true;
+            this.checkBoxShowSide.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxShowSide.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.checkBoxShowSide.Location = new System.Drawing.Point(7, 32);
+            this.checkBoxShowSide.Name = "checkBoxShowSide";
+            this.checkBoxShowSide.Size = new System.Drawing.Size(93, 22);
+            this.checkBoxShowSide.TabIndex = 69;
+            this.checkBoxShowSide.Text = "Side Ortho";
+            this.checkBoxShowSide.UseVisualStyleBackColor = true;
+            this.checkBoxShowSide.CheckedChanged += new System.EventHandler(this.checkBoxShowSide_CheckedChanged);
+            // 
             // panelRight
             // 
+            this.panelRight.Controls.Add(this.panelRightTrial);
             this.panelRight.Controls.Add(this.panelRightTop);
             this.panelRight.Controls.Add(this.panelRightBottom);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
@@ -489,6 +547,15 @@
             this.panelRight.Name = "panelRight";
             this.panelRight.Size = new System.Drawing.Size(210, 642);
             this.panelRight.TabIndex = 73;
+            // 
+            // panelRightTrial
+            // 
+            this.panelRightTrial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.panelRightTrial.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelRightTrial.Location = new System.Drawing.Point(0, 110);
+            this.panelRightTrial.Name = "panelRightTrial";
+            this.panelRightTrial.Size = new System.Drawing.Size(210, 322);
+            this.panelRightTrial.TabIndex = 72;
             // 
             // panelRightTop
             // 
@@ -605,7 +672,7 @@
             0,
             0,
             -2147483648});
-            this.numericUpDownHeadPitch.ValueChanged += new System.EventHandler(this.Head_ValueChanged);
+            this.numericUpDownHeadPitch.ValueChanged += new System.EventHandler(this.numericUpDownHeadPitch_ValueChanged);
             // 
             // labelEyeSeperation
             // 
@@ -647,7 +714,7 @@
             this.numericUpDownEyeSeperation.Size = new System.Drawing.Size(76, 26);
             this.numericUpDownEyeSeperation.TabIndex = 38;
             this.numericUpDownEyeSeperation.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownEyeSeperation.ValueChanged += new System.EventHandler(this.numericUpDownHead_ValueChanged);
+            this.numericUpDownEyeSeperation.ValueChanged += new System.EventHandler(this.numericUpDownEyeSeperation_ValueChanged);
             // 
             // numericUpDownHeadYaw
             // 
@@ -673,50 +740,10 @@
             this.numericUpDownHeadYaw.Size = new System.Drawing.Size(76, 26);
             this.numericUpDownHeadYaw.TabIndex = 73;
             this.numericUpDownHeadYaw.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownHeadYaw.ValueChanged += new System.EventHandler(this.Head_ValueChanged);
-            // 
-            // labelFocalDistance
-            // 
-            this.labelFocalDistance.AutoSize = true;
-            this.labelFocalDistance.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFocalDistance.Location = new System.Drawing.Point(15, 47);
-            this.labelFocalDistance.Name = "labelFocalDistance";
-            this.labelFocalDistance.Size = new System.Drawing.Size(100, 18);
-            this.labelFocalDistance.TabIndex = 39;
-            this.labelFocalDistance.Text = "Focal Distance:";
-            // 
-            // numericUpDownFocalDistance
-            // 
-            this.numericUpDownFocalDistance.Enabled = false;
-            this.numericUpDownFocalDistance.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDownFocalDistance.Location = new System.Drawing.Point(128, 45);
-            this.numericUpDownFocalDistance.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownFocalDistance.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownFocalDistance.Name = "numericUpDownFocalDistance";
-            this.numericUpDownFocalDistance.Size = new System.Drawing.Size(76, 26);
-            this.numericUpDownFocalDistance.TabIndex = 40;
-            this.numericUpDownFocalDistance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownFocalDistance.Value = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownFocalDistance.ValueChanged += new System.EventHandler(this.numericUpDownHead_ValueChanged);
+            this.numericUpDownHeadYaw.ValueChanged += new System.EventHandler(this.numericUpDownHeadYaw_ValueChanged);
             // 
             // tabPageScenery
             // 
-            this.tabPageScenery.Controls.Add(this.numericUpDown4);
-            this.tabPageScenery.Controls.Add(this.numericUpDown3);
-            this.tabPageScenery.Controls.Add(this.numericUpDown2);
-            this.tabPageScenery.Controls.Add(this.numericUpDown1);
             this.tabPageScenery.Controls.Add(this.numericUpDownSkyBoxDim);
             this.tabPageScenery.Controls.Add(this.labelSkyBoxDistance);
             this.tabPageScenery.Controls.Add(this.labelSkyBox);
@@ -728,102 +755,6 @@
             this.tabPageScenery.TabIndex = 3;
             this.tabPageScenery.Text = "Scenery";
             this.tabPageScenery.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDown4
-            // 
-            this.numericUpDown4.DecimalPlaces = 2;
-            this.numericUpDown4.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDown4.Location = new System.Drawing.Point(49, 348);
-            this.numericUpDown4.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown4.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(120, 26);
-            this.numericUpDown4.TabIndex = 46;
-            this.numericUpDown4.ValueChanged += new System.EventHandler(this.numericUpDown4_ValueChanged);
-            // 
-            // numericUpDown3
-            // 
-            this.numericUpDown3.DecimalPlaces = 2;
-            this.numericUpDown3.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDown3.Location = new System.Drawing.Point(49, 261);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(120, 26);
-            this.numericUpDown3.TabIndex = 45;
-            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.DecimalPlaces = 2;
-            this.numericUpDown2.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDown2.Location = new System.Drawing.Point(49, 229);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 26);
-            this.numericUpDown2.TabIndex = 44;
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.DecimalPlaces = 2;
-            this.numericUpDown1.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDown1.Location = new System.Drawing.Point(49, 197);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 26);
-            this.numericUpDown1.TabIndex = 43;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // numericUpDownSkyBoxDim
             // 
@@ -882,7 +813,6 @@
             // 
             // tabPageOpenGL
             // 
-            this.tabPageOpenGL.Controls.Add(this.cadHandler1);
             this.tabPageOpenGL.Location = new System.Drawing.Point(4, 22);
             this.tabPageOpenGL.Name = "tabPageOpenGL";
             this.tabPageOpenGL.Padding = new System.Windows.Forms.Padding(10);
@@ -890,16 +820,6 @@
             this.tabPageOpenGL.TabIndex = 2;
             this.tabPageOpenGL.Text = "OpenGL";
             this.tabPageOpenGL.UseVisualStyleBackColor = true;
-            // 
-            // cadHandler1
-            // 
-            this.cadHandler1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cadHandler1.Location = new System.Drawing.Point(10, 10);
-            this.cadHandler1.MaximumSize = new System.Drawing.Size(266, 0);
-            this.cadHandler1.MinimumSize = new System.Drawing.Size(266, 266);
-            this.cadHandler1.Name = "cadHandler1";
-            this.cadHandler1.Size = new System.Drawing.Size(266, 596);
-            this.cadHandler1.TabIndex = 0;
             // 
             // tabPageInterface
             // 
@@ -916,8 +836,8 @@
             // 
             this.panelViewMode.BackColor = System.Drawing.SystemColors.Control;
             this.panelViewMode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelViewMode.Controls.Add(this.numericUpDownOutsideDistance);
             this.panelViewMode.Controls.Add(this.radioButtonEnvShadowBufferGraphics);
-            this.panelViewMode.Controls.Add(this.radioButtonEnvSplitVert);
             this.panelViewMode.Controls.Add(this.radioButtonEnvCatStereo);
             this.panelViewMode.Controls.Add(this.label12);
             this.panelViewMode.Controls.Add(this.radioButtonEnvCat);
@@ -934,8 +854,34 @@
             this.panelViewMode.Location = new System.Drawing.Point(12, 12);
             this.panelViewMode.Margin = new System.Windows.Forms.Padding(3, 10, 3, 10);
             this.panelViewMode.Name = "panelViewMode";
-            this.panelViewMode.Size = new System.Drawing.Size(257, 366);
+            this.panelViewMode.Size = new System.Drawing.Size(257, 594);
             this.panelViewMode.TabIndex = 76;
+            // 
+            // numericUpDownOutsideDistance
+            // 
+            this.numericUpDownOutsideDistance.Enabled = false;
+            this.numericUpDownOutsideDistance.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.numericUpDownOutsideDistance.Location = new System.Drawing.Point(93, 138);
+            this.numericUpDownOutsideDistance.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDownOutsideDistance.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownOutsideDistance.Name = "numericUpDownOutsideDistance";
+            this.numericUpDownOutsideDistance.Size = new System.Drawing.Size(80, 26);
+            this.numericUpDownOutsideDistance.TabIndex = 82;
+            this.numericUpDownOutsideDistance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownOutsideDistance.Value = new decimal(new int[] {
+            350,
+            0,
+            0,
+            0});
+            this.numericUpDownOutsideDistance.ValueChanged += new System.EventHandler(this.numericUpDownOutsideDistance_ValueChanged);
             // 
             // radioButtonEnvShadowBufferGraphics
             // 
@@ -950,24 +896,11 @@
             this.radioButtonEnvShadowBufferGraphics.UseVisualStyleBackColor = true;
             this.radioButtonEnvShadowBufferGraphics.CheckedChanged += new System.EventHandler(this.radioButtonEnv_CheckedChanged);
             // 
-            // radioButtonEnvSplitVert
-            // 
-            this.radioButtonEnvSplitVert.AutoSize = true;
-            this.radioButtonEnvSplitVert.Font = new System.Drawing.Font("Calibri", 11.25F);
-            this.radioButtonEnvSplitVert.Location = new System.Drawing.Point(141, 245);
-            this.radioButtonEnvSplitVert.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.radioButtonEnvSplitVert.Name = "radioButtonEnvSplitVert";
-            this.radioButtonEnvSplitVert.Size = new System.Drawing.Size(156, 22);
-            this.radioButtonEnvSplitVert.TabIndex = 80;
-            this.radioButtonEnvSplitVert.Text = "Will Delete Split Vert";
-            this.radioButtonEnvSplitVert.UseVisualStyleBackColor = true;
-            this.radioButtonEnvSplitVert.CheckedChanged += new System.EventHandler(this.radioButtonEnv_CheckedChanged);
-            // 
             // radioButtonEnvCatStereo
             // 
             this.radioButtonEnvCatStereo.AutoSize = true;
             this.radioButtonEnvCatStereo.Font = new System.Drawing.Font("Calibri", 11.25F);
-            this.radioButtonEnvCatStereo.Location = new System.Drawing.Point(10, 301);
+            this.radioButtonEnvCatStereo.Location = new System.Drawing.Point(95, 273);
             this.radioButtonEnvCatStereo.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.radioButtonEnvCatStereo.Name = "radioButtonEnvCatStereo";
             this.radioButtonEnvCatStereo.Size = new System.Drawing.Size(87, 22);
@@ -990,12 +923,14 @@
             // radioButtonEnvCat
             // 
             this.radioButtonEnvCat.AutoSize = true;
+            this.radioButtonEnvCat.Checked = true;
             this.radioButtonEnvCat.Font = new System.Drawing.Font("Calibri", 11.25F);
             this.radioButtonEnvCat.Location = new System.Drawing.Point(10, 273);
             this.radioButtonEnvCat.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.radioButtonEnvCat.Name = "radioButtonEnvCat";
             this.radioButtonEnvCat.Size = new System.Drawing.Size(68, 22);
             this.radioButtonEnvCat.TabIndex = 77;
+            this.radioButtonEnvCat.TabStop = true;
             this.radioButtonEnvCat.Text = "Bobcat";
             this.radioButtonEnvCat.UseVisualStyleBackColor = true;
             this.radioButtonEnvCat.CheckedChanged += new System.EventHandler(this.radioButtonEnv_CheckedChanged);
@@ -1017,7 +952,7 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Calibri", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(174, 94);
+            this.label13.Location = new System.Drawing.Point(7, 303);
             this.label13.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(54, 18);
@@ -1064,14 +999,12 @@
             // radioButtonEnvNorm
             // 
             this.radioButtonEnvNorm.AutoSize = true;
-            this.radioButtonEnvNorm.Checked = true;
             this.radioButtonEnvNorm.Font = new System.Drawing.Font("Calibri", 11.25F);
-            this.radioButtonEnvNorm.Location = new System.Drawing.Point(177, 115);
+            this.radioButtonEnvNorm.Location = new System.Drawing.Point(10, 324);
             this.radioButtonEnvNorm.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.radioButtonEnvNorm.Name = "radioButtonEnvNorm";
             this.radioButtonEnvNorm.Size = new System.Drawing.Size(72, 22);
             this.radioButtonEnvNorm.TabIndex = 0;
-            this.radioButtonEnvNorm.TabStop = true;
             this.radioButtonEnvNorm.Text = "Normal";
             this.radioButtonEnvNorm.UseVisualStyleBackColor = true;
             this.radioButtonEnvNorm.CheckedChanged += new System.EventHandler(this.radioButtonEnv_CheckedChanged);
@@ -1144,7 +1077,16 @@
             // 
             // tabPageHeadSpace
             // 
-            this.tabPageHeadSpace.Controls.Add(this.panel1);
+            this.tabPageHeadSpace.Controls.Add(this.labelHT_O);
+            this.tabPageHeadSpace.Controls.Add(this.numericUpDownHT_O);
+            this.tabPageHeadSpace.Controls.Add(this.numericUpDownHT_Z);
+            this.tabPageHeadSpace.Controls.Add(this.labelHT_Z);
+            this.tabPageHeadSpace.Controls.Add(this.numericUpDownHT_Y);
+            this.tabPageHeadSpace.Controls.Add(this.labelHT_Y);
+            this.tabPageHeadSpace.Controls.Add(this.numericUpDownHT_X);
+            this.tabPageHeadSpace.Controls.Add(this.labelHT_X);
+            this.tabPageHeadSpace.Controls.Add(this.checkBoxHeadTrack);
+            this.tabPageHeadSpace.Controls.Add(this.panelPinkTV);
             this.tabPageHeadSpace.Controls.Add(this.numericUpDownHeadZ);
             this.tabPageHeadSpace.Controls.Add(this.label11);
             this.tabPageHeadSpace.Controls.Add(this.numericUpDownHeadY);
@@ -1153,8 +1095,6 @@
             this.tabPageHeadSpace.Controls.Add(this.label9);
             this.tabPageHeadSpace.Controls.Add(this.labelEyeSeperation);
             this.tabPageHeadSpace.Controls.Add(this.labelHeadYaw);
-            this.tabPageHeadSpace.Controls.Add(this.numericUpDownFocalDistance);
-            this.tabPageHeadSpace.Controls.Add(this.labelFocalDistance);
             this.tabPageHeadSpace.Controls.Add(this.numericUpDownHeadPitch);
             this.tabPageHeadSpace.Controls.Add(this.numericUpDownHeadYaw);
             this.tabPageHeadSpace.Controls.Add(this.numericUpDownEyeSeperation);
@@ -1166,26 +1106,167 @@
             this.tabPageHeadSpace.Text = "View";
             this.tabPageHeadSpace.UseVisualStyleBackColor = true;
             // 
-            // panel1
+            // labelHT_O
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Location = new System.Drawing.Point(30, 342);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(108, 192);
-            this.panel1.TabIndex = 87;
-            this.panel1.DoubleClick += new System.EventHandler(this.panel1_DoubleClick);
+            this.labelHT_O.AutoSize = true;
+            this.labelHT_O.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHT_O.Location = new System.Drawing.Point(15, 538);
+            this.labelHT_O.Name = "labelHT_O";
+            this.labelHT_O.Size = new System.Drawing.Size(118, 18);
+            this.labelHT_O.TabIndex = 99;
+            this.labelHT_O.Text = "Head Tracker Yaw:";
             // 
-            // panel2
+            // numericUpDownHT_O
             // 
-            this.panel2.BackColor = System.Drawing.Color.Black;
-            this.panel2.Location = new System.Drawing.Point(28, 32);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(10, 10);
-            this.panel2.TabIndex = 0;
-            this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
-            this.panel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseMove);
-            this.panel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseUp);
+            this.numericUpDownHT_O.Enabled = false;
+            this.numericUpDownHT_O.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownHT_O.Location = new System.Drawing.Point(158, 536);
+            this.numericUpDownHT_O.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.numericUpDownHT_O.Minimum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownHT_O.Name = "numericUpDownHT_O";
+            this.numericUpDownHT_O.Size = new System.Drawing.Size(109, 26);
+            this.numericUpDownHT_O.TabIndex = 98;
+            this.numericUpDownHT_O.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownHT_O.ValueChanged += new System.EventHandler(this.numericUpDownHT_O_ValueChanged);
+            // 
+            // numericUpDownHT_Z
+            // 
+            this.numericUpDownHT_Z.DecimalPlaces = 1;
+            this.numericUpDownHT_Z.Enabled = false;
+            this.numericUpDownHT_Z.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownHT_Z.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownHT_Z.Location = new System.Drawing.Point(157, 504);
+            this.numericUpDownHT_Z.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownHT_Z.Name = "numericUpDownHT_Z";
+            this.numericUpDownHT_Z.Size = new System.Drawing.Size(109, 26);
+            this.numericUpDownHT_Z.TabIndex = 97;
+            this.numericUpDownHT_Z.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownHT_Z.ValueChanged += new System.EventHandler(this.numericUpDownHT_Z_ValueChanged);
+            // 
+            // labelHT_Z
+            // 
+            this.labelHT_Z.AutoSize = true;
+            this.labelHT_Z.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHT_Z.Location = new System.Drawing.Point(15, 506);
+            this.labelHT_Z.Name = "labelHT_Z";
+            this.labelHT_Z.Size = new System.Drawing.Size(101, 18);
+            this.labelHT_Z.TabIndex = 96;
+            this.labelHT_Z.Text = "Head Tracker Z:";
+            // 
+            // numericUpDownHT_Y
+            // 
+            this.numericUpDownHT_Y.DecimalPlaces = 1;
+            this.numericUpDownHT_Y.Enabled = false;
+            this.numericUpDownHT_Y.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownHT_Y.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownHT_Y.Location = new System.Drawing.Point(157, 472);
+            this.numericUpDownHT_Y.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownHT_Y.Name = "numericUpDownHT_Y";
+            this.numericUpDownHT_Y.Size = new System.Drawing.Size(109, 26);
+            this.numericUpDownHT_Y.TabIndex = 95;
+            this.numericUpDownHT_Y.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownHT_Y.ValueChanged += new System.EventHandler(this.numericUpDownHT_Y_ValueChanged);
+            // 
+            // labelHT_Y
+            // 
+            this.labelHT_Y.AutoSize = true;
+            this.labelHT_Y.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHT_Y.Location = new System.Drawing.Point(15, 474);
+            this.labelHT_Y.Name = "labelHT_Y";
+            this.labelHT_Y.Size = new System.Drawing.Size(100, 18);
+            this.labelHT_Y.TabIndex = 94;
+            this.labelHT_Y.Text = "Head Tracker Y:";
+            // 
+            // numericUpDownHT_X
+            // 
+            this.numericUpDownHT_X.DecimalPlaces = 1;
+            this.numericUpDownHT_X.Enabled = false;
+            this.numericUpDownHT_X.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownHT_X.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownHT_X.Location = new System.Drawing.Point(157, 440);
+            this.numericUpDownHT_X.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownHT_X.Name = "numericUpDownHT_X";
+            this.numericUpDownHT_X.Size = new System.Drawing.Size(109, 26);
+            this.numericUpDownHT_X.TabIndex = 93;
+            this.numericUpDownHT_X.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownHT_X.ValueChanged += new System.EventHandler(this.numericUpDownHT_X_ValueChanged);
+            // 
+            // labelHT_X
+            // 
+            this.labelHT_X.AutoSize = true;
+            this.labelHT_X.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHT_X.Location = new System.Drawing.Point(15, 442);
+            this.labelHT_X.Name = "labelHT_X";
+            this.labelHT_X.Size = new System.Drawing.Size(102, 18);
+            this.labelHT_X.TabIndex = 92;
+            this.labelHT_X.Text = "Head Tracker X:";
+            // 
+            // checkBoxHeadTrack
+            // 
+            this.checkBoxHeadTrack.AutoCheck = false;
+            this.checkBoxHeadTrack.AutoSize = true;
+            this.checkBoxHeadTrack.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.checkBoxHeadTrack.Location = new System.Drawing.Point(18, 409);
+            this.checkBoxHeadTrack.Name = "checkBoxHeadTrack";
+            this.checkBoxHeadTrack.Size = new System.Drawing.Size(132, 22);
+            this.checkBoxHeadTrack.TabIndex = 88;
+            this.checkBoxHeadTrack.Text = "Use Head Tracker";
+            this.checkBoxHeadTrack.UseVisualStyleBackColor = true;
+            this.checkBoxHeadTrack.CheckedChanged += new System.EventHandler(this.checkBoxHeadTrack_CheckedChanged);
+            this.checkBoxHeadTrack.Click += new System.EventHandler(this.checkBoxHeadTrack_Click);
+            // 
+            // panelPinkTV
+            // 
+            this.panelPinkTV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.panelPinkTV.Controls.Add(this.panelPinkTV2);
+            this.panelPinkTV.Location = new System.Drawing.Point(158, 173);
+            this.panelPinkTV.Name = "panelPinkTV";
+            this.panelPinkTV.Size = new System.Drawing.Size(108, 192);
+            this.panelPinkTV.TabIndex = 87;
+            this.panelPinkTV.DoubleClick += new System.EventHandler(this.panel1_DoubleClick);
+            // 
+            // panelPinkTV2
+            // 
+            this.panelPinkTV2.BackColor = System.Drawing.Color.Black;
+            this.panelPinkTV2.Location = new System.Drawing.Point(28, 32);
+            this.panelPinkTV2.Name = "panelPinkTV2";
+            this.panelPinkTV2.Size = new System.Drawing.Size(10, 10);
+            this.panelPinkTV2.TabIndex = 0;
+            this.panelPinkTV2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
+            this.panelPinkTV2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseMove);
+            this.panelPinkTV2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseUp);
             // 
             // numericUpDownHeadZ
             // 
@@ -1196,18 +1277,18 @@
             0,
             0,
             65536});
-            this.numericUpDownHeadZ.Location = new System.Drawing.Point(128, 237);
+            this.numericUpDownHeadZ.Location = new System.Drawing.Point(76, 237);
             this.numericUpDownHeadZ.Minimum = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
-            -2147483648});
+            0});
             this.numericUpDownHeadZ.Name = "numericUpDownHeadZ";
             this.numericUpDownHeadZ.Size = new System.Drawing.Size(76, 26);
             this.numericUpDownHeadZ.TabIndex = 86;
             this.numericUpDownHeadZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownHeadZ.Value = new decimal(new int[] {
-            10,
+            30,
             0,
             0,
             0});
@@ -1232,7 +1313,7 @@
             0,
             0,
             65536});
-            this.numericUpDownHeadY.Location = new System.Drawing.Point(128, 205);
+            this.numericUpDownHeadY.Location = new System.Drawing.Point(76, 205);
             this.numericUpDownHeadY.Minimum = new decimal(new int[] {
             100,
             0,
@@ -1243,7 +1324,7 @@
             this.numericUpDownHeadY.TabIndex = 84;
             this.numericUpDownHeadY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownHeadY.Value = new decimal(new int[] {
-            30,
+            10,
             0,
             0,
             0});
@@ -1268,7 +1349,7 @@
             0,
             0,
             65536});
-            this.numericUpDownHeadX.Location = new System.Drawing.Point(128, 173);
+            this.numericUpDownHeadX.Location = new System.Drawing.Point(76, 173);
             this.numericUpDownHeadX.Minimum = new decimal(new int[] {
             100,
             0,
@@ -1278,11 +1359,6 @@
             this.numericUpDownHeadX.Size = new System.Drawing.Size(76, 26);
             this.numericUpDownHeadX.TabIndex = 82;
             this.numericUpDownHeadX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownHeadX.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            -2147483648});
             this.numericUpDownHeadX.ValueChanged += new System.EventHandler(this.numericUpDownHead_ValueChanged);
             // 
             // label9
@@ -1309,8 +1385,8 @@
             this.MinimumSize = new System.Drawing.Size(800, 700);
             this.Name = "FormBase";
             this.Padding = new System.Windows.Forms.Padding(10);
-            this.Text = "Georgia Tech Excavator Simulator V1.00";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormBase_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormBase_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panelOuterGL.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCabRotation)).EndInit();
@@ -1319,7 +1395,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSwing)).EndInit();
             this.panelFill.ResumeLayout(false);
-            this.panelFill.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.panelRight.ResumeLayout(false);
             this.panelRightTop.ResumeLayout(false);
             this.panelRightTopFill.ResumeLayout(false);
@@ -1330,22 +1407,21 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadPitch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEyeSeperation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadYaw)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFocalDistance)).EndInit();
             this.tabPageScenery.ResumeLayout(false);
             this.tabPageScenery.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSkyBoxDim)).EndInit();
-            this.tabPageOpenGL.ResumeLayout(false);
             this.tabPageInterface.ResumeLayout(false);
             this.panelViewMode.ResumeLayout(false);
             this.panelViewMode.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOutsideDistance)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPageHeadSpace.ResumeLayout(false);
             this.tabPageHeadSpace.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHT_O)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHT_Z)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHT_Y)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHT_X)).EndInit();
+            this.panelPinkTV.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadX)).EndInit();
@@ -1356,7 +1432,6 @@
         #endregion
 
         private System.Windows.Forms.Panel panelOuterGL;
-        private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
@@ -1386,7 +1461,6 @@
         private System.Windows.Forms.Label labelSkyBox;
         private System.Windows.Forms.ComboBox comboBoxSkyBox;
         private System.Windows.Forms.TabPage tabPageOpenGL;
-        private SamSeifert.GLE.CadViewer.CadHandler cadHandler1;
         private System.Windows.Forms.TabPage tabPageInterface;
         private System.Windows.Forms.Panel panelViewMode;
         private System.Windows.Forms.RadioButton radioButtonEnvLaces;
@@ -1405,8 +1479,6 @@
         private System.Windows.Forms.CheckBox checkBoxAspectRatio;
         private System.Windows.Forms.CheckBox checkBoxShowSide;
         private System.Windows.Forms.Label labelEyeSeperation;
-        private System.Windows.Forms.NumericUpDown numericUpDownFocalDistance;
-        private System.Windows.Forms.Label labelFocalDistance;
         private System.Windows.Forms.NumericUpDown numericUpDownEyeSeperation;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.Panel panelRightTop;
@@ -1417,20 +1489,30 @@
         private System.Windows.Forms.RadioButton radioButtonEnvCatStereo;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RadioButton radioButtonEnvSplitVert;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panelPinkTV;
+        private System.Windows.Forms.Panel panelPinkTV2;
         private System.Windows.Forms.NumericUpDown numericUpDownHeadZ;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown numericUpDownHeadY;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.NumericUpDown numericUpDownHeadX;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
         private System.Windows.Forms.RadioButton radioButtonEnvShadowBufferGraphics;
+        internal System.Windows.Forms.CheckBox checkBoxHeadTrack;
+        private System.Windows.Forms.NumericUpDown numericUpDownOutsideDistance;
+        private System.Windows.Forms.NumericUpDown numericUpDownHT_Z;
+        private System.Windows.Forms.Label labelHT_Z;
+        private System.Windows.Forms.NumericUpDown numericUpDownHT_Y;
+        private System.Windows.Forms.Label labelHT_Y;
+        private System.Windows.Forms.NumericUpDown numericUpDownHT_X;
+        private System.Windows.Forms.Label labelHT_X;
+        private System.Windows.Forms.Label labelHT_O;
+        private System.Windows.Forms.NumericUpDown numericUpDownHT_O;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox checkBoxMute;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panelRightTrial;
+        internal System.Windows.Forms.CheckBox checkBoxCabRotater;
     }
 }
 

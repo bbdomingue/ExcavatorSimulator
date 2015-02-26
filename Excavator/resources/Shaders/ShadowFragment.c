@@ -1,8 +1,8 @@
 ﻿varying vec4 ShadowCoord;
-uniform sampler2D ShadowMap;
+uniform sampler2D ShadowMap; // Shadow
 
 varying vec2 texCoords;
-uniform sampler2D tex0;
+uniform sampler2D tex0; // Grass
 
 varying vec4 ambColor;
 varying vec4 difColor;
@@ -21,7 +21,7 @@ void main()
 		shadowCoordinateWdivide.z -= 0.0001;
 
 		float distanceFromLight = texture(ShadowMap, shadowCoordinateWdivide.st).z;
-		if ((distanceFromLight < shadowCoordinateWdivide.z)) shadow = 0.35;
+		if ((distanceFromLight < shadowCoordinateWdivide.z)) shadow = 0.5;
 
 /*		gl_FragColor = clamp(ambColor + shadow * difColor, 0.0, 1.0);
 	}
