@@ -1,0 +1,6 @@
+<SkyBox>
+  <Pos X="1.1" Y="1.1" Z="1.1"/>
+  <Dir X="1.1" Y="1.1" Z="1.1"/>
+  <Ext Type=".png"/>
+  <Half/>
+</SkyBox>

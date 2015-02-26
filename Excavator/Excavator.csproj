@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EF09B0E9-638D-4BFF-8CBC-22B5CEE68B94}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Excavator</RootNamespace>
+    <AssemblyName>Excavator</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ControlPhantom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlPhantom.Designer.cs">
+      <DependentUpon>ControlPhantom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBase.Designer.cs">
+      <DependentUpon>FormBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPickScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPickScreen.Designer.cs">
+      <DependentUpon>FormPickScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPickTrial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPickTrial.Designer.cs">
+      <DependentUpon>FormPickTrial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GLControl3D.cs" />
+    <Compile Include="Bobcat.cs" />
+    <Compile Include="GLSphere.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="PhysX3CharacterKinematicCHECKED_x86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PhysX3CHECKED_x86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PhysX3CommonCHECKED_x86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PhysX3CookingCHECKED_x86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PhysX3GpuCHECKED_x86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\GL_Items\Arm.txt" />
+    <Content Include="Resources\GL_Items\ArmCyl.txt" />
+    <Content Include="Resources\GL_Items\ArmPiston.txt" />
+    <Content Include="Resources\GL_Items\Boom.txt" />
+    <Content Include="Resources\GL_Items\BoomCyl.txt" />
+    <Content Include="Resources\GL_Items\BoomPiston.txt" />
+    <Content Include="Resources\GL_Items\Bucket.txt" />
+    <Content Include="Resources\GL_Items\BucketCyl.txt" />
+    <Content Include="Resources\GL_Items\BucketLink.txt" />
+    <Content Include="Resources\GL_Items\BucketLink2.txt" />
+    <Content Include="Resources\GL_Items\BucketPiston.txt" />
+    <Content Include="Resources\GL_Items\BucketSimple.txt" />
+    <Content Include="Resources\GL_Items\Dull_Butt.txt" />
+    <Content Include="Resources\GL_Items\Dull_Cab.txt" />
+    <Content Include="Resources\GL_Items\Exchange.txt" />
+    <Content Include="Resources\GL_Items\SwingFrame.txt" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="StaticMethods.cs" />
+    <Compile Include="Trial.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Trial.Designer.cs">
+      <DependentUpon>Trial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrialJointControlKeyboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrialJointControlKeyboard.Designer.cs">
+      <DependentUpon>TrialJointControlKeyboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrialMarkElton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrialMarkElton.Designer.cs">
+      <DependentUpon>TrialMarkElton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TrialPillars.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrialPillars.Designer.cs">
+      <DependentUpon>TrialPillars.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WPFControlPhantom.xaml.cs">
+      <DependentUpon>WPFControlPhantom.xaml</DependentUpon>
+    </Compile>
+    <None Include="Resources\Images\ground2.bmp" />
+    <None Include="Resources\Images\green.jpg" />
+    <None Include="Resources\Images\HeightMap.bmp" />
+    <Content Include="Resources\GL_Trees\tree1.txt" />
+    <Content Include="Resources\GL_Trees\tree2.txt" />
+    <Content Include="Resources\GL_Trees\tree3.txt" />
+    <Content Include="Resources\GL_Trees\tree4.txt" />
+    <Content Include="Resources\GL_Trees\tree5.txt" />
+    <Content Include="Resources\GL_Trees\tree6.txt" />
+    <Content Include="Resources\Shaders\GhostFragment.c" />
+    <Content Include="Resources\Shaders\GhostVertex.c" />
+    <Content Include="Resources\Shaders\ShadowFragment.c" />
+    <Content Include="Resources\Shaders\ShadowVertex.c" />
+    <EmbeddedResource Include="ControlPhantom.resx">
+      <DependentUpon>ControlPhantom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBase.resx">
+      <DependentUpon>FormBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPickScreen.resx">
+      <DependentUpon>FormPickScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPickTrial.resx">
+      <DependentUpon>FormPickTrial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trial.resx">
+      <DependentUpon>Trial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrialJointControlKeyboard.resx">
+      <DependentUpon>TrialJointControlKeyboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrialMarkElton.resx">
+      <DependentUpon>TrialMarkElton.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <Content Include="CustomResources\Skybox\Skybox 1\skybox.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 2\skybox.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CustomResources\Skybox\Skybox 1\Back.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 1\Bottom.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 1\Front.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 1\Left.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 1\Right.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 1\Top.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 2\Back.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 2\Base.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 2\Bottom.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 2\Front.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 2\Left.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 2\Right.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 2\Top.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 3\Back.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 3\Base.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 3\Front.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 3\Left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 3\Right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 3\skybox.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 3\Top.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 0\Back.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 0\Base.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 0\Front.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 0\Left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 0\Right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 0\skybox.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CustomResources\Skybox\Skybox 0\Top.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\dirt1.jpg" />
+    <Content Include="Resources\Images\dirt2.jpg" />
+    <Content Include="Resources\Images\dirt3.jpg" />
+    <Content Include="Resources\Images\dirt4.jpg" />
+    <Content Include="Resources\Images\grass2.jpg" />
+    <Content Include="Resources\Images\grass1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="WPFControlPhantom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenTK\Source\GLControl\OpenTK.GLControl.csproj">
+      <Project>{A625BE88-0000-0000-0000-000000000000}</Project>
+      <Name>OpenTK.GLControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenTK\Source\OpenTK\OpenTK.csproj">
+      <Project>{A37A7E14-0000-0000-0000-000000000000}</Project>
+      <Name>OpenTK</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PhysX.Net 3.2.4\PhysX.Net-3\PhysX.Net-3.vcxproj">
+      <Project>{FB145A7D-CDF2-417D-A006-F7591481D609}</Project>
+      <Name>PhysX.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser.csproj">
+      <Project>{2414F4DD-734E-4A0B-9C95-C24B2CEE25F7}</Project>
+      <Name>SamSeifert.ComplexFileParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SamSeifert.GLE.CadViewer\SamSeifert.GLE.CadViewer.csproj">
+      <Project>{012184D6-08E1-4152-B2BB-409D4B5D7785}</Project>
+      <Name>SamSeifert.GLE.CadViewer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SamSeifert.GLE.Generics\SamSeifert.GLE.Generics\SamSeifert.GLE.Generics.csproj">
+      <Project>{FB6E9B5D-7A20-45F2-9ADA-DDD12E70A967}</Project>
+      <Name>SamSeifert.GLE.Generics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SamSeifert.GlobalEvent\SamSeifert.GlobalEvent\SamSeifert.GlobalEvents.csproj">
+      <Project>{9B8D2FBB-0305-4DF6-A090-DB590DA3659A}</Project>
+      <Name>SamSeifert.GlobalEvents</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
