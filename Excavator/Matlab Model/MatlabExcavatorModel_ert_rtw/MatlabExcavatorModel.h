@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'MatlabExcavatorModel'.
  *
- * Model version                  : 1.227
+ * Model version                  : 1.263
  * Simulink Coder version         : 8.5 (R2013b) 08-Aug-2013
- * C/C++ source code generated on : Wed Feb 25 23:07:32 2015
+ * C/C++ source code generated on : Wed Feb 25 23:29:52 2015
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -85,68 +85,52 @@
 
 /* Block signals (auto storage) */
 typedef struct {
-  real_T TmpSignalConversionAtSFunctionI[8];
-  real_T SFunction_o1[8];              /* '<S4>/S-Function' */
-  real_T SFunction_o2[4];              /* '<S4>/S-Function' */
-  real_T SFunction_o1_i[4];            /* '<S1>/S-Function' */
-  real_T SFunction_o2_h[4];            /* '<S1>/S-Function' */
+  real_T SFunction_o1[4];              /* '<S1>/S-Function' */
+  real_T SFunction_o2[4];              /* '<S1>/S-Function' */
   real_T SFunction_o4;                 /* '<S1>/S-Function' */
   real_T SFunction_o5[4];              /* '<S1>/S-Function' */
-  real_T SFunction;                    /* '<S2>/S-Function' */
-  real_T SFunction1;                   /* '<S2>/S-Function1' */
-  real_T SFunction2;                   /* '<S2>/S-Function2' */
-  real_T SFunction3;                   /* '<S2>/S-Function3' */
 } B_MatlabExcavatorModel_T;
 
 /* Block states (auto storage) for system '<Root>' */
 typedef struct {
-  real_T IntegerDelay3_DSTATE;         /* '<S3>/Integer Delay3' */
-  real_T IntegerDelay1_DSTATE[4];      /* '<S3>/Integer Delay1' */
-  real_T IntegerDelay2_DSTATE[4];      /* '<S3>/Integer Delay2' */
+  real_T IntegerDelay3_DSTATE;         /* '<S4>/Integer Delay3' */
+  real_T IntegerDelay1_DSTATE[4];      /* '<S4>/Integer Delay1' */
+  real_T IntegerDelay2_DSTATE[4];      /* '<S4>/Integer Delay2' */
   real_T SFunction_DSTATE[8];          /* '<S1>/S-Function' */
-  real_T SFunction3_DSTATE;            /* '<S2>/S-Function3' */
 } DW_MatlabExcavatorModel_T;
 
 /* Constant parameters (auto storage) */
 typedef struct {
   /* Pooled Parameter (Expression: torqscale)
    * Referenced by:
-   *   '<S3>/in Nm'
-   *   '<S3>/in Nm1'
+   *   '<S4>/in Nm'
+   *   '<S4>/in Nm1'
    */
   real_T pooled2[51];
 
   /* Pooled Parameter (Expression: speedscale)
    * Referenced by:
-   *   '<S3>/in rpms'
-   *   '<S3>/in rpms1'
+   *   '<S4>/in rpms'
+   *   '<S4>/in rpms1'
    */
   real_T pooled3[57];
 
   /* Expression: maxincol
-   * Referenced by: '<S3>/max torq at set engine speed'
+   * Referenced by: '<S4>/max torq at set engine speed'
    */
   real_T maxtorqatsetenginesp[57];
 
   /* Pooled Parameter (Expression: )
    * Referenced by:
    *   '<S1>/S-Function'
-   *   '<S2>/S-Function'
-   *   '<S2>/S-Function1'
-   *   '<S2>/S-Function2'
-   *   '<S2>/S-Function3'
-   *   '<S4>/S-Function'
+   *   '<S3>/S-Function'
    */
   real_T pooled5[2];
 
   /* Pooled Parameter (Expression: Ts)
    * Referenced by:
    *   '<S1>/S-Function'
-   *   '<S2>/S-Function'
-   *   '<S2>/S-Function1'
-   *   '<S2>/S-Function2'
-   *   '<S2>/S-Function3'
-   *   '<S4>/S-Function'
+   *   '<S3>/S-Function'
    */
   real_T pooled6;
 
@@ -261,100 +245,40 @@ typedef struct {
   real_T pooled20;
 
   /* Computed Parameter: SFunction_P2_Size_n
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   real_T SFunction_P2_Size_n[2];
 
   /* Expression: fv_swing
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   real_T SFunction_P2_i;
 
   /* Computed Parameter: SFunction_P3_Size_j
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   real_T SFunction_P3_Size_j[2];
 
   /* Expression: fc_swing
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   real_T SFunction_P3_k;
 
   /* Computed Parameter: SFunction_P4_Size
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   real_T SFunction_P4_Size[2];
 
   /* Expression: fbrake
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   real_T SFunction_P4;
-
-  /* Computed Parameter: SFunction1_P2_Size
-   * Referenced by: '<S2>/S-Function1'
-   */
-  real_T SFunction1_P2_Size[2];
-
-  /* Expression: fv_boom
-   * Referenced by: '<S2>/S-Function1'
-   */
-  real_T SFunction1_P2;
-
-  /* Computed Parameter: SFunction1_P3_Size
-   * Referenced by: '<S2>/S-Function1'
-   */
-  real_T SFunction1_P3_Size[2];
-
-  /* Expression: fc_boom
-   * Referenced by: '<S2>/S-Function1'
-   */
-  real_T SFunction1_P3;
-
-  /* Computed Parameter: SFunction2_P2_Size
-   * Referenced by: '<S2>/S-Function2'
-   */
-  real_T SFunction2_P2_Size[2];
-
-  /* Expression: fv_arm
-   * Referenced by: '<S2>/S-Function2'
-   */
-  real_T SFunction2_P2;
-
-  /* Computed Parameter: SFunction2_P3_Size
-   * Referenced by: '<S2>/S-Function2'
-   */
-  real_T SFunction2_P3_Size[2];
-
-  /* Expression: fc_arm
-   * Referenced by: '<S2>/S-Function2'
-   */
-  real_T SFunction2_P3;
-
-  /* Computed Parameter: SFunction3_P2_Size
-   * Referenced by: '<S2>/S-Function3'
-   */
-  real_T SFunction3_P2_Size[2];
-
-  /* Expression: fv_bucket
-   * Referenced by: '<S2>/S-Function3'
-   */
-  real_T SFunction3_P2;
-
-  /* Computed Parameter: SFunction3_P3_Size
-   * Referenced by: '<S2>/S-Function3'
-   */
-  real_T SFunction3_P3_Size[2];
-
-  /* Expression: fc_bucket
-   * Referenced by: '<S2>/S-Function3'
-   */
-  real_T SFunction3_P3;
 } ConstP_MatlabExcavatorModel_T;
 
 /* Constant parameters with dynamic initialization (auto storage) */
 typedef struct {
   /* Expression: fuelmatrix
-   * Referenced by: '<S3>/fuel rate  matrix (kg//hr)'
+   * Referenced by: '<S4>/fuel rate  matrix (kg//hr)'
    */
   real_T fuelratematrixkghr[2907];
 } ConstInitP_MatlabExcavatorModel_T;
@@ -362,8 +286,8 @@ typedef struct {
 /* External inputs (root inport signals with auto storage) */
 typedef struct {
   real_T Flow[4];                      /* '<Root>/Flow ' */
-  real_T Qd[4];                        /* '<Root>/Qd' */
-  real_T Q[4];                         /* '<Root>/Q' */
+  real_T CylinderPosition[4];          /* '<Root>/CylinderPosition' */
+  real_T CylinderVelocity[4];          /* '<Root>/CylinderVelocity' */
 } ExtU_MatlabExcavatorModel_T;
 
 /* External outputs (root outports fed by signals with auto storage) */
@@ -373,9 +297,8 @@ typedef struct {
   real_T FuelInstant;                  /* '<Root>/FuelInstant' */
   uint16_T Volume;                     /* '<Root>/Volume ' */
   real_T FlowSent[4];                  /* '<Root>/FlowSent' */
-  real_T CylinderPosition[4];          /* '<Root>/CylinderPosition' */
-  real_T CylinderVelocity[4];          /* '<Root>/CylinderVelocity' */
-  real_T JointTorques[4];              /* '<Root>/JointTorques' */
+  real_T JointForce[4];                /* '<Root>/JointForce' */
+  real_T CabTorque;                    /* '<Root>/CabTorque' */
 } ExtY_MatlabExcavatorModel_T;
 
 /* Real-time Model Data Structure */
@@ -395,22 +318,12 @@ struct tag_RTM_MatlabExcavatorModel_T {
   struct {
     RTWSfcnInfo sfcnInfo;
     time_T *taskTimePtrs[2];
-    SimStruct childSFunctions[6];
-    SimStruct *childSFunctionPtrs[6];
-    struct _ssBlkInfo2 blkInfo2[6];
-    struct _ssSFcnModelMethods2 methods2[6];
-    struct _ssSFcnModelMethods3 methods3[6];
-    struct _ssStatesInfo2 statesInfo2[6];
-    struct {
-      time_T sfcnPeriod[1];
-      time_T sfcnOffset[1];
-      int_T sfcnTsMap[1];
-      struct _ssPortInputs inputPortInfo[1];
-      struct _ssPortOutputs outputPortInfo[2];
-      uint_T attribs[1];
-      mxArray *params[1];
-    } Sfcn0;
-
+    SimStruct childSFunctions[2];
+    SimStruct *childSFunctionPtrs[2];
+    struct _ssBlkInfo2 blkInfo2[2];
+    struct _ssSFcnModelMethods2 methods2[2];
+    struct _ssSFcnModelMethods3 methods3[2];
+    struct _ssStatesInfo2 statesInfo2[2];
     struct {
       time_T sfcnPeriod[1];
       time_T sfcnOffset[1];
@@ -421,7 +334,7 @@ struct tag_RTM_MatlabExcavatorModel_T {
       mxArray *params[27];
       struct _ssDWorkRecord dWork[1];
       struct _ssDWorkAuxRecord dWorkAux[1];
-    } Sfcn1;
+    } Sfcn0;
 
     struct {
       time_T sfcnPeriod[1];
@@ -431,39 +344,7 @@ struct tag_RTM_MatlabExcavatorModel_T {
       struct _ssPortOutputs outputPortInfo[1];
       uint_T attribs[4];
       mxArray *params[4];
-    } Sfcn2;
-
-    struct {
-      time_T sfcnPeriod[1];
-      time_T sfcnOffset[1];
-      int_T sfcnTsMap[1];
-      struct _ssPortInputs inputPortInfo[4];
-      struct _ssPortOutputs outputPortInfo[1];
-      uint_T attribs[3];
-      mxArray *params[3];
-    } Sfcn3;
-
-    struct {
-      time_T sfcnPeriod[1];
-      time_T sfcnOffset[1];
-      int_T sfcnTsMap[1];
-      struct _ssPortInputs inputPortInfo[4];
-      struct _ssPortOutputs outputPortInfo[1];
-      uint_T attribs[3];
-      mxArray *params[3];
-    } Sfcn4;
-
-    struct {
-      time_T sfcnPeriod[1];
-      time_T sfcnOffset[1];
-      int_T sfcnTsMap[1];
-      struct _ssPortInputs inputPortInfo[4];
-      struct _ssPortOutputs outputPortInfo[1];
-      uint_T attribs[3];
-      mxArray *params[3];
-      struct _ssDWorkRecord dWork[1];
-      struct _ssDWorkAuxRecord dWorkAux[1];
-    } Sfcn5;
+    } Sfcn1;
   } NonInlinedSFcns;
 
   /*
@@ -610,9 +491,9 @@ extern "C" {
  *
  * '<Root>' : 'MatlabExcavatorModel'
  * '<S1>'   : 'MatlabExcavatorModel/Cylinder Model'
- * '<S2>'   : 'MatlabExcavatorModel/Pressure to Torque Calculation'
- * '<S3>'   : 'MatlabExcavatorModel/Torque limiter'
- * '<S4>'   : 'MatlabExcavatorModel/j2c'
+ * '<S2>'   : 'MatlabExcavatorModel/Get Force On Piston'
+ * '<S3>'   : 'MatlabExcavatorModel/Pressure to Torque Calculation'
+ * '<S4>'   : 'MatlabExcavatorModel/Torque limiter'
  * '<S5>'   : 'MatlabExcavatorModel/Torque limiter/Limit torque at given engine speed'
  * '<S6>'   : 'MatlabExcavatorModel/Torque limiter/swashflow'
  */

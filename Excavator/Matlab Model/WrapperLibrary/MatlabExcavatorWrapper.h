@@ -14,14 +14,14 @@ namespace MatlabExcavatorWrapper
 		void SamInitClass();
 
 		float SamUpdateClass(
-			float * Q,
-			float * Qd,
-			float * Flow,
-			// Back
-			float * Fuel, 
 			float * CylinderPositions,
 			float * CylinderVelocities,
-			float * JointTorques);
+			float * Flow,
+			// Back
+			float * Fuel,
+			float * CabTorque,
+			float * JointForces
+			);
 		
 		void SamTerminateClass();
 	};

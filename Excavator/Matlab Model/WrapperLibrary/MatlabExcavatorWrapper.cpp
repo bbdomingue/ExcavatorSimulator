@@ -11,24 +11,24 @@ void MatlabExcavatorWrapper::MatlabSimulation::SamInitClass()
 }
 
 float MatlabExcavatorWrapper::MatlabSimulation::SamUpdateClass(
-	float * Q,
-	float * Qd,
-	float * Flow,
-	// Back
-	float * Fuel, 
 	float * CylinderPositions,
 	float * CylinderVelocities,
-	float * JointTorques)
+	float * Flow,
+	// Back
+	float * Fuel,
+	float * CabTorque,
+	float * JointForces
+	)
 {
 	return SamUpdate(
-		Q,
-		Qd,
+		CylinderPositions,
+		CylinderVelocities,
 		Flow,
 		// Back
 		Fuel,
-		CylinderPositions,
-		CylinderVelocities,
-     	JointTorques);
+		CabTorque,
+		JointForces		
+		);
 }
 
 void MatlabExcavatorWrapper::MatlabSimulation::SamTerminateClass()

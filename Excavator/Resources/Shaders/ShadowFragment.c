@@ -17,7 +17,7 @@ void main()
 		shadowCoordinateWdivide.z -= 0.0001;
 
 		float distanceFromLight = texture(ShadowMap, shadowCoordinateWdivide.st).z;
-		if ((distanceFromLight < shadowCoordinateWdivide.z)) shadow_intensity = 0.15;
+		if ((distanceFromLight < shadowCoordinateWdivide.z)) shadow_intensity = min(0.3, shadow_intensity);
 
 /*		gl_FragColor = clamp(ambColor + shadow * difColor, 0.0, 1.0);
 	}

@@ -64,11 +64,9 @@ namespace Excavator
         private float delayF = 0;
 
         // Link Masses (Kg)
-        const float m1 = 1000 * 1.9554f;
-        const float m2 = 1000 * 0.1411f;
+        const float m1 = 1000 * 0.9554f;
+        const float m2 = 1000 * 0.4211f;
         const float m3 = 1000 * 0.1906f;
-        const float m4 = 1000 * 0.1190f;
-        const float m5 = 1000 * 0.2071f;
 
         // Link Lengths (M)
         const float a1 = StaticMethods.Conversion_Inches_To_Meters * 31.5423f;
@@ -352,9 +350,11 @@ namespace Excavator
         public virtual void drawObjectsInShadow(bool ShadowBufferDraw)
         {
             if (FormBase._BoolDrawPhysX) this.drawPhysX();
-//            else this._EmbeddedSoilModel.drawTrench(ShadowBufferDraw);
-
-            this._EmbeddedSoilModel.drawBins(ShadowBufferDraw);
+            else
+            {
+                this._EmbeddedSoilModel.drawTrench(ShadowBufferDraw);
+                this._EmbeddedSoilModel.drawBins(ShadowBufferDraw);
+            }
             this._EmbeddedSoilModel.drawPiles((float)this._StopWatchSimulateTotal.Elapsed.TotalSeconds);
         }
 
@@ -444,36 +444,49 @@ namespace Excavator
 
 
 
-
         private SamSeifert.GLE.Color_GL _ColorGL = new Color_GL(Color.White);
 
         private Scene _Scene;
 
-        RigidDynamic xCab, xBoom, xArm, xBucket;
-        
+        RigidDynamic xCab, xBoom, xArm, xBucketLink, xBucket;
+
+        FixedJoint jntCabBoom1, jntCabBoom2;
+        RigidDynamic actorCabBoom1, actorCabBoom2;
+
+        FixedJoint jntBoomArm1, jntBoomArm2;
+        RigidDynamic actorBoomArm1, actorBoomArm2;
+
+        FixedJoint jntArmBucketLink1, jntArmBucketLink2;
+        RigidDynamic actorArmBucketLink1, actorArmBucketLink2;
+
+
+//         RigidDynamic actorTEMP; FixedJoint fixedJOINTEMP;
+
+        DistanceJoint jntBucketLinkBucket;
+
         private void setupPhysics()
         {
             this._Scene = Trial._Physics.CreateScene(new SceneDesc()
             {
-                Gravity = new Vector3_PhysX(0, -9.8f, 0)
+                Gravity = new Vector3_PhysX(0, -9.8f, 0),
             });
 
             Vector3[] vss;
             int[] iss;
             var cat_material = Trial._Physics.CreateMaterial(0.1f, 0.1f, 0.0f);
+            var bin_material = Trial._Physics.CreateMaterial(1.0f, 1.0f, 0);
+            var grnd_material = Trial._Physics.CreateMaterial(1.0f, 1.0f, 0);
             var cooking = Trial._Physics.CreateCooking();
 
+            var tw = EmbeddedSoilModel.TRENCH_WIDTH * StaticMethods.Conversion_Inches_To_Meters * 1.2f; // 1.2 IS SAFETY BUFFER
+            const int depth = 1;
+            const int hw = 10; // Half Width of The Covered Area
 
-
-            var _MaterialCage = Trial._Physics.CreateMaterial(0.1f, 0.1f, 0.0f);
-            var groundPlane = Trial._Physics.CreateRigidStatic();
-            groundPlane.CreateShape(
-                new PlaneGeometry(),
-                _MaterialCage,
-                Matrix_PhysX.RotationAxis(new Vector3_PhysX(0, 0, 1), (float)System.Math.PI * 0.5f));
-            this._Scene.AddActor(groundPlane);
-
-
+            var ground = Trial._Physics.CreateRigidStatic();
+            ground.CreateShape(new BoxGeometry((hw - tw) / 2, depth, hw), grnd_material, Matrix_PhysX.Translation(hw / 2, -depth, 0));
+            ground.CreateShape(new BoxGeometry((hw - tw) / 2, depth, hw), grnd_material, Matrix_PhysX.Translation(-hw / 2, -depth, 0));
+            ground.CreateShape(new BoxGeometry(tw, depth, hw / 2), grnd_material, Matrix_PhysX.Translation(0, -depth, hw / 2));
+            this._Scene.AddActor(ground);
 
 
 
@@ -493,7 +506,7 @@ namespace Excavator
 
             float zset = -dim_cab_radius;
 
-            this.xCab = Trial._Physics.CreateRigidDynamic();
+            this.xCab = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, height - dim_cab_thickness_o2, 0));
             this.xCab.CreateShape(
                 new CapsuleGeometry(dim_cab_radius, dim_cab_thickness_o2),
                 cat_material,
@@ -508,33 +521,56 @@ namespace Excavator
                 null,
                 Matrix_PhysX.Multiply(
                      Matrix_PhysX.RotationZ(StaticMethods._PIF / 2),
-                     Matrix_PhysX.Translation(0, height - dim_cab_thickness_o2, 0)));
+                     Matrix_PhysX.Translation(xset, height - dim_cab_thickness_o2, 0)));
             this.xCab.SetMassAndUpdateInertia(Trial.m1);
             this._Scene.AddActor(this.xCab);
 
 
 
 
+            const float middleDist = 0.5f * dim_boom_length_meters;
+            const float middleHeight = 0.25f * dim_boom_length_meters;
+            float ang1 = (float)Math.Atan2(middleHeight, middleDist);
+            float ang2 = (float)Math.Atan2(middleHeight, dim_boom_length_meters - middleDist);
+            float ang3 = 180 - ang1 - ang2;
+            float leg1 = (float)Math.Sqrt(Math.Pow(middleHeight, 2) + Math.Pow(middleDist, 2));
+            float leg2 = (float)Math.Sqrt(Math.Pow(middleHeight, 2) + Math.Pow((dim_boom_length_meters - middleDist), 2));
             const float boomdim = 0.1f;
             float boomdimsq2 = boomdim * (float) Math.Sqrt(2);
-            const float dim_boom_length_meters_o2 = dim_boom_length_meters / 2;
             this.xBoom = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset));
             this.xBoom.CreateShape(
-                new BoxGeometry(boomdim, boomdim, dim_boom_length_meters_o2 - boomdim), 
-                cat_material,
-                Matrix_PhysX.Translation(0, 0, -dim_boom_length_meters_o2));
-            this.xBoom.CreateShape(
                 new BoxGeometry(boomdim, boomdimsq2 / 2, boomdimsq2 / 2),
                 cat_material,
-                Matrix_PhysX.Multiply(
-                     Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
-                     Matrix_PhysX.Translation(0, 0, boomdim - dim_boom_length_meters)));
+                Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
+                    Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
+                    Matrix_PhysX.Translation(0, 0, -boomdim)),
+                    Matrix_PhysX.RotationX(ang1)));
             this.xBoom.CreateShape(
-                new BoxGeometry(boomdim, boomdimsq2 / 2, boomdimsq2 / 2),
+                new BoxGeometry(boomdim, boomdim, (leg1 - boomdim) / 2),
                 cat_material,
                 Matrix_PhysX.Multiply(
-                     Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
-                     Matrix_PhysX.Translation(0, 0, -boomdim)));
+                     Matrix_PhysX.Translation(0, 0, -(boomdim + leg1) / 2),
+                     Matrix_PhysX.RotationX(ang1)));
+            this.xBoom.CreateShape(
+                new CapsuleGeometry(boomdim, boomdim),
+                cat_material,
+                Matrix_PhysX.Translation(0, middleHeight, -middleDist));
+            this.xBoom.CreateShape(
+                new BoxGeometry(boomdim, boomdim, (leg2 - boomdim) / 2),
+                cat_material,
+                Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
+                     Matrix_PhysX.Translation(0, 0, -(leg2 - boomdim) / 2),
+                     Matrix_PhysX.RotationX(-ang2)),
+                     Matrix_PhysX.Translation(0, middleHeight, -middleDist)
+                     ));
+/*            this.xBoom.CreateShape( // Boom - Arm Square on Boom
+                new BoxGeometry(boomdim, boomdimsq2 / 2, boomdimsq2 / 2),
+                cat_material,
+                Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
+                    Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
+                    Matrix_PhysX.Translation(0, 0, boomdim)),
+                    Matrix_PhysX.RotationX(-ang2)),
+                    Matrix_PhysX.Translation(0,0,-dim_boom_length_meters)));*/
             var jnt2 = this._Scene.CreateJoint<RevoluteJoint>(
                 this.xBoom,
                 Matrix_PhysX.Identity,
@@ -544,10 +580,6 @@ namespace Excavator
             jnt2.Flags |= RevoluteJointFlag.LimitEnabled;
             this.xBoom.SetMassAndUpdateInertia(Trial.m2);
             this._Scene.AddActor(xBoom);
-
-
-
-
 
             zset -= dim_boom_length_meters;
             const float armdim = boomdim;
@@ -564,12 +596,12 @@ namespace Excavator
                 Matrix_PhysX.Multiply(
                      Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
                      Matrix_PhysX.Translation(0, 0, armdim - dim_arm_length_meters)));
-            this.xArm.CreateShape(
+/*            this.xArm.CreateShape(// Boom - Arm Square on Arm
                 new BoxGeometry(armdim, armdimsq2 / 2, armdimsq2 / 2),
                 cat_material,
                 Matrix_PhysX.Multiply(
                      Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
-                     Matrix_PhysX.Translation(0, 0, - armdim)));
+                     Matrix_PhysX.Translation(0, 0, - armdim)));*/
             var jnt3 = this._Scene.CreateJoint<RevoluteJoint>(
                 this.xArm,
                 Matrix_PhysX.Identity,
@@ -579,10 +611,6 @@ namespace Excavator
             jnt3.Flags |= RevoluteJointFlag.LimitEnabled;
             this.xArm.SetMassAndUpdateInertia(Trial.m3);
             this._Scene.AddActor(this.xArm);
-
-
-
-            
 
             zset -= dim_arm_length_meters;
             this.xBucket = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset));
@@ -621,8 +649,144 @@ namespace Excavator
                 Matrix_PhysX.Translation(0, 0, -dim_arm_length_meters));
             jnt4.Limit = new JointAngularLimitPair(-(float)this.Q4_Max_Radians, -(float)this.Q4_Min_Radians);
             jnt4.Flags |= RevoluteJointFlag.LimitEnabled;
-            this.xBucket.SetMassAndUpdateInertia(Trial.m4);
+            this.xBucket.SetMassAndUpdateInertia(Trial.m3);
             this._Scene.AddActor(this.xBucket);
+
+            float linkOffset = 0.23f;
+            const float linkLength = 0.33f;
+            this.xBucketLink = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset + linkOffset));
+            this.xBucketLink.CreateShape(
+                new SphereGeometry(linkLength * 0.14f),
+                cat_material,
+                Matrix_PhysX.Translation(0, linkLength * 0.65f, 0));
+            var jnt5 = this._Scene.CreateJoint<RevoluteJoint>(
+                this.xBucketLink,
+                Matrix_PhysX.Identity,
+                this.xArm,
+                Matrix_PhysX.Translation(0, 0, linkOffset - dim_arm_length_meters));
+            jnt5.Limit = new JointAngularLimitPair(-StaticMethods._PIF / 3, StaticMethods._PIF / 3);
+            jnt5.Flags |= RevoluteJointFlag.LimitEnabled;
+            this.xBucketLink.SetMassAndUpdateInertia(5);
+            this._Scene.AddActor(this.xBucketLink);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var driveMass = 5.5f;
+            var bg = new SphereGeometry(0.06f);
+
+            // Boom Driver
+            this.actorCabBoom1 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 0, 0)); ;
+            this.actorCabBoom1.CreateShape(bg, cat_material, Matrix_PhysX.Identity);
+            this.actorCabBoom1.SetMassAndUpdateInertia(driveMass);
+            this._Scene.AddActor(actorCabBoom1);
+            this.actorCabBoom2 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 0, -1));
+            this.actorCabBoom2.CreateShape(bg, cat_material, Matrix_PhysX.Identity);
+            this.actorCabBoom2.SetMassAndUpdateInertia(driveMass);
+            this._Scene.AddActor(actorCabBoom2);
+            this.jntCabBoom1 = this._Scene.CreateJoint<FixedJoint>(
+                this.actorCabBoom1,
+                Matrix_PhysX.Identity,
+                this.xCab,
+                Matrix_PhysX.Translation(xset, -.288f, -.914f)
+                );
+            this.jntCabBoom2 = this._Scene.CreateJoint<FixedJoint>(
+                this.actorCabBoom2,
+                Matrix_PhysX.Identity,
+                this.xBoom,
+                Matrix_PhysX.Translation(0, 0.438f, -1.386f)
+                );
+
+            // Arm Driver
+            this.actorBoomArm1 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, 0));
+            this.actorBoomArm1.CreateShape(bg, /*new SphereGeometry(driveRad),//*/
+                cat_material,
+                Matrix_PhysX.Identity);
+            this.actorBoomArm1.SetMassAndUpdateInertia(driveMass);
+            this._Scene.AddActor(actorBoomArm1);
+            this.actorBoomArm2 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -1));
+            this.actorBoomArm2.CreateShape(bg, /*new SphereGeometry(driveRad),//*/
+                cat_material,
+                Matrix_PhysX.Identity);
+            this.actorBoomArm2.SetMassAndUpdateInertia(driveMass);
+            this._Scene.AddActor(actorBoomArm2);
+            this.jntBoomArm1 = this._Scene.CreateJoint<FixedJoint>(
+                this.actorBoomArm1,
+                Matrix_PhysX.Identity,
+                this.xBoom,
+                Matrix_PhysX.Translation(0, 0.828f, -1.570f)
+                );
+            this.jntBoomArm2 = this._Scene.CreateJoint<FixedJoint>(
+                this.actorBoomArm2,
+                Matrix_PhysX.Identity,
+                this.xArm,
+                Matrix_PhysX.Translation(0, 0.229f, 0.282f)
+                );
+
+            // Bucket Link Driver
+            this.actorArmBucketLink1 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -2));
+            this.actorArmBucketLink1.CreateShape(bg,
+                cat_material,
+                Matrix_PhysX.Identity);
+            this.actorArmBucketLink1.SetMassAndUpdateInertia(driveMass);
+            this._Scene.AddActor(actorArmBucketLink1);
+            this.actorArmBucketLink2 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -3));
+            this.actorArmBucketLink2.CreateShape(bg,
+                cat_material,
+                Matrix_PhysX.Identity);
+            this.actorArmBucketLink2.SetMassAndUpdateInertia(driveMass);
+            this._Scene.AddActor(actorArmBucketLink2);
+            this.jntArmBucketLink1 = this._Scene.CreateJoint<FixedJoint>(
+                this.actorArmBucketLink1,
+                Matrix_PhysX.Identity,
+                this.xArm,
+                Matrix_PhysX.Translation(0, 0.313f, -0.137f)
+                );
+            this.jntArmBucketLink2 = this._Scene.CreateJoint<FixedJoint>(
+                this.actorArmBucketLink2,
+                Matrix_PhysX.Identity,
+                this.xBucketLink,
+                Matrix_PhysX.Translation(0, linkLength, 0)
+                );
+
+            /*
+            this.actorTEMP = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -3));
+            this.actorTEMP.CreateShape(bg,
+                cat_material,
+                Matrix_PhysX.Identity);
+            this.actorTEMP.SetMassAndUpdateInertia(driveMass);
+            this._Scene.AddActor(actorTEMP);
+            this.fixedJOINTEMP = this._Scene.CreateJoint<FixedJoint>(
+                this.actorTEMP,
+                Matrix_PhysX.Identity,
+                this.xBucket,
+                Matrix_PhysX.Translation(0, 0.165f, 0.148f)
+                );*/
+
+            this.jntBucketLinkBucket = this._Scene.CreateJoint<DistanceJoint>(
+                this.actorArmBucketLink2,
+                Matrix_PhysX.Identity,
+                this.xBucket,
+                Matrix_PhysX.Translation(0, 0.165f, 0.148f)
+                );
+            this.jntBucketLinkBucket.Flags = (DistanceJointFlag.MinimumDistanceEnabled | DistanceJointFlag.MaximumDistanceEnabled);
+            this.jntBucketLinkBucket.MinimumDistance = 0.25f;
+            this.jntBucketLinkBucket.MaximumDistance = 0.25f;
+
+
+
+
+
 
 
 
@@ -644,7 +808,7 @@ namespace Excavator
                             EmbeddedSoilModel.dimBoxHeight_Inches * conv2,
                             EmbeddedSoilModel.dimBoxThickness_Inches * conv2
                             ),
-                        cat_material,
+                        bin_material,
                         Matrix_PhysX.Multiply(
                             Matrix_PhysX.Translation(
                                 0,
@@ -652,13 +816,99 @@ namespace Excavator
                                 (EmbeddedSoilModel.dimBoxWidth_Inches - EmbeddedSoilModel.dimBoxThickness_Inches) * conv2),
                             Matrix_PhysX.RotationY(j * StaticMethods._PIF / 2)));
                 }
-                this._Scene.AddActor(bin);
-               
+                this._Scene.AddActor(bin);               
             }
 
+            var ls = new RigidDynamic[]
+            {
+                this.actorBoomArm1,
+                this.actorBoomArm2,
+                this.actorCabBoom1,
+                this.actorCabBoom2,
+                this.actorArmBucketLink1,
+                this.actorArmBucketLink2,
+                this.xCab,
+                this.xBoom,
+                this.xArm,
+                this.xBucketLink,
+                this.xBucket
+            };
+
+            foreach (var rig in ls)
+            {
+                rig.LinearDamping = 0;
+                rig.AngularDamping = 0;
+            }
+
+            for (int j = 0; j < 5; j++)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    this._Scene.Simulate(TimeStepPhysX);
+                    this._Scene.FetchResults(true);
+                }
+                foreach (var rig in ls)
+                {
+                    rig.LinearVelocity = Vector3_PhysX.Zero;
+                    rig.AngularVelocity = Vector3_PhysX.Zero;
+                }
+            }
+
+//            this.xBucketLink.AngularDamping = 100;
+//            this.xBoom.AngularDamping = 100;
+//            this.xArm.AngularDamping = 80;
+//            this.xBucket.AngularDamping = 40;
+        }
+        public static volatile float f1 = 1, f2 = -1, f3, f4;
 
 
-            for (int i = 0; i < 25; i++) this._Scene.Simulate(0.001f);
+        const float damping_cab_boom = 25000;
+        const float damping_boom_arm = 25000;
+        const float damping_arm_bucket = 25000;
+        const float maxf_cab_boom = 0;
+        const float maxf_boom_arm = 0;
+        const float maxf_arm_bucket = 0;
+
+        private void updatePhysXJoints(float[] JOINT_FORCES, float[] CAB_TORQUE)
+        {
+//            this.jntBucketLinkBucket.MinimumDistance = Trial.f1;
+//            this.jntBucketLinkBucket.MaximumDistance = Trial.f1;
+
+//            this.jntDArmBucket1.LocalPose1 = Matrix_PhysX.Translation(new Vector3_PhysX(0, Trial.f1, Trial.f2));
+//            this.jntDArmBucket2.LocalPose1 = Matrix_PhysX.Translation(new Vector3_PhysX(0, Trial.f3, Trial.f4));
+
+//            this.fixedJOINTEMP.LocalPose1 = Matrix_PhysX.Translation(new Vector3_PhysX(0, Trial.f1, Trial.f2));
+
+            Vector3_PhysX frcedir;
+
+            frcedir = this.actorCabBoom1.GlobalPose.xyz() - this.actorCabBoom2.GlobalPose.xyz();
+            frcedir.Normalize();
+            this.actorCabBoom1.AddForce(frcedir * JOINT_FORCES[1]);
+            this.actorCabBoom2.AddForce(-frcedir * JOINT_FORCES[1]);
+
+            frcedir = this.actorBoomArm1.GlobalPose.xyz() - this.actorBoomArm2.GlobalPose.xyz();
+            frcedir.Normalize();
+            this.actorBoomArm1.AddForce(frcedir * JOINT_FORCES[2]);
+            this.actorBoomArm2.AddForce(-frcedir * JOINT_FORCES[2]);
+
+            frcedir = this.actorArmBucketLink1.GlobalPose.xyz() - this.actorArmBucketLink2.GlobalPose.xyz();
+            frcedir.Normalize();
+            this.actorArmBucketLink1.AddForce(frcedir * JOINT_FORCES[3]);
+            this.actorArmBucketLink2.AddForce(-frcedir * JOINT_FORCES[3]);
+
+            var cab = this.xCab.GlobalPose;
+            this.xCab.AddTorque(new Vector3_PhysX(0, CAB_TORQUE[0], 0));
+
+//            this.xArm.AddTorque(Vector4_PhysX.Transform(new Vector4_PhysX(JOINT_TORQUES[2], 0, 0, 0), cab).xyz());
+            
+            /*this.xBucket.AddTorque(Vector4_PhysX.Transform(
+                new Vector4_PhysX(JOINT_TORQUES[3], 0, 0, 0), cab).xyz());
+
+            this.xCab.AddTorque(new Vector3_PhysX(
+                0,
+                -_FrictionCab * Math.Sign(Qd[0]) * Math.Max(Math.Abs(Qd[0]),
+                _FrictionCutoff), 0));*/
+                        
         }
 
         /// <summary>
@@ -704,7 +954,7 @@ namespace Excavator
                             break;
                         case GeometryType.Sphere:
                             var s = shp.GetSphereGeometry();
-                            SamSeifert.GLE.Draw.Sphere(s.Radius);
+                            SamSeifert.GLE.Draw.Sphere(s.Radius * StaticMethods.Conversion_Meters_To_Inches);
                             break;   
                         case GeometryType.Plane:
                             const float p = 100 * StaticMethods.Conversion_Meters_To_Inches;
@@ -752,10 +1002,7 @@ namespace Excavator
 
 
 
-
-
-
-
+        const float TimeStepPhysX = 0.001f;
         private volatile float _FloatSimTime = 0.0f;
 
         public const float QSCALE = 57.2957795f;
@@ -815,19 +1062,9 @@ namespace Excavator
             float[] CYL_VEL = new float[] { 0, 0, 0, 0 };
 
             float[] FUEL = new float[] { 0, 0 };
-            
-            float[] JOINT_TORQUES = new float[] { 0, 0, 0, 0 };
 
-            float fBucketVolumeLoad = 0;
-            float fBucketMassLoad = 0;
-
-            float fuelInstant;
-            float fuelFiltered = Trial.FuelMin;
-
-            int centiSeconds = -1;
-            int centiSecondsNew = 0;            
-            float simTime = 0;
-
+            float[] CAB_TORQUE = new float[] { 0 };
+            float[] JOINT_FORCES = new float[] { 0, 0, 0, 0 };
 
             fixed (float *
                 Q_P = Q,
@@ -837,11 +1074,24 @@ namespace Excavator
                 SW_FORCE_P = SW_FORCE,
                 FUEL_P = FUEL,
                 FLOW_P = FLOW,
-                JOINT_TORQUES_P = JOINT_TORQUES,
+                CAB_TORQUE_P = CAB_TORQUE,
+                JOINT_FORCES_P = JOINT_FORCES,
                 CYL_POS_P = CYL_POS,
                 CYL_VEL_P = CYL_VEL
                 )
-            {               
+            {
+                float fBucketVolumeLoad = 0;
+                float fBucketMassLoad = 0;
+
+                float fuelInstant;
+                float fuelFiltered = Trial.FuelMin;
+
+                int centiSeconds = -1;
+                int centiSecondsNew = 0;
+                float simTime = 0;
+
+                this.UpdateMatlabInputs(ref Q, ref Qd, ref CYL_POS, ref CYL_VEL);
+
                 while (FormBase._BoolThreadAlive && this._BoolAlive)
                 {
                     if (this._FloatSimTime < wtch.Elapsed.TotalSeconds)
@@ -859,7 +1109,7 @@ namespace Excavator
                             ref Q,
                             ref Qd);
 
-/*                        var pl = this._EmbeddedSoilModel.ForceModel_ReturnDump(
+                        var pl = this._EmbeddedSoilModel.ForceModel_ReturnDump(
                             ref Ybh,
                             ref Vbh,
                             ref Q,
@@ -871,81 +1121,28 @@ namespace Excavator
                             this._FloatSimTime
                             );
 
-                        if (pl.Size > 0) if (this._TrialSaver != null) this._TrialSaver.update2(pl);*/
+//                        if (pl.Size > 0) if (this._TrialSaver != null) this._TrialSaver.update2(pl);
 
                         Bobcat._FloatBucketSoilVolume = fBucketVolumeLoad;
                         fBucketMassLoad = fBucketVolumeLoad * 0.03149594f;
 
                         simTime = sim.SamUpdateClass(
-                            Q_P,
-                            QD_P,
+                            CYL_POS_P,
+                            CYL_VEL_P,
                             FLOW_P,
                             // Back
                             FUEL_P,
-                            CYL_POS_P,
-                            CYL_VEL_P,
-                            JOINT_TORQUES_P);
-
-                        const float TimeStep = 0.001f;
+                            CAB_TORQUE_P,
+                            JOINT_FORCES_P);
 
                         lock (Trial._Physics)
                         {
-                            var cab = this.xCab.GlobalPose;
+                            this.updatePhysXJoints(JOINT_FORCES, CAB_TORQUE);
 
-                            this.xCab.AddTorque(
-                                new Vector3_PhysX(0, JOINT_TORQUES[0], 0));
-                            this.xBoom.AddTorque(Vector4_PhysX.Transform(
-                                new Vector4_PhysX(JOINT_TORQUES[1], 0, 0, 0), cab).xyz());
-                            this.xArm.AddTorque(Vector4_PhysX.Transform(
-                                new Vector4_PhysX(JOINT_TORQUES[2], 0, 0, 0), cab).xyz());
-                            this.xBucket.AddTorque(Vector4_PhysX.Transform(
-                                new Vector4_PhysX(JOINT_TORQUES[3], 0, 0, 0), cab).xyz());
-
-                            this.xCab.AddTorque(new Vector3_PhysX(
-                                0,
-                                -_FrictionCab * Math.Sign(Qd[0]) * Math.Max(Math.Abs(Qd[0]),
-                                _FrictionCutoff), 0));
-
-                            this._Scene.Simulate(TimeStep);
+                            this._Scene.Simulate(TimeStepPhysX);
                             this._Scene.FetchResults(true);
 
-                            Vector4_PhysX targ1, targ2, cabPerp = Vector4_PhysX.Transform(Vector4_PhysX.UnitX, this.xCab.GlobalPose);
-                            Vector3_PhysX cross;
-                            float newQ;
-
-                            targ1 = Vector4_PhysX.Transform(Vector4_PhysX.UnitX, cab);
-                            newQ = -(float)Math.Atan2(targ1.Z, targ1.X);
-                            Qd[0] = (newQ - Q[0]) / TimeStep;
-                            Q[0] = newQ;
-
-                            targ1 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, cab);
-                            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xBoom.GlobalPose);
-                            cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
-                            if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
-                            else newQ = (float)Math.Acos(Vector4_PhysX.Dot(targ1, targ2)) *
-                                Math.Sign(Vector4_PhysX.Dot(new Vector4_PhysX(cross, 0), cabPerp));
-                            Qd[1] = (newQ - Q[1]) / TimeStep;
-                            Q[1] = newQ;
-
-                            targ1 = targ2;
-                            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xArm.GlobalPose);
-                            cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
-                            if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
-                            else newQ = (float)Math.Acos(Vector4_PhysX.Dot(targ1, targ2)) *
-                                Math.Sign(Vector4_PhysX.Dot(new Vector4_PhysX(cross, 0), cabPerp));
-                            Qd[2] = (newQ - Q[2]) / TimeStep;
-                            Q[2] = newQ;
-
-                            targ1 = targ2;
-                            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xBucket.GlobalPose);
-                            cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
-                            if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
-                            else newQ = (float)
-                                Math.Acos(Math.Max(-1, Math.Min(1, Vector4_PhysX.Dot(targ1, targ2)))) *
-                                Math.Sign(Vector4_PhysX.Dot(new Vector4_PhysX(cross, 0), cabPerp));
-
-                            Qd[3] = (newQ - Q[3]) / TimeStep;
-                            Q[3] = newQ;
+                            this.UpdateMatlabInputs(ref Q, ref Qd, ref CYL_POS, ref CYL_VEL);
                         }
 
 
@@ -1004,6 +1201,74 @@ namespace Excavator
 
             FormBase.subThread();
         }
+
+        private void UpdateMatlabInputs(ref float[] Q, ref float[] Qd, ref float[] CYL_POS, ref float[] CYL_VEL)
+        {
+            // UPDATE Q
+
+            Vector4_PhysX targ1, targ2, cabPerp = Vector4_PhysX.Transform(Vector4_PhysX.UnitX, this.xCab.GlobalPose);
+            Vector3_PhysX cross;
+            float newQ;
+
+            targ1 = Vector4_PhysX.Transform(Vector4_PhysX.UnitX, this.xCab.GlobalPose);
+            Q[0] = -(float)Math.Atan2(targ1.Z, targ1.X); ;
+
+            var cabX = (targ1.xyz());
+
+            targ1 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xCab.GlobalPose);
+            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xBoom.GlobalPose);
+            cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
+            if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
+            else newQ = (float)Math.Acos(Vector4_PhysX.Dot(targ1, targ2)) *
+                Math.Sign(Vector4_PhysX.Dot(new Vector4_PhysX(cross, 0), cabPerp));
+            Q[1] = newQ;
+
+            targ1 = targ2;
+            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xArm.GlobalPose);
+            cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
+            if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
+            else newQ = (float)Math.Acos(Vector4_PhysX.Dot(targ1, targ2)) *
+                Math.Sign(Vector4_PhysX.Dot(new Vector4_PhysX(cross, 0), cabPerp));
+            Q[2] = newQ;
+
+            targ1 = targ2;
+            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xBucket.GlobalPose);
+            cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
+            if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
+            else newQ = (float)
+                Math.Acos(Math.Max(-1, Math.Min(1, Vector4_PhysX.Dot(targ1, targ2)))) *
+                Math.Sign(Vector4_PhysX.Dot(new Vector4_PhysX(cross, 0), cabPerp));
+            Q[3] = newQ;
+
+            // Update Qd
+
+            Qd[0] = Vector3_PhysX.Dot(this.xCab.AngularVelocity, Vector3_PhysX.UnitY);
+            Qd[1] = Vector3_PhysX.Dot(this.xBoom.AngularVelocity, cabX);
+            Qd[2] = Vector3_PhysX.Dot(this.xArm.AngularVelocity, cabX);
+            Qd[3] = Vector3_PhysX.Dot(this.xBucket.AngularVelocity, cabX);
+
+            // Udate Cyl_Pos
+
+            Vector3_PhysX v3pos1 = this.actorCabBoom1.GlobalPose.xyz() - this.actorCabBoom2.GlobalPose.xyz();
+            Vector3_PhysX v3pos2 = this.actorBoomArm1.GlobalPose.xyz() - this.actorBoomArm2.GlobalPose.xyz();
+            Vector3_PhysX v3pos3 = this.actorArmBucketLink1.GlobalPose.xyz() - this.actorArmBucketLink2.GlobalPose.xyz();
+
+            CYL_POS[0] = Q[0];
+            CYL_POS[1] = v3pos1.Normalize() * StaticMethods.Conversion_Meters_To_Inches;
+            CYL_POS[2] = v3pos2.Normalize() * StaticMethods.Conversion_Meters_To_Inches;
+            CYL_POS[3] = v3pos3.Normalize() * StaticMethods.Conversion_Meters_To_Inches;
+
+            // Update Cyl_Vel
+
+            CYL_VEL[0] = Qd[0];
+            CYL_VEL[1] = StaticMethods.Conversion_Meters_To_Inches *
+                Vector3_PhysX.Dot(this.actorCabBoom1.LinearVelocity - this.actorCabBoom2.LinearVelocity, v3pos1);
+            CYL_VEL[2] = StaticMethods.Conversion_Meters_To_Inches *
+                Vector3_PhysX.Dot(this.actorBoomArm1.LinearVelocity - this.actorBoomArm2.LinearVelocity, v3pos2);
+            CYL_VEL[3] = StaticMethods.Conversion_Meters_To_Inches *
+                Vector3_PhysX.Dot(this.actorArmBucketLink1.LinearVelocity - this.actorArmBucketLink2.LinearVelocity, v3pos3);
+        }
+
 
         /// <summary>
         /// When Overrode, do not call base

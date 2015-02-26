@@ -72,6 +72,10 @@
             this.numericUpDownEyeSeperation = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownHeadYaw = new System.Windows.Forms.NumericUpDown();
             this.tabPageScenery = new System.Windows.Forms.TabPage();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownSkyBoxDim = new System.Windows.Forms.NumericUpDown();
             this.labelSkyBoxDistance = new System.Windows.Forms.Label();
             this.labelSkyBox = new System.Windows.Forms.Label();
@@ -130,6 +134,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownEyeSeperation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadYaw)).BeginInit();
             this.tabPageScenery.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSkyBoxDim)).BeginInit();
             this.tabPageInterface.SuspendLayout();
             this.panelViewMode.SuspendLayout();
@@ -311,7 +319,7 @@
             this.numericUpDownArm.Location = new System.Drawing.Point(129, 138);
             this.numericUpDownArm.Margin = new System.Windows.Forms.Padding(0);
             this.numericUpDownArm.Maximum = new decimal(new int[] {
-            22,
+            35,
             0,
             0,
             -2147483648});
@@ -759,6 +767,10 @@
             // 
             // tabPageScenery
             // 
+            this.tabPageScenery.Controls.Add(this.numericUpDown4);
+            this.tabPageScenery.Controls.Add(this.numericUpDown3);
+            this.tabPageScenery.Controls.Add(this.numericUpDown2);
+            this.tabPageScenery.Controls.Add(this.numericUpDown1);
             this.tabPageScenery.Controls.Add(this.numericUpDownSkyBoxDim);
             this.tabPageScenery.Controls.Add(this.labelSkyBoxDistance);
             this.tabPageScenery.Controls.Add(this.labelSkyBox);
@@ -770,6 +782,125 @@
             this.tabPageScenery.TabIndex = 3;
             this.tabPageScenery.Text = "Scenery";
             this.tabPageScenery.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.DecimalPlaces = 3;
+            this.numericUpDown4.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.numericUpDown4.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            196608});
+            this.numericUpDown4.Location = new System.Drawing.Point(65, 391);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown4.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(157, 26);
+            this.numericUpDown4.TabIndex = 46;
+            this.numericUpDown4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDown4.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown4.ValueChanged += new System.EventHandler(this.numericUpDown4_ValueChanged);
+            // 
+            // numericUpDown3
+            // 
+            this.numericUpDown3.DecimalPlaces = 3;
+            this.numericUpDown3.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.numericUpDown3.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            196608});
+            this.numericUpDown3.Location = new System.Drawing.Point(65, 359);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown3.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown3.Name = "numericUpDown3";
+            this.numericUpDown3.Size = new System.Drawing.Size(157, 26);
+            this.numericUpDown3.TabIndex = 45;
+            this.numericUpDown3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDown3.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.DecimalPlaces = 3;
+            this.numericUpDown2.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.numericUpDown2.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            196608});
+            this.numericUpDown2.Location = new System.Drawing.Point(65, 327);
+            this.numericUpDown2.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown2.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(157, 26);
+            this.numericUpDown2.TabIndex = 44;
+            this.numericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.DecimalPlaces = 3;
+            this.numericUpDown1.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.numericUpDown1.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            196608});
+            this.numericUpDown1.Location = new System.Drawing.Point(65, 295);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(157, 26);
+            this.numericUpDown1.TabIndex = 43;
+            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            28,
+            0,
+            0,
+            131072});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // numericUpDownSkyBoxDim
             // 
@@ -1426,6 +1557,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadYaw)).EndInit();
             this.tabPageScenery.ResumeLayout(false);
             this.tabPageScenery.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSkyBoxDim)).EndInit();
             this.tabPageInterface.ResumeLayout(false);
             this.panelViewMode.ResumeLayout(false);
@@ -1531,6 +1666,10 @@
         private System.Windows.Forms.Panel panelRightTrial;
         internal System.Windows.Forms.CheckBox checkBoxCabRotater;
         private System.Windows.Forms.CheckBox checkBoxPhysX;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
 

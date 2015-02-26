@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'MatlabExcavatorModel'.
  *
- * Model version                  : 1.227
+ * Model version                  : 1.263
  * Simulink Coder version         : 8.5 (R2013b) 08-Aug-2013
- * C/C++ source code generated on : Wed Feb 25 23:07:32 2015
+ * C/C++ source code generated on : Wed Feb 25 23:29:52 2015
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)

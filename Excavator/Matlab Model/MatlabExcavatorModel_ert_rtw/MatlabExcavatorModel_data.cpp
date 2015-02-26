@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'MatlabExcavatorModel'.
  *
- * Model version                  : 1.227
+ * Model version                  : 1.263
  * Simulink Coder version         : 8.5 (R2013b) 08-Aug-2013
- * C/C++ source code generated on : Wed Feb 25 23:07:32 2015
+ * C/C++ source code generated on : Wed Feb 25 23:29:52 2015
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -20,8 +20,8 @@
 const ConstP_MatlabExcavatorModel_T MatlabExcavatorModel_ConstP = {
   /* Pooled Parameter (Expression: torqscale)
    * Referenced by:
-   *   '<S3>/in Nm'
-   *   '<S3>/in Nm1'
+   *   '<S4>/in Nm'
+   *   '<S4>/in Nm1'
    */
   { 0.0, 3.38, 6.76, 10.14, 13.52, 16.900000000000002, 20.28, 23.659999999999997,
     27.04, 30.42, 33.800000000000004, 37.18, 40.56, 43.94, 47.319999999999993,
@@ -34,8 +34,8 @@ const ConstP_MatlabExcavatorModel_T MatlabExcavatorModel_ConstP = {
 
   /* Pooled Parameter (Expression: speedscale)
    * Referenced by:
-   *   '<S3>/in rpms'
-   *   '<S3>/in rpms1'
+   *   '<S4>/in rpms'
+   *   '<S4>/in rpms1'
    */
   { 1300.0, 1325.0, 1350.0, 1375.0, 1400.0, 1425.0, 1450.0, 1475.0, 1500.0,
     1525.0, 1550.0, 1575.0, 1600.0, 1625.0, 1650.0, 1675.0, 1700.0, 1725.0,
@@ -46,7 +46,7 @@ const ConstP_MatlabExcavatorModel_T MatlabExcavatorModel_ConstP = {
     2650.0, 2675.0, 2700.0 },
 
   /* Expression: maxincol
-   * Referenced by: '<S3>/max torq at set engine speed'
+   * Referenced by: '<S4>/max torq at set engine speed'
    */
   { 29.0, 30.0, 31.0, 32.0, 34.0, 35.0, 37.0, 39.0, 42.0, 42.0, 43.0, 44.0, 46.0,
     46.0, 47.0, 48.0, 49.0, 49.0, 49.0, 49.0, 49.0, 49.0, 49.0, 49.0, 48.0, 48.0,
@@ -57,22 +57,14 @@ const ConstP_MatlabExcavatorModel_T MatlabExcavatorModel_ConstP = {
   /* Pooled Parameter (Expression: )
    * Referenced by:
    *   '<S1>/S-Function'
-   *   '<S2>/S-Function'
-   *   '<S2>/S-Function1'
-   *   '<S2>/S-Function2'
-   *   '<S2>/S-Function3'
-   *   '<S4>/S-Function'
+   *   '<S3>/S-Function'
    */
   { 1.0, 1.0 },
 
   /* Pooled Parameter (Expression: Ts)
    * Referenced by:
    *   '<S1>/S-Function'
-   *   '<S2>/S-Function'
-   *   '<S2>/S-Function1'
-   *   '<S2>/S-Function2'
-   *   '<S2>/S-Function3'
-   *   '<S4>/S-Function'
+   *   '<S3>/S-Function'
    */
   0.001,
 
@@ -187,100 +179,40 @@ const ConstP_MatlabExcavatorModel_T MatlabExcavatorModel_ConstP = {
   0.00025244634267614991,
 
   /* Computed Parameter: SFunction_P2_Size_n
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   { 1.0, 1.0 },
 
   /* Expression: fv_swing
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   1.72,
 
   /* Computed Parameter: SFunction_P3_Size_j
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   { 1.0, 1.0 },
 
   /* Expression: fc_swing
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   87.5,
 
   /* Computed Parameter: SFunction_P4_Size
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
   { 1.0, 1.0 },
 
   /* Expression: fbrake
-   * Referenced by: '<S2>/S-Function'
+   * Referenced by: '<S3>/S-Function'
    */
-  50000.0,
-
-  /* Computed Parameter: SFunction1_P2_Size
-   * Referenced by: '<S2>/S-Function1'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: fv_boom
-   * Referenced by: '<S2>/S-Function1'
-   */
-  1260.0,
-
-  /* Computed Parameter: SFunction1_P3_Size
-   * Referenced by: '<S2>/S-Function1'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: fc_boom
-   * Referenced by: '<S2>/S-Function1'
-   */
-  3439.5768279000004,
-
-  /* Computed Parameter: SFunction2_P2_Size
-   * Referenced by: '<S2>/S-Function2'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: fv_arm
-   * Referenced by: '<S2>/S-Function2'
-   */
-  19300.0,
-
-  /* Computed Parameter: SFunction2_P3_Size
-   * Referenced by: '<S2>/S-Function2'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: fc_arm
-   * Referenced by: '<S2>/S-Function2'
-   */
-  325.97296735000003,
-
-  /* Computed Parameter: SFunction3_P2_Size
-   * Referenced by: '<S2>/S-Function3'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: fv_bucket
-   * Referenced by: '<S2>/S-Function3'
-   */
-  28800.0,
-
-  /* Computed Parameter: SFunction3_P3_Size
-   * Referenced by: '<S2>/S-Function3'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: fc_bucket
-   * Referenced by: '<S2>/S-Function3'
-   */
-  22.480894300000003
+  50000.0
 };
 
 /* Constant parameters with dynamic initialization (auto storage) */
 ConstInitP_MatlabExcavatorModel_T MatlabExcavatorModel_ConstInitP = {
   /* Expression: fuelmatrix
-   * Referenced by: '<S3>/fuel rate  matrix (kg//hr)'
+   * Referenced by: '<S4>/fuel rate  matrix (kg//hr)'
    */
   { 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864,
     0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864,

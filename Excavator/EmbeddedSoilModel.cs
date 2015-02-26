@@ -8,6 +8,7 @@ using SamSeifert.GLE.CadViewer;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
+
 namespace Excavator
 {
     public class EmbeddedSoilModel
@@ -15,7 +16,7 @@ namespace Excavator
         const int _IntDiscreteSectionsMatlab = 256;			// number of nodes
         const float GroundLevel = - (Bobcat.dimOffsetCabY_Inches + Bobcat.dimOffsetSwing2Y_Inches + 3);	// inches
         const float	MaxDepth = 150;			// inches
-        const int TRENCH_WIDTH = 24;       // inches
+        public const int TRENCH_WIDTH = 24;       // inches
         const float TrenchStart = 0;        // inches
         const float TrenchEnd = 250;        // - 31.5423) // inches	
         const int NumStatesK_c = 3;

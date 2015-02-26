@@ -9,19 +9,19 @@ void SamInit(void)
 }
 
 float SamUpdate(
-	float * Q,
-	float * Qd,
-	float * Flow,
-	// Back
-	float * Fuel, 
 	float * CylinderPositions,
 	float * CylinderVelocities,
-	float * JointTorques)
-{	
+	float * Flow,
+	// Back
+	float * Fuel,
+	float * CabTorque,
+	float * JointForces
+	)
+{
 	for (int i = 0; i < 4; i++)
 	{
-		MatlabExcavatorModel_U.Q[i] = Q[i];
-		MatlabExcavatorModel_U.Qd[i] = Qd[i];
+		MatlabExcavatorModel_U.CylinderPosition[i] = CylinderPositions[i];
+		MatlabExcavatorModel_U.CylinderVelocity[i] = CylinderVelocities[i];
 		MatlabExcavatorModel_U.Flow[i] = Flow[i];
 	}
 
@@ -29,12 +29,11 @@ float SamUpdate(
 
 	Fuel[0] = MatlabExcavatorModel_Y.FuelInstant;
 	Fuel[1] = MatlabExcavatorModel_Y.FuelTotal;
+	CabTorque[0] = MatlabExcavatorModel_Y.CabTorque;
 
 	for (int i = 0; i < 4; i++)
 	{
-		CylinderPositions[i] = MatlabExcavatorModel_Y.CylinderPosition[i];
-		CylinderVelocities[i] = MatlabExcavatorModel_Y.CylinderVelocity[i];
-		JointTorques[i] = MatlabExcavatorModel_Y.JointTorques[i];
+		JointForces[i] = MatlabExcavatorModel_Y.JointForce[i];
 	}
 
 	return MatlabExcavatorModel_Y.Time;

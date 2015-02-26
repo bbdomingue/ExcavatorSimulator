@@ -30,7 +30,6 @@ namespace Excavator
                 new TE_VelocityCylinderKeyboard(FormBase._FormBase, s, i);
             else if (this.rb_E_CylindricalVelocity_Sticks.Checked)
                 new TE_VelocityCylinderSticks(FormBase._FormBase, s, i);
-            else new TrialPillars(FormBase._FormBase);
 
             this.Close();
         }

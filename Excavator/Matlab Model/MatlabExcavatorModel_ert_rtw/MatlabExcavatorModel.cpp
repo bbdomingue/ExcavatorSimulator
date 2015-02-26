@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'MatlabExcavatorModel'.
  *
- * Model version                  : 1.227
+ * Model version                  : 1.263
  * Simulink Coder version         : 8.5 (R2013b) 08-Aug-2013
- * C/C++ source code generated on : Wed Feb 25 23:07:32 2015
+ * C/C++ source code generated on : Wed Feb 25 23:29:52 2015
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -51,19 +51,19 @@ void MatlabExcavatorModel_step(void)
   /* Outport: '<Root>/Time' */
   MatlabExcavatorModel_Y.Time = rtb_Clock;
 
-  /* MATLAB Function: '<S3>/swashflow' incorporates:
-   *  Constant: '<S3>/Max Disp per Revolution'
-   *  Constant: '<S3>/Maximum Pump Flow (in^3)'
-   *  Constant: '<S3>/Nm to inlb conversion'
-   *  Constant: '<S3>/fuel rate  matrix (kg//hr)'
-   *  Constant: '<S3>/in Nm1'
-   *  Constant: '<S3>/in rpm1'
-   *  Constant: '<S3>/in rpms1'
-   *  Constant: '<S3>/in sec'
-   *  Constant: '<S3>/max torq at set engine speed'
-   *  Delay: '<S3>/Integer Delay1'
-   *  Delay: '<S3>/Integer Delay2'
-   *  Delay: '<S3>/Integer Delay3'
+  /* MATLAB Function: '<S4>/swashflow' incorporates:
+   *  Constant: '<S4>/Max Disp per Revolution'
+   *  Constant: '<S4>/Maximum Pump Flow (in^3)'
+   *  Constant: '<S4>/Nm to inlb conversion'
+   *  Constant: '<S4>/fuel rate  matrix (kg//hr)'
+   *  Constant: '<S4>/in Nm1'
+   *  Constant: '<S4>/in rpm1'
+   *  Constant: '<S4>/in rpms1'
+   *  Constant: '<S4>/in sec'
+   *  Constant: '<S4>/max torq at set engine speed'
+   *  Delay: '<S4>/Integer Delay1'
+   *  Delay: '<S4>/Integer Delay2'
+   *  Delay: '<S4>/Integer Delay3'
    *  Inport: '<Root>/Flow '
    */
   /* MATLAB Function 'Torque limiter/swashflow': '<S6>:1' */
@@ -265,40 +265,13 @@ void MatlabExcavatorModel_step(void)
   MatlabExcavatorModel_Y.FuelTotal = rtb_totalfuel;
 
   /* Outport: '<Root>/FuelInstant' incorporates:
-   *  MATLAB Function: '<S3>/swashflow'
+   *  MATLAB Function: '<S4>/swashflow'
    */
   MatlabExcavatorModel_Y.FuelInstant = torq_reduce;
 
-  /* SignalConversion: '<S4>/TmpSignal ConversionAtS-FunctionInport1' incorporates:
-   *  Inport: '<Root>/Q'
-   *  Inport: '<Root>/Qd'
-   */
-  MatlabExcavatorModel_B.TmpSignalConversionAtSFunctionI[0] =
-    MatlabExcavatorModel_U.Q[0];
-  MatlabExcavatorModel_B.TmpSignalConversionAtSFunctionI[1] =
-    MatlabExcavatorModel_U.Q[1];
-  MatlabExcavatorModel_B.TmpSignalConversionAtSFunctionI[2] =
-    MatlabExcavatorModel_U.Q[2];
-  MatlabExcavatorModel_B.TmpSignalConversionAtSFunctionI[3] =
-    MatlabExcavatorModel_U.Q[3];
-  MatlabExcavatorModel_B.TmpSignalConversionAtSFunctionI[4] =
-    MatlabExcavatorModel_U.Qd[0];
-  MatlabExcavatorModel_B.TmpSignalConversionAtSFunctionI[5] =
-    MatlabExcavatorModel_U.Qd[1];
-  MatlabExcavatorModel_B.TmpSignalConversionAtSFunctionI[6] =
-    MatlabExcavatorModel_U.Qd[2];
-  MatlabExcavatorModel_B.TmpSignalConversionAtSFunctionI[7] =
-    MatlabExcavatorModel_U.Qd[3];
-
-  /* Level2 S-Function Block: '<S4>/S-Function' (j2c_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[0];
-    sfcnOutputs(rts, 1);
-  }
-
   /* Level2 S-Function Block: '<S1>/S-Function' (cylmodel_435_ryder) */
   {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[1];
+    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[0];
     ssSetOutputPortSignal(rts, 2, &MatlabExcavatorModel_Y.Volume);
     sfcnOutputs(rts, 1);
   }
@@ -311,55 +284,34 @@ void MatlabExcavatorModel_step(void)
   MatlabExcavatorModel_Y.FlowSent[2] = MatlabExcavatorModel_U.Flow[2];
   MatlabExcavatorModel_Y.FlowSent[3] = MatlabExcavatorModel_U.Flow[3];
 
-  /* Outport: '<Root>/CylinderPosition' */
-  MatlabExcavatorModel_Y.CylinderPosition[0] =
-    MatlabExcavatorModel_B.SFunction_o1[0];
-  MatlabExcavatorModel_Y.CylinderPosition[1] =
-    MatlabExcavatorModel_B.SFunction_o1[1];
-  MatlabExcavatorModel_Y.CylinderPosition[2] =
-    MatlabExcavatorModel_B.SFunction_o1[2];
-  MatlabExcavatorModel_Y.CylinderPosition[3] =
-    MatlabExcavatorModel_B.SFunction_o1[3];
+  /* Outport: '<Root>/JointForce' incorporates:
+   *  Gain: '<Root>/Gain'
+   *  MATLAB Function: '<Root>/Get Force On Piston'
+   */
+  /* MATLAB Function 'Get Force On Piston': '<S2>:1' */
+  /*  This function reads in swashplate data and interpolates and then calculates the flow */
+  /* '<S2>:1:8' */
+  /* '<S2>:1:9' */
+  /* '<S2>:1:10' */
+  /* '<S2>:1:11' */
+  MatlabExcavatorModel_Y.JointForce[0] = (MatlabExcavatorModel_B.SFunction_o1[0]
+    * 0.0 - MatlabExcavatorModel_B.SFunction_o2[0] * 0.0) * 4.4482216172334388;
+  MatlabExcavatorModel_Y.JointForce[1] = (MatlabExcavatorModel_B.SFunction_o1[1]
+    * 11.044661672776616 - MatlabExcavatorModel_B.SFunction_o2[1] *
+    7.9030690191868231) * 4.4482216172334388;
+  MatlabExcavatorModel_Y.JointForce[2] = (MatlabExcavatorModel_B.SFunction_o1[2]
+    * 8.2957681008855477 - MatlabExcavatorModel_B.SFunction_o2[2] *
+    5.1541754472957546) * 4.4482216172334388;
+  MatlabExcavatorModel_Y.JointForce[3] = (MatlabExcavatorModel_B.SFunction_o1[3]
+    * 7.0685834705770345 - MatlabExcavatorModel_B.SFunction_o2[3] *
+    4.6633015951723493) * 4.4482216172334388;
 
-  /* Outport: '<Root>/CylinderVelocity' */
-  MatlabExcavatorModel_Y.CylinderVelocity[0] =
-    MatlabExcavatorModel_B.SFunction_o1[4];
-  MatlabExcavatorModel_Y.CylinderVelocity[1] =
-    MatlabExcavatorModel_B.SFunction_o1[5];
-  MatlabExcavatorModel_Y.CylinderVelocity[2] =
-    MatlabExcavatorModel_B.SFunction_o1[6];
-  MatlabExcavatorModel_Y.CylinderVelocity[3] =
-    MatlabExcavatorModel_B.SFunction_o1[7];
-
-  /* Level2 S-Function Block: '<S2>/S-Function' (p2torq1_435_brake) */
+  /* Level2 S-Function Block: '<S3>/S-Function' (p2torq1_435_brake) */
   {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[2];
+    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[1];
+    ssSetOutputPortSignal(rts, 0, &MatlabExcavatorModel_Y.CabTorque);
     sfcnOutputs(rts, 1);
   }
-
-  /* Level2 S-Function Block: '<S2>/S-Function1' (p2torq2_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[3];
-    sfcnOutputs(rts, 1);
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function2' (p2torq3_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[4];
-    sfcnOutputs(rts, 1);
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function3' (p2torq4_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[5];
-    sfcnOutputs(rts, 1);
-  }
-
-  /* Outport: '<Root>/JointTorques' */
-  MatlabExcavatorModel_Y.JointTorques[0] = MatlabExcavatorModel_B.SFunction;
-  MatlabExcavatorModel_Y.JointTorques[1] = MatlabExcavatorModel_B.SFunction1;
-  MatlabExcavatorModel_Y.JointTorques[2] = MatlabExcavatorModel_B.SFunction2;
-  MatlabExcavatorModel_Y.JointTorques[3] = MatlabExcavatorModel_B.SFunction3;
 
   /* MATLAB Function 'Torque limiter/Limit torque at given engine speed': '<S5>:1' */
   /*  this function limits the pump output evenly for all 4 pumps when the */
@@ -403,28 +355,28 @@ void MatlabExcavatorModel_step(void)
   /* '<S5>:1:63' */
   /* '<S5>:1:69' */
 
-  /* Update for Delay: '<S3>/Integer Delay3' */
+  /* Update for Delay: '<S4>/Integer Delay3' */
   MatlabExcavatorModel_DW.IntegerDelay3_DSTATE = rtb_totalfuel;
 
-  /* Update for Delay: '<S3>/Integer Delay1' */
+  /* Update for Delay: '<S4>/Integer Delay1' */
   MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[0] =
-    MatlabExcavatorModel_B.SFunction_o1_i[0];
+    MatlabExcavatorModel_B.SFunction_o1[0];
   MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[1] =
-    MatlabExcavatorModel_B.SFunction_o1_i[1];
+    MatlabExcavatorModel_B.SFunction_o1[1];
   MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[2] =
-    MatlabExcavatorModel_B.SFunction_o1_i[2];
+    MatlabExcavatorModel_B.SFunction_o1[2];
   MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[3] =
-    MatlabExcavatorModel_B.SFunction_o1_i[3];
+    MatlabExcavatorModel_B.SFunction_o1[3];
 
-  /* Update for Delay: '<S3>/Integer Delay2' */
+  /* Update for Delay: '<S4>/Integer Delay2' */
   MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[0] =
-    MatlabExcavatorModel_B.SFunction_o2_h[0];
+    MatlabExcavatorModel_B.SFunction_o2[0];
   MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[1] =
-    MatlabExcavatorModel_B.SFunction_o2_h[1];
+    MatlabExcavatorModel_B.SFunction_o2[1];
   MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[2] =
-    MatlabExcavatorModel_B.SFunction_o2_h[2];
+    MatlabExcavatorModel_B.SFunction_o2[2];
   MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[3] =
-    MatlabExcavatorModel_B.SFunction_o2_h[3];
+    MatlabExcavatorModel_B.SFunction_o2[3];
 
   /* Update absolute time for base rate */
   /* The "clockTick0" counts the number of times the code of this task has
@@ -1046,25 +998,21 @@ void MatlabExcavatorModel_initialize(void)
     rtssSetSolverInfoPtr(sfcnInfo, &MatlabExcavatorModel_M->solverInfoPtr);
   }
 
-  MatlabExcavatorModel_M->Sizes.numSFcns = (6);
+  MatlabExcavatorModel_M->Sizes.numSFcns = (2);
 
   /* register each child */
   {
     (void) memset((void *)
                   &MatlabExcavatorModel_M->NonInlinedSFcns.childSFunctions[0], 0,
-                  6*sizeof(SimStruct));
+                  2*sizeof(SimStruct));
     MatlabExcavatorModel_M->childSfunctions =
       (&MatlabExcavatorModel_M->NonInlinedSFcns.childSFunctionPtrs[0]);
+    MatlabExcavatorModel_M->childSfunctions[0] =
+      (&MatlabExcavatorModel_M->NonInlinedSFcns.childSFunctions[0]);
+    MatlabExcavatorModel_M->childSfunctions[1] =
+      (&MatlabExcavatorModel_M->NonInlinedSFcns.childSFunctions[1]);
 
-    {
-      int_T i;
-      for (i = 0; i < 6; i++) {
-        MatlabExcavatorModel_M->childSfunctions[i] =
-          (&MatlabExcavatorModel_M->NonInlinedSFcns.childSFunctions[i]);
-      }
-    }
-
-    /* Level2 S-Function Block: MatlabExcavatorModel/<S4>/S-Function (j2c_435) */
+    /* Level2 S-Function Block: MatlabExcavatorModel/<S1>/S-Function (cylmodel_435_ryder) */
     {
       SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[0];
 
@@ -1110,138 +1058,15 @@ void MatlabExcavatorModel_initialize(void)
 
       /* inputs */
       {
-        _ssSetNumInputPorts(rts, 1);
+        _ssSetNumInputPorts(rts, 3);
         ssSetPortInfoForInputs(rts,
           &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn0.inputPortInfo[0]);
 
         /* port 0 */
         {
           ssSetInputPortRequiredContiguous(rts, 0, 1);
-          ssSetInputPortSignal(rts, 0,
-                               MatlabExcavatorModel_B.TmpSignalConversionAtSFunctionI);
-          _ssSetInputPortNumDimensions(rts, 0, 1);
-          ssSetInputPortWidth(rts, 0, 8);
-        }
-      }
-
-      /* outputs */
-      {
-        ssSetPortInfoForOutputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn0.outputPortInfo[0]);
-        _ssSetNumOutputPorts(rts, 2);
-
-        /* port 0 */
-        {
-          _ssSetOutputPortNumDimensions(rts, 0, 1);
-          ssSetOutputPortWidth(rts, 0, 8);
-          ssSetOutputPortSignal(rts, 0, ((real_T *)
-            MatlabExcavatorModel_B.SFunction_o1));
-        }
-
-        /* port 1 */
-        {
-          _ssSetOutputPortNumDimensions(rts, 1, 1);
-          ssSetOutputPortWidth(rts, 1, 4);
-          ssSetOutputPortSignal(rts, 1, ((real_T *)
-            MatlabExcavatorModel_B.SFunction_o2));
-        }
-      }
-
-      /* path info */
-      ssSetModelName(rts, "S-Function");
-      ssSetPath(rts, "MatlabExcavatorModel/j2c/S-Function");
-      ssSetRTModel(rts,MatlabExcavatorModel_M);
-      ssSetParentSS(rts, (NULL));
-      ssSetRootSS(rts, rts);
-      ssSetVersion(rts, SIMSTRUCT_VERSION_LEVEL2);
-
-      /* parameters */
-      {
-        mxArray **sfcnParams = (mxArray **)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn0.params;
-        ssSetSFcnParamsCount(rts, 1);
-        ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
-      }
-
-      /* registration */
-      j2c_435(rts);
-      sfcnInitializeSizes(rts);
-      sfcnInitializeSampleTimes(rts);
-
-      /* adjust sample time */
-      ssSetSampleTime(rts, 0, 0.001);
-      ssSetOffsetTime(rts, 0, 0.0);
-      sfcnTsMap[0] = 1;
-
-      /* set compiled values of dynamic vector attributes */
-      ssSetNumNonsampledZCs(rts, 0);
-
-      /* Update connectivity flags for each port */
-      _ssSetInputPortConnected(rts, 0, 1);
-      _ssSetOutputPortConnected(rts, 0, 1);
-      _ssSetOutputPortConnected(rts, 1, 1);
-      _ssSetOutputPortBeingMerged(rts, 0, 0);
-      _ssSetOutputPortBeingMerged(rts, 1, 0);
-
-      /* Update the BufferDstPort flags for each input port */
-      ssSetInputPortBufferDstPort(rts, 0, -1);
-    }
-
-    /* Level2 S-Function Block: MatlabExcavatorModel/<S1>/S-Function (cylmodel_435_ryder) */
-    {
-      SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[1];
-
-      /* timing info */
-      time_T *sfcnPeriod =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.sfcnPeriod;
-      time_T *sfcnOffset =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.sfcnOffset;
-      int_T *sfcnTsMap = MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.sfcnTsMap;
-      (void) memset((void*)sfcnPeriod, 0,
-                    sizeof(time_T)*1);
-      (void) memset((void*)sfcnOffset, 0,
-                    sizeof(time_T)*1);
-      ssSetSampleTimePtr(rts, &sfcnPeriod[0]);
-      ssSetOffsetTimePtr(rts, &sfcnOffset[0]);
-      ssSetSampleTimeTaskIDPtr(rts, sfcnTsMap);
-
-      /* Set up the mdlInfo pointer */
-      {
-        ssSetBlkInfo2Ptr(rts, &MatlabExcavatorModel_M->NonInlinedSFcns.blkInfo2
-                         [1]);
-      }
-
-      ssSetRTWSfcnInfo(rts, MatlabExcavatorModel_M->sfcnInfo);
-
-      /* Allocate memory of model methods 2 */
-      {
-        ssSetModelMethods2(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods2[1]);
-      }
-
-      /* Allocate memory of model methods 3 */
-      {
-        ssSetModelMethods3(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods3[1]);
-      }
-
-      /* Allocate memory for states auxilliary information */
-      {
-        ssSetStatesInfo2(rts,
-                         &MatlabExcavatorModel_M->NonInlinedSFcns.statesInfo2[1]);
-      }
-
-      /* inputs */
-      {
-        _ssSetNumInputPorts(rts, 3);
-        ssSetPortInfoForInputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.inputPortInfo[0]);
-
-        /* port 0 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 0, 1);
-          ssSetInputPortSignal(rts, 0, &MatlabExcavatorModel_B.SFunction_o1[0]);
+          ssSetInputPortSignal(rts, 0, &MatlabExcavatorModel_U.CylinderPosition
+                               [0]);
           _ssSetInputPortNumDimensions(rts, 0, 1);
           ssSetInputPortWidth(rts, 0, 4);
         }
@@ -1249,7 +1074,8 @@ void MatlabExcavatorModel_initialize(void)
         /* port 1 */
         {
           ssSetInputPortRequiredContiguous(rts, 1, 1);
-          ssSetInputPortSignal(rts, 1, &MatlabExcavatorModel_B.SFunction_o1[4]);
+          ssSetInputPortSignal(rts, 1, &MatlabExcavatorModel_U.CylinderVelocity
+                               [0]);
           _ssSetInputPortNumDimensions(rts, 1, 1);
           ssSetInputPortWidth(rts, 1, 4);
         }
@@ -1266,7 +1092,7 @@ void MatlabExcavatorModel_initialize(void)
       /* outputs */
       {
         ssSetPortInfoForOutputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.outputPortInfo[0]);
+          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn0.outputPortInfo[0]);
         _ssSetNumOutputPorts(rts, 5);
 
         /* port 0 */
@@ -1274,7 +1100,7 @@ void MatlabExcavatorModel_initialize(void)
           _ssSetOutputPortNumDimensions(rts, 0, 1);
           ssSetOutputPortWidth(rts, 0, 4);
           ssSetOutputPortSignal(rts, 0, ((real_T *)
-            MatlabExcavatorModel_B.SFunction_o1_i));
+            MatlabExcavatorModel_B.SFunction_o1));
         }
 
         /* port 1 */
@@ -1282,7 +1108,7 @@ void MatlabExcavatorModel_initialize(void)
           _ssSetOutputPortNumDimensions(rts, 1, 1);
           ssSetOutputPortWidth(rts, 1, 4);
           ssSetOutputPortSignal(rts, 1, ((real_T *)
-            MatlabExcavatorModel_B.SFunction_o2_h));
+            MatlabExcavatorModel_B.SFunction_o2));
         }
 
         /* port 2 */
@@ -1325,7 +1151,7 @@ void MatlabExcavatorModel_initialize(void)
       /* parameters */
       {
         mxArray **sfcnParams = (mxArray **)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.params;
+          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn0.params;
         ssSetSFcnParamsCount(rts, 27);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
         ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
@@ -1364,9 +1190,9 @@ void MatlabExcavatorModel_initialize(void)
       /* work vectors */
       {
         struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.dWork;
+          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn0.dWork;
         struct _ssDWorkAuxRecord *dWorkAuxRecord = (struct _ssDWorkAuxRecord *)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.dWorkAux;
+          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn0.dWorkAux;
         ssSetSFcnDWork(rts, dWorkRecord);
         ssSetSFcnDWorkAux(rts, dWorkAuxRecord);
         _ssSetNumDWork(rts, 1);
@@ -1413,16 +1239,16 @@ void MatlabExcavatorModel_initialize(void)
       ssSetInputPortBufferDstPort(rts, 2, -1);
     }
 
-    /* Level2 S-Function Block: MatlabExcavatorModel/<S2>/S-Function (p2torq1_435_brake) */
+    /* Level2 S-Function Block: MatlabExcavatorModel/<S3>/S-Function (p2torq1_435_brake) */
     {
-      SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[2];
+      SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[1];
 
       /* timing info */
       time_T *sfcnPeriod =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn2.sfcnPeriod;
+        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.sfcnPeriod;
       time_T *sfcnOffset =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn2.sfcnOffset;
-      int_T *sfcnTsMap = MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn2.sfcnTsMap;
+        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.sfcnOffset;
+      int_T *sfcnTsMap = MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.sfcnTsMap;
       (void) memset((void*)sfcnPeriod, 0,
                     sizeof(time_T)*1);
       (void) memset((void*)sfcnOffset, 0,
@@ -1434,7 +1260,7 @@ void MatlabExcavatorModel_initialize(void)
       /* Set up the mdlInfo pointer */
       {
         ssSetBlkInfo2Ptr(rts, &MatlabExcavatorModel_M->NonInlinedSFcns.blkInfo2
-                         [2]);
+                         [1]);
       }
 
       ssSetRTWSfcnInfo(rts, MatlabExcavatorModel_M->sfcnInfo);
@@ -1442,31 +1268,31 @@ void MatlabExcavatorModel_initialize(void)
       /* Allocate memory of model methods 2 */
       {
         ssSetModelMethods2(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods2[2]);
+                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods2[1]);
       }
 
       /* Allocate memory of model methods 3 */
       {
         ssSetModelMethods3(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods3[2]);
+                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods3[1]);
       }
 
       /* Allocate memory for states auxilliary information */
       {
         ssSetStatesInfo2(rts,
-                         &MatlabExcavatorModel_M->NonInlinedSFcns.statesInfo2[2]);
+                         &MatlabExcavatorModel_M->NonInlinedSFcns.statesInfo2[1]);
       }
 
       /* inputs */
       {
         _ssSetNumInputPorts(rts, 4);
         ssSetPortInfoForInputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn2.inputPortInfo[0]);
+          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.inputPortInfo[0]);
 
         /* port 0 */
         {
           ssSetInputPortRequiredContiguous(rts, 0, 1);
-          ssSetInputPortSignal(rts, 0, &MatlabExcavatorModel_B.SFunction_o1_i[0]);
+          ssSetInputPortSignal(rts, 0, &MatlabExcavatorModel_B.SFunction_o1[0]);
           _ssSetInputPortNumDimensions(rts, 0, 1);
           ssSetInputPortWidth(rts, 0, 1);
         }
@@ -1474,7 +1300,7 @@ void MatlabExcavatorModel_initialize(void)
         /* port 1 */
         {
           ssSetInputPortRequiredContiguous(rts, 1, 1);
-          ssSetInputPortSignal(rts, 1, &MatlabExcavatorModel_B.SFunction_o2_h[0]);
+          ssSetInputPortSignal(rts, 1, &MatlabExcavatorModel_B.SFunction_o2[0]);
           _ssSetInputPortNumDimensions(rts, 1, 1);
           ssSetInputPortWidth(rts, 1, 1);
         }
@@ -1482,7 +1308,8 @@ void MatlabExcavatorModel_initialize(void)
         /* port 2 */
         {
           ssSetInputPortRequiredContiguous(rts, 2, 1);
-          ssSetInputPortSignal(rts, 2, &MatlabExcavatorModel_B.SFunction_o1[0]);
+          ssSetInputPortSignal(rts, 2, &MatlabExcavatorModel_U.CylinderPosition
+                               [0]);
           _ssSetInputPortNumDimensions(rts, 2, 1);
           ssSetInputPortWidth(rts, 2, 1);
         }
@@ -1499,7 +1326,7 @@ void MatlabExcavatorModel_initialize(void)
       /* outputs */
       {
         ssSetPortInfoForOutputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn2.outputPortInfo[0]);
+          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.outputPortInfo[0]);
         _ssSetNumOutputPorts(rts, 1);
 
         /* port 0 */
@@ -1507,7 +1334,7 @@ void MatlabExcavatorModel_initialize(void)
           _ssSetOutputPortNumDimensions(rts, 0, 1);
           ssSetOutputPortWidth(rts, 0, 1);
           ssSetOutputPortSignal(rts, 0, ((real_T *)
-            &MatlabExcavatorModel_B.SFunction));
+            &MatlabExcavatorModel_Y.CabTorque));
         }
       }
 
@@ -1523,7 +1350,7 @@ void MatlabExcavatorModel_initialize(void)
       /* parameters */
       {
         mxArray **sfcnParams = (mxArray **)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn2.params;
+          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn1.params;
         ssSetSFcnParamsCount(rts, 4);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
         ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
@@ -1562,512 +1389,23 @@ void MatlabExcavatorModel_initialize(void)
       ssSetInputPortBufferDstPort(rts, 2, -1);
       ssSetInputPortBufferDstPort(rts, 3, -1);
     }
-
-    /* Level2 S-Function Block: MatlabExcavatorModel/<S2>/S-Function1 (p2torq2_435) */
-    {
-      SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[3];
-
-      /* timing info */
-      time_T *sfcnPeriod =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn3.sfcnPeriod;
-      time_T *sfcnOffset =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn3.sfcnOffset;
-      int_T *sfcnTsMap = MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn3.sfcnTsMap;
-      (void) memset((void*)sfcnPeriod, 0,
-                    sizeof(time_T)*1);
-      (void) memset((void*)sfcnOffset, 0,
-                    sizeof(time_T)*1);
-      ssSetSampleTimePtr(rts, &sfcnPeriod[0]);
-      ssSetOffsetTimePtr(rts, &sfcnOffset[0]);
-      ssSetSampleTimeTaskIDPtr(rts, sfcnTsMap);
-
-      /* Set up the mdlInfo pointer */
-      {
-        ssSetBlkInfo2Ptr(rts, &MatlabExcavatorModel_M->NonInlinedSFcns.blkInfo2
-                         [3]);
-      }
-
-      ssSetRTWSfcnInfo(rts, MatlabExcavatorModel_M->sfcnInfo);
-
-      /* Allocate memory of model methods 2 */
-      {
-        ssSetModelMethods2(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods2[3]);
-      }
-
-      /* Allocate memory of model methods 3 */
-      {
-        ssSetModelMethods3(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods3[3]);
-      }
-
-      /* Allocate memory for states auxilliary information */
-      {
-        ssSetStatesInfo2(rts,
-                         &MatlabExcavatorModel_M->NonInlinedSFcns.statesInfo2[3]);
-      }
-
-      /* inputs */
-      {
-        _ssSetNumInputPorts(rts, 4);
-        ssSetPortInfoForInputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn3.inputPortInfo[0]);
-
-        /* port 0 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 0, 1);
-          ssSetInputPortSignal(rts, 0, &MatlabExcavatorModel_B.SFunction_o1_i[1]);
-          _ssSetInputPortNumDimensions(rts, 0, 1);
-          ssSetInputPortWidth(rts, 0, 1);
-        }
-
-        /* port 1 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 1, 1);
-          ssSetInputPortSignal(rts, 1, &MatlabExcavatorModel_B.SFunction_o2_h[1]);
-          _ssSetInputPortNumDimensions(rts, 1, 1);
-          ssSetInputPortWidth(rts, 1, 1);
-        }
-
-        /* port 2 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 2, 1);
-          ssSetInputPortSignal(rts, 2, &MatlabExcavatorModel_B.SFunction_o1[1]);
-          _ssSetInputPortNumDimensions(rts, 2, 1);
-          ssSetInputPortWidth(rts, 2, 1);
-        }
-
-        /* port 3 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 3, 1);
-          ssSetInputPortSignal(rts, 3, &MatlabExcavatorModel_B.SFunction_o2[1]);
-          _ssSetInputPortNumDimensions(rts, 3, 1);
-          ssSetInputPortWidth(rts, 3, 1);
-        }
-      }
-
-      /* outputs */
-      {
-        ssSetPortInfoForOutputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn3.outputPortInfo[0]);
-        _ssSetNumOutputPorts(rts, 1);
-
-        /* port 0 */
-        {
-          _ssSetOutputPortNumDimensions(rts, 0, 1);
-          ssSetOutputPortWidth(rts, 0, 1);
-          ssSetOutputPortSignal(rts, 0, ((real_T *)
-            &MatlabExcavatorModel_B.SFunction1));
-        }
-      }
-
-      /* path info */
-      ssSetModelName(rts, "S-Function1");
-      ssSetPath(rts,
-                "MatlabExcavatorModel/Pressure to Torque Calculation/S-Function1");
-      ssSetRTModel(rts,MatlabExcavatorModel_M);
-      ssSetParentSS(rts, (NULL));
-      ssSetRootSS(rts, rts);
-      ssSetVersion(rts, SIMSTRUCT_VERSION_LEVEL2);
-
-      /* parameters */
-      {
-        mxArray **sfcnParams = (mxArray **)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn3.params;
-        ssSetSFcnParamsCount(rts, 3);
-        ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
-        ssSetSFcnParam(rts, 1, (mxArray*)
-                       MatlabExcavatorModel_ConstP.SFunction1_P2_Size);
-        ssSetSFcnParam(rts, 2, (mxArray*)
-                       MatlabExcavatorModel_ConstP.SFunction1_P3_Size);
-      }
-
-      /* registration */
-      p2torq2_435(rts);
-      sfcnInitializeSizes(rts);
-      sfcnInitializeSampleTimes(rts);
-
-      /* adjust sample time */
-      ssSetSampleTime(rts, 0, 0.001);
-      ssSetOffsetTime(rts, 0, 0.0);
-      sfcnTsMap[0] = 1;
-
-      /* set compiled values of dynamic vector attributes */
-      ssSetNumNonsampledZCs(rts, 0);
-
-      /* Update connectivity flags for each port */
-      _ssSetInputPortConnected(rts, 0, 1);
-      _ssSetInputPortConnected(rts, 1, 1);
-      _ssSetInputPortConnected(rts, 2, 1);
-      _ssSetInputPortConnected(rts, 3, 1);
-      _ssSetOutputPortConnected(rts, 0, 1);
-      _ssSetOutputPortBeingMerged(rts, 0, 0);
-
-      /* Update the BufferDstPort flags for each input port */
-      ssSetInputPortBufferDstPort(rts, 0, -1);
-      ssSetInputPortBufferDstPort(rts, 1, -1);
-      ssSetInputPortBufferDstPort(rts, 2, -1);
-      ssSetInputPortBufferDstPort(rts, 3, -1);
-    }
-
-    /* Level2 S-Function Block: MatlabExcavatorModel/<S2>/S-Function2 (p2torq3_435) */
-    {
-      SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[4];
-
-      /* timing info */
-      time_T *sfcnPeriod =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn4.sfcnPeriod;
-      time_T *sfcnOffset =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn4.sfcnOffset;
-      int_T *sfcnTsMap = MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn4.sfcnTsMap;
-      (void) memset((void*)sfcnPeriod, 0,
-                    sizeof(time_T)*1);
-      (void) memset((void*)sfcnOffset, 0,
-                    sizeof(time_T)*1);
-      ssSetSampleTimePtr(rts, &sfcnPeriod[0]);
-      ssSetOffsetTimePtr(rts, &sfcnOffset[0]);
-      ssSetSampleTimeTaskIDPtr(rts, sfcnTsMap);
-
-      /* Set up the mdlInfo pointer */
-      {
-        ssSetBlkInfo2Ptr(rts, &MatlabExcavatorModel_M->NonInlinedSFcns.blkInfo2
-                         [4]);
-      }
-
-      ssSetRTWSfcnInfo(rts, MatlabExcavatorModel_M->sfcnInfo);
-
-      /* Allocate memory of model methods 2 */
-      {
-        ssSetModelMethods2(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods2[4]);
-      }
-
-      /* Allocate memory of model methods 3 */
-      {
-        ssSetModelMethods3(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods3[4]);
-      }
-
-      /* Allocate memory for states auxilliary information */
-      {
-        ssSetStatesInfo2(rts,
-                         &MatlabExcavatorModel_M->NonInlinedSFcns.statesInfo2[4]);
-      }
-
-      /* inputs */
-      {
-        _ssSetNumInputPorts(rts, 4);
-        ssSetPortInfoForInputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn4.inputPortInfo[0]);
-
-        /* port 0 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 0, 1);
-          ssSetInputPortSignal(rts, 0, &MatlabExcavatorModel_B.SFunction_o1_i[2]);
-          _ssSetInputPortNumDimensions(rts, 0, 1);
-          ssSetInputPortWidth(rts, 0, 1);
-        }
-
-        /* port 1 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 1, 1);
-          ssSetInputPortSignal(rts, 1, &MatlabExcavatorModel_B.SFunction_o2_h[2]);
-          _ssSetInputPortNumDimensions(rts, 1, 1);
-          ssSetInputPortWidth(rts, 1, 1);
-        }
-
-        /* port 2 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 2, 1);
-          ssSetInputPortSignal(rts, 2, &MatlabExcavatorModel_B.SFunction_o1[2]);
-          _ssSetInputPortNumDimensions(rts, 2, 1);
-          ssSetInputPortWidth(rts, 2, 1);
-        }
-
-        /* port 3 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 3, 1);
-          ssSetInputPortSignal(rts, 3, &MatlabExcavatorModel_B.SFunction_o2[2]);
-          _ssSetInputPortNumDimensions(rts, 3, 1);
-          ssSetInputPortWidth(rts, 3, 1);
-        }
-      }
-
-      /* outputs */
-      {
-        ssSetPortInfoForOutputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn4.outputPortInfo[0]);
-        _ssSetNumOutputPorts(rts, 1);
-
-        /* port 0 */
-        {
-          _ssSetOutputPortNumDimensions(rts, 0, 1);
-          ssSetOutputPortWidth(rts, 0, 1);
-          ssSetOutputPortSignal(rts, 0, ((real_T *)
-            &MatlabExcavatorModel_B.SFunction2));
-        }
-      }
-
-      /* path info */
-      ssSetModelName(rts, "S-Function2");
-      ssSetPath(rts,
-                "MatlabExcavatorModel/Pressure to Torque Calculation/S-Function2");
-      ssSetRTModel(rts,MatlabExcavatorModel_M);
-      ssSetParentSS(rts, (NULL));
-      ssSetRootSS(rts, rts);
-      ssSetVersion(rts, SIMSTRUCT_VERSION_LEVEL2);
-
-      /* parameters */
-      {
-        mxArray **sfcnParams = (mxArray **)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn4.params;
-        ssSetSFcnParamsCount(rts, 3);
-        ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
-        ssSetSFcnParam(rts, 1, (mxArray*)
-                       MatlabExcavatorModel_ConstP.SFunction2_P2_Size);
-        ssSetSFcnParam(rts, 2, (mxArray*)
-                       MatlabExcavatorModel_ConstP.SFunction2_P3_Size);
-      }
-
-      /* registration */
-      p2torq3_435(rts);
-      sfcnInitializeSizes(rts);
-      sfcnInitializeSampleTimes(rts);
-
-      /* adjust sample time */
-      ssSetSampleTime(rts, 0, 0.001);
-      ssSetOffsetTime(rts, 0, 0.0);
-      sfcnTsMap[0] = 1;
-
-      /* set compiled values of dynamic vector attributes */
-      ssSetNumNonsampledZCs(rts, 0);
-
-      /* Update connectivity flags for each port */
-      _ssSetInputPortConnected(rts, 0, 1);
-      _ssSetInputPortConnected(rts, 1, 1);
-      _ssSetInputPortConnected(rts, 2, 1);
-      _ssSetInputPortConnected(rts, 3, 1);
-      _ssSetOutputPortConnected(rts, 0, 1);
-      _ssSetOutputPortBeingMerged(rts, 0, 0);
-
-      /* Update the BufferDstPort flags for each input port */
-      ssSetInputPortBufferDstPort(rts, 0, -1);
-      ssSetInputPortBufferDstPort(rts, 1, -1);
-      ssSetInputPortBufferDstPort(rts, 2, -1);
-      ssSetInputPortBufferDstPort(rts, 3, -1);
-    }
-
-    /* Level2 S-Function Block: MatlabExcavatorModel/<S2>/S-Function3 (p2torq4_435) */
-    {
-      SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[5];
-
-      /* timing info */
-      time_T *sfcnPeriod =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn5.sfcnPeriod;
-      time_T *sfcnOffset =
-        MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn5.sfcnOffset;
-      int_T *sfcnTsMap = MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn5.sfcnTsMap;
-      (void) memset((void*)sfcnPeriod, 0,
-                    sizeof(time_T)*1);
-      (void) memset((void*)sfcnOffset, 0,
-                    sizeof(time_T)*1);
-      ssSetSampleTimePtr(rts, &sfcnPeriod[0]);
-      ssSetOffsetTimePtr(rts, &sfcnOffset[0]);
-      ssSetSampleTimeTaskIDPtr(rts, sfcnTsMap);
-
-      /* Set up the mdlInfo pointer */
-      {
-        ssSetBlkInfo2Ptr(rts, &MatlabExcavatorModel_M->NonInlinedSFcns.blkInfo2
-                         [5]);
-      }
-
-      ssSetRTWSfcnInfo(rts, MatlabExcavatorModel_M->sfcnInfo);
-
-      /* Allocate memory of model methods 2 */
-      {
-        ssSetModelMethods2(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods2[5]);
-      }
-
-      /* Allocate memory of model methods 3 */
-      {
-        ssSetModelMethods3(rts,
-                           &MatlabExcavatorModel_M->NonInlinedSFcns.methods3[5]);
-      }
-
-      /* Allocate memory for states auxilliary information */
-      {
-        ssSetStatesInfo2(rts,
-                         &MatlabExcavatorModel_M->NonInlinedSFcns.statesInfo2[5]);
-      }
-
-      /* inputs */
-      {
-        _ssSetNumInputPorts(rts, 4);
-        ssSetPortInfoForInputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn5.inputPortInfo[0]);
-
-        /* port 0 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 0, 1);
-          ssSetInputPortSignal(rts, 0, &MatlabExcavatorModel_B.SFunction_o1_i[3]);
-          _ssSetInputPortNumDimensions(rts, 0, 1);
-          ssSetInputPortWidth(rts, 0, 1);
-        }
-
-        /* port 1 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 1, 1);
-          ssSetInputPortSignal(rts, 1, &MatlabExcavatorModel_B.SFunction_o2_h[3]);
-          _ssSetInputPortNumDimensions(rts, 1, 1);
-          ssSetInputPortWidth(rts, 1, 1);
-        }
-
-        /* port 2 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 2, 1);
-          ssSetInputPortSignal(rts, 2, &MatlabExcavatorModel_B.SFunction_o1[3]);
-          _ssSetInputPortNumDimensions(rts, 2, 1);
-          ssSetInputPortWidth(rts, 2, 1);
-        }
-
-        /* port 3 */
-        {
-          ssSetInputPortRequiredContiguous(rts, 3, 1);
-          ssSetInputPortSignal(rts, 3, &MatlabExcavatorModel_B.SFunction_o2[3]);
-          _ssSetInputPortNumDimensions(rts, 3, 1);
-          ssSetInputPortWidth(rts, 3, 1);
-        }
-      }
-
-      /* outputs */
-      {
-        ssSetPortInfoForOutputs(rts,
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn5.outputPortInfo[0]);
-        _ssSetNumOutputPorts(rts, 1);
-
-        /* port 0 */
-        {
-          _ssSetOutputPortNumDimensions(rts, 0, 1);
-          ssSetOutputPortWidth(rts, 0, 1);
-          ssSetOutputPortSignal(rts, 0, ((real_T *)
-            &MatlabExcavatorModel_B.SFunction3));
-        }
-      }
-
-      /* states */
-      ssSetDiscStates(rts, (real_T *) &MatlabExcavatorModel_DW.SFunction3_DSTATE);
-
-      /* path info */
-      ssSetModelName(rts, "S-Function3");
-      ssSetPath(rts,
-                "MatlabExcavatorModel/Pressure to Torque Calculation/S-Function3");
-      ssSetRTModel(rts,MatlabExcavatorModel_M);
-      ssSetParentSS(rts, (NULL));
-      ssSetRootSS(rts, rts);
-      ssSetVersion(rts, SIMSTRUCT_VERSION_LEVEL2);
-
-      /* parameters */
-      {
-        mxArray **sfcnParams = (mxArray **)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn5.params;
-        ssSetSFcnParamsCount(rts, 3);
-        ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)MatlabExcavatorModel_ConstP.pooled5);
-        ssSetSFcnParam(rts, 1, (mxArray*)
-                       MatlabExcavatorModel_ConstP.SFunction3_P2_Size);
-        ssSetSFcnParam(rts, 2, (mxArray*)
-                       MatlabExcavatorModel_ConstP.SFunction3_P3_Size);
-      }
-
-      /* work vectors */
-      {
-        struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn5.dWork;
-        struct _ssDWorkAuxRecord *dWorkAuxRecord = (struct _ssDWorkAuxRecord *)
-          &MatlabExcavatorModel_M->NonInlinedSFcns.Sfcn5.dWorkAux;
-        ssSetSFcnDWork(rts, dWorkRecord);
-        ssSetSFcnDWorkAux(rts, dWorkAuxRecord);
-        _ssSetNumDWork(rts, 1);
-
-        /* DSTATE */
-        ssSetDWorkWidth(rts, 0, 1);
-        ssSetDWorkDataType(rts, 0,SS_DOUBLE);
-        ssSetDWorkComplexSignal(rts, 0, 0);
-        ssSetDWorkUsedAsDState(rts, 0, 1);
-        ssSetDWork(rts, 0, &MatlabExcavatorModel_DW.SFunction3_DSTATE);
-      }
-
-      /* registration */
-      p2torq4_435(rts);
-      sfcnInitializeSizes(rts);
-      sfcnInitializeSampleTimes(rts);
-
-      /* adjust sample time */
-      ssSetSampleTime(rts, 0, 0.001);
-      ssSetOffsetTime(rts, 0, 0.0);
-      sfcnTsMap[0] = 1;
-
-      /* set compiled values of dynamic vector attributes */
-      ssSetNumNonsampledZCs(rts, 0);
-
-      /* Update connectivity flags for each port */
-      _ssSetInputPortConnected(rts, 0, 1);
-      _ssSetInputPortConnected(rts, 1, 1);
-      _ssSetInputPortConnected(rts, 2, 1);
-      _ssSetInputPortConnected(rts, 3, 1);
-      _ssSetOutputPortConnected(rts, 0, 1);
-      _ssSetOutputPortBeingMerged(rts, 0, 0);
-
-      /* Update the BufferDstPort flags for each input port */
-      ssSetInputPortBufferDstPort(rts, 0, -1);
-      ssSetInputPortBufferDstPort(rts, 1, -1);
-      ssSetInputPortBufferDstPort(rts, 2, -1);
-      ssSetInputPortBufferDstPort(rts, 3, -1);
-    }
   }
 
-  /* Level2 S-Function Block: '<S2>/S-Function' (p2torq1_435_brake) */
+  /* Level2 S-Function Block: '<S3>/S-Function' (p2torq1_435_brake) */
   {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[2];
+    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[1];
     sfcnStart(rts);
     if (ssGetErrorStatus(rts) != (NULL))
       return;
   }
 
-  /* Level2 S-Function Block: '<S2>/S-Function1' (p2torq2_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[3];
-    sfcnStart(rts);
-    if (ssGetErrorStatus(rts) != (NULL))
-      return;
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function2' (p2torq3_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[4];
-    sfcnStart(rts);
-    if (ssGetErrorStatus(rts) != (NULL))
-      return;
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function3' (p2torq4_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[5];
-    sfcnStart(rts);
-    if (ssGetErrorStatus(rts) != (NULL))
-      return;
-  }
-
-  /* InitializeConditions for Delay: '<S3>/Integer Delay1' */
+  /* InitializeConditions for Delay: '<S4>/Integer Delay1' */
   MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[0] = 435.11321399999997;
   MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[1] = 435.11321399999997;
   MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[2] = 435.11321399999997;
   MatlabExcavatorModel_DW.IntegerDelay1_DSTATE[3] = 435.11321399999997;
 
-  /* InitializeConditions for Delay: '<S3>/Integer Delay2' */
+  /* InitializeConditions for Delay: '<S4>/Integer Delay2' */
   MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[0] = 435.11321399999997;
   MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[1] = 435.11321399999997;
   MatlabExcavatorModel_DW.IntegerDelay2_DSTATE[2] = 435.11321399999997;
@@ -2075,39 +1413,15 @@ void MatlabExcavatorModel_initialize(void)
 
   /* Level2 S-Function Block: '<S1>/S-Function' (cylmodel_435_ryder) */
   {
+    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[0];
+    sfcnInitializeConditions(rts);
+    if (ssGetErrorStatus(rts) != (NULL))
+      return;
+  }
+
+  /* Level2 S-Function Block: '<S3>/S-Function' (p2torq1_435_brake) */
+  {
     SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[1];
-    sfcnInitializeConditions(rts);
-    if (ssGetErrorStatus(rts) != (NULL))
-      return;
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function' (p2torq1_435_brake) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[2];
-    sfcnInitializeConditions(rts);
-    if (ssGetErrorStatus(rts) != (NULL))
-      return;
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function1' (p2torq2_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[3];
-    sfcnInitializeConditions(rts);
-    if (ssGetErrorStatus(rts) != (NULL))
-      return;
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function2' (p2torq3_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[4];
-    sfcnInitializeConditions(rts);
-    if (ssGetErrorStatus(rts) != (NULL))
-      return;
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function3' (p2torq4_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[5];
     sfcnInitializeConditions(rts);
     if (ssGetErrorStatus(rts) != (NULL))
       return;
@@ -2117,39 +1431,15 @@ void MatlabExcavatorModel_initialize(void)
 /* Model terminate function */
 void MatlabExcavatorModel_terminate(void)
 {
-  /* Level2 S-Function Block: '<S4>/S-Function' (j2c_435) */
+  /* Level2 S-Function Block: '<S1>/S-Function' (cylmodel_435_ryder) */
   {
     SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[0];
     sfcnTerminate(rts);
   }
 
-  /* Level2 S-Function Block: '<S1>/S-Function' (cylmodel_435_ryder) */
+  /* Level2 S-Function Block: '<S3>/S-Function' (p2torq1_435_brake) */
   {
     SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[1];
-    sfcnTerminate(rts);
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function' (p2torq1_435_brake) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[2];
-    sfcnTerminate(rts);
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function1' (p2torq2_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[3];
-    sfcnTerminate(rts);
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function2' (p2torq3_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[4];
-    sfcnTerminate(rts);
-  }
-
-  /* Level2 S-Function Block: '<S2>/S-Function3' (p2torq4_435) */
-  {
-    SimStruct *rts = MatlabExcavatorModel_M->childSfunctions[5];
     sfcnTerminate(rts);
   }
 }

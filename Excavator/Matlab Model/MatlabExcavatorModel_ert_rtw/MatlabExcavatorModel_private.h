@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'MatlabExcavatorModel'.
  *
- * Model version                  : 1.227
+ * Model version                  : 1.263
  * Simulink Coder version         : 8.5 (R2013b) 08-Aug-2013
- * C/C++ source code generated on : Wed Feb 25 23:07:32 2015
+ * C/C++ source code generated on : Wed Feb 25 23:29:52 2015
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -46,12 +46,8 @@
 #endif                                 /* TMWTYPES_PREVIOUSLY_INCLUDED */
 #endif                                 /* __RTWTYPES_H__ */
 
-extern "C" void j2c_435(SimStruct *rts);
 extern "C" void cylmodel_435_ryder(SimStruct *rts);
 extern "C" void p2torq1_435_brake(SimStruct *rts);
-extern "C" void p2torq2_435(SimStruct *rts);
-extern "C" void p2torq3_435(SimStruct *rts);
-extern "C" void p2torq4_435(SimStruct *rts);
 
 #endif                                 /* RTW_HEADER_MatlabExcavatorModel_private_h_ */
 

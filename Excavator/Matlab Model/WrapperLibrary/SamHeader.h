@@ -13,14 +13,14 @@ extern "C" {  // only need to export C interface if used by C++ source code
 SFNC void SamInit();
 	
 SFNC float SamUpdate(
-	float * Q,
-	float * Qd,
+	float * CylinderPositions,
+	float * CylinderVelocities,
 	float * Flow,
 	// Back
 	float * Fuel, 
-	float * CylinderPositions,
-	float * CylinderVelocities,
-	float * JointTorques);
+	float * CabTorque,
+	float * JointForces
+	);
 
 SFNC void SamTerminate(void);
 

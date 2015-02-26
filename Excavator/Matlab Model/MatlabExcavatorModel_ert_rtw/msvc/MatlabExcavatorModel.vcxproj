@@ -22,11 +22,7 @@
     <ClCompile Include="..\..\..\..\..\..\..\Applications\Matlab\2013b\rtw\c\src\rt_matrx.c" />
     <ClCompile Include="..\..\..\..\..\..\..\Applications\Matlab\2013b\rtw\c\src\rt_printf.c" />
     <ClCompile Include="..\..\cylmodel_435_ryder.c" />
-    <ClCompile Include="..\..\j2c_435.c" />
     <ClCompile Include="..\..\p2torq1_435_brake.c" />
-    <ClCompile Include="..\..\p2torq2_435.c" />
-    <ClCompile Include="..\..\p2torq3_435.c" />
-    <ClCompile Include="..\..\p2torq4_435.c" />
     <ClCompile Include="..\..\WrapperLibrary\SamFunc.cpp" />
     <ClCompile Include="..\ert_main.cpp" />
     <ClCompile Include="..\MatlabExcavatorModel.cpp" />
@@ -139,7 +135,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <Version>1.227</Version>
+      <Version>1.263</Version>
       <AdditionalLibraryDirectories>E:\Dropbox\Programming\C-Sharp\Excavator\Matlab Model\MatlabExcavatorModel_ert_rtw\msvc\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

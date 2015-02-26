@@ -994,5 +994,44 @@ namespace Excavator
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            Trial.f1 = (float)this.numericUpDown1.Value;
+
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            Trial.f2 = (float)this.numericUpDown2.Value;
+        }
+
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            Trial.f3 = (float)this.numericUpDown3.Value;
+        }
+
+        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
+        {
+            Trial.f4 = (float)this.numericUpDown4.Value;
+        }
+
+
+
     }
 }

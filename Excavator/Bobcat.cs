@@ -17,8 +17,9 @@ namespace Excavator
     internal static class Bobcat
     {
         internal const float dimOffsetCabY_Inches = 31.0f;
+        internal const float dimOffsetCabX_Inches = -1.0f;
         internal const float dimOffsetSwing2Y_Inches = 1.36f;
-        internal static readonly Vector3 vecOffsetCab_Inches = new Vector3(0, Bobcat.dimOffsetCabY_Inches, 0);
+        internal static readonly Vector3 vecOffsetCab_Inches = new Vector3(Bobcat.dimOffsetCabX_Inches, Bobcat.dimOffsetCabY_Inches, 0);
         internal static readonly Vector3 vecOffsetSwing1_Inches = new Vector3(-1.7f, 0, 0.3f);
         internal static readonly Vector3 vecOffsetSwing2_Inches = new Vector3(1.31f, Bobcat.dimOffsetSwing2Y_Inches, -24.41f);
         internal static readonly Vector3 vecOffsetSwing3_Inches = new Vector3(a1 - 1, 5, 2);
@@ -322,6 +323,7 @@ namespace Excavator
                         GL_Handler.Translate(0, rAB + 2, 0);	//another offset
                         GL_Handler.Rotate(180, 0, 0, 1);
                         Bobcat._COBoomPiston.draw(useC);
+
                     }
                     GL_Handler.PopMatrix();
 
