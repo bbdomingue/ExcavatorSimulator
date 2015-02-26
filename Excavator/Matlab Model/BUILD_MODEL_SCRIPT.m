@@ -1,6 +1,8 @@
 clear all;
 clc;
 
+mexall;
+
 LoadVars;
 
 rtwbuild('MatlabExcavatorModel')

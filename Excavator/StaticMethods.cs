@@ -16,6 +16,10 @@ namespace Excavator
         internal const float _PIF = (float)Math.PI;
         internal const double _PID = Math.PI;
 
+        public const float Conversion_Meters_To_Inches = 39.3701f;
+        public const float Conversion_Inches_To_Meters = 1 / Conversion_Meters_To_Inches;
+
+
 
 
         internal static float toRadiansF(float f)
@@ -104,5 +108,9 @@ namespace Excavator
         {
             nud.Value = Math.Max(nud.Minimum, Math.Min(nud.Maximum, val));
         }
+
+
+
+
     }
 }

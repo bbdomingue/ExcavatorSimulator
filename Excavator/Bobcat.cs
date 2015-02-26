@@ -16,11 +16,16 @@ namespace Excavator
 {
     internal static class Bobcat
     {
-        internal const float _SamCatLiftHeight = 31.0f;
-        internal static readonly Vector3 _V3CatLift = new Vector3(0, Bobcat._SamCatLiftHeight, 0);
-        internal const float _V3RotationOffsetY = 1.36f;
-        internal static readonly Vector3 _V3RotationOffset = new Vector3(1.31f, Bobcat._V3RotationOffsetY, -24.41f);
+        internal const float dimOffsetCabY_Inches = 31.0f;
+        internal const float dimOffsetSwing2Y_Inches = 1.36f;
+        internal static readonly Vector3 vecOffsetCab_Inches = new Vector3(0, Bobcat.dimOffsetCabY_Inches, 0);
+        internal static readonly Vector3 vecOffsetSwing1_Inches = new Vector3(-1.7f, 0, 0.3f);
+        internal static readonly Vector3 vecOffsetSwing2_Inches = new Vector3(1.31f, Bobcat.dimOffsetSwing2Y_Inches, -24.41f);
+        internal static readonly Vector3 vecOffsetSwing3_Inches = new Vector3(a1 - 1, 5, 2);
+        internal static readonly Vector3 vecOffsetSwing3Rot_Inches = new Vector3(vecOffsetSwing3_Inches.Z, vecOffsetSwing3_Inches.Y, -vecOffsetSwing3_Inches.X);
 
+
+//        internal static readonly Vector3 _
         
         private static readonly Color _ColorPiston = Color.DimGray;
         private static readonly Color _ColorCylinder = Color.LightGray;
@@ -75,9 +80,9 @@ namespace Excavator
                 tv.Y,
                 tv.Z * cosr - tv.X * sinr);
 
-            ret.X += Bobcat._V3CatLift.X;
-            ret.Y += Bobcat._V3CatLift.Y;
-            ret.Z += Bobcat._V3CatLift.Z;
+            ret.X += Bobcat.vecOffsetCab_Inches.X;
+            ret.Y += Bobcat.vecOffsetCab_Inches.Y;
+            ret.Z += Bobcat.vecOffsetCab_Inches.Z;
 
             return ret;
         }
@@ -182,8 +187,6 @@ namespace Excavator
 
 
             float temp;
-            const float slidey = -36.6f;		//bucket origin x-offset (came w/ bobcat files)
-            const float slidex = 5.1f;		//bucket origin y-offset
             const float rotatelink = -30;	//bucket link origin angle offset
 
             float tA1B, rAB, tBA1;				// boom cylinder calculations
@@ -196,7 +199,7 @@ namespace Excavator
             //////////////////////////////////////////////////////////////
 
             GL_Handler.PushMatrix();
-            GL_Handler.Translate(Bobcat._V3CatLift);
+            GL_Handler.Translate(Bobcat.vecOffsetCab_Inches);
             {
                 if (drawCab)
                 {
@@ -218,7 +221,7 @@ namespace Excavator
 
                         GL_Handler.Rotate(90, Vector3.UnitY);
                         Bobcat._COCab.draw(useC);
-                        
+
                         GL.Enable(EnableCap.CullFace);
 
                         if (Bobcat._CO_Head._Display)
@@ -278,14 +281,14 @@ namespace Excavator
                 GL_Handler.PushMatrix();
                 {
                     GL_Handler.Rotate(cab + thetaSwing, Vector3.UnitY);
-                    GL_Handler.Translate(-1.7f, 0, 0.3f);
+                    GL_Handler.Translate(Bobcat.vecOffsetSwing1_Inches);
                     GL_Handler.Rotate(-thetaSwing, Vector3.UnitY);
-                    GL_Handler.Translate(Bobcat._V3RotationOffset);
+                    GL_Handler.Translate(Bobcat.vecOffsetSwing2_Inches);
 
                     GL_Handler.PushMatrix();
                     {
                         GL_Handler.Rotate(90, 0, 1, 0);
-                        GL_Handler.Rotate(thetaSwing, 0, 1, 0);	    // unexplained origin offset in the .slp file
+                        GL_Handler.Rotate(thetaSwing, 0, 1, 0);	// unexplained origin offset in the .slp file
                         GL_Handler.Translate(-33, 0, 0);		// 33 is a fudge factor to adjust for an 
                         Bobcat._COSwingFrame.draw(useC);
                     }
@@ -297,7 +300,7 @@ namespace Excavator
 
                     GL_Handler.Rotate(90, 1, 0, 0);
                     GL_Handler.Rotate(90, 0, 1, 0);
-                    GL_Handler.Translate(a1 - 1, 5, 2);	//adjust offset of origin with origin of .slp file
+                    GL_Handler.Translate(Bobcat.vecOffsetSwing3_Inches);	//adjust offset of origin with origin of .slp file
                     GL_Handler.Rotate(theta2, 0, 0, 1);
                     Bobcat._COBoom.draw(useC);
 
@@ -353,12 +356,9 @@ namespace Excavator
                     GL_Handler.PushMatrix();
                     {
                         GL_Handler.Rotate(theta4, 0, 0, 1);
-                        //GL.Color(0,1,1);
-                        //DrawGLObject(bucketshadow);
+
                         GL_Handler.PushMatrix();
                         {
-                            //GL.Rotate(35,0,0,1);
-                            //GL.Rotate(-15,0,0,1);
                             GL_Handler.Rotate(20, 0, 0, 1);
                             GL_Handler.Translate(-0.771f, 2.11f - 3.67f, 0);	//correct for the slp origin
                             display_bucket_dirt(/*data*/);
@@ -376,8 +376,9 @@ namespace Excavator
                         GL_Handler.Rotate(35, 0, 0, 1);
                         GL_Handler.Translate(slidex / 2 - 0.365f, slidey / 2 + 2.11f, 0);	//correct for the slp origin
 
-                        Bobcat._COBucketSimple.draw(useC);
                         Bobcat._COBucket.draw(useC);
+//                        Bobcat._COBucketSimple.draw(useC);
+//
                     }
                     GL_Handler.PopMatrix();
 
@@ -529,7 +530,6 @@ namespace Excavator
             Bobcat._COBoomPiston = CadObjectGenerator.fromXAML(Properties.Resources.BoomPiston, ObjectName: "Boom Piston", yScale: cyl);
 
             Bobcat._COBucketSimple = CadObjectGenerator.fromXAML(Properties.Resources.BucketSimple, ObjectName: "Bucket Simple");
-            Bobcat._COBucketSimple._Display = false;
 
             Bobcat._COBucket = CadObjectGenerator.fromXAML(Properties.Resources.Bucket, ObjectName: "Bucket");
             Bobcat._COBucketCyl = CadObjectGenerator.fromXAML(Properties.Resources.BucketCyl, ObjectName: "Bucket Cylinder");
@@ -1435,6 +1435,9 @@ namespace Excavator
 
 
 
+        public const float slidey = -36.6f;		//bucket origin x-offset (came w/ bobcat files)
+        public const float slidex = 5.1f;		//bucket origin y-offset
+
         const float Z_BUCKET_MIN = -10.4f;//-5.8;
         const float Z_BUCKET_MAX = 10.4f;//5.8;
 
@@ -1821,5 +1824,11 @@ namespace Excavator
             }
         }
 
+
+        internal static void DrawSimpleBucket()
+        {
+            if (Bobcat._COBucketSimple != null)
+                Bobcat._COBucketSimple.draw(false);
+        }
     }
 }

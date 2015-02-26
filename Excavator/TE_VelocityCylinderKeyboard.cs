@@ -11,7 +11,7 @@ using OpenTK;
 
 namespace Excavator
 {
-    public class TE_VelocityCylinderKeyboard : TrialEmbedBase
+    public class TE_VelocityCylinderKeyboard : Trial
     {
         private volatile float T1 = 0.0f;
         private volatile float T2 = 0.0f;
@@ -55,11 +55,16 @@ namespace Excavator
 
         public override string getName()
         {
-            return "Flow with Keyboard";
+            return "Cylinder Flow with Keyboard";
         }
 
-        public override void MatlabUpdateSim()
+
+
+
+        public override void updateSim()
         {
+ 	        base.updateSim();
+
             var fts = this.controlKeyboard1.getInts();
 
             this.T1 = fts[1];
@@ -165,8 +170,10 @@ namespace Excavator
 
 
 
-        public override void MatlabUpdateGui()
+        public override void  Gui_Label_Tick(float accumulator)
         {
+         	base.Gui_Label_Tick(accumulator);
+
             StaticMethods.setNudValue(this.nudCab, this.ActualAngles.cab);
             StaticMethods.setNudValue(this.nudBoom, this.ActualAngles.boo);
             StaticMethods.setNudValue(this.nudArm, this.ActualAngles.arm);

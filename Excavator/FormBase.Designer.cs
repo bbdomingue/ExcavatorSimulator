@@ -52,6 +52,7 @@
             this.timerResize = new System.Windows.Forms.Timer(this.components);
             this.panelFill = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxPhysX = new System.Windows.Forms.CheckBox();
             this.checkBoxCabRotater = new System.Windows.Forms.CheckBox();
             this.checkBoxAspectRatio = new System.Windows.Forms.CheckBox();
             this.checkBoxMute = new System.Windows.Forms.CheckBox();
@@ -154,7 +155,7 @@
             this.panelOuterGL.Location = new System.Drawing.Point(10, 0);
             this.panelOuterGL.Margin = new System.Windows.Forms.Padding(0);
             this.panelOuterGL.Name = "panelOuterGL";
-            this.panelOuterGL.Size = new System.Drawing.Size(376, 557);
+            this.panelOuterGL.Size = new System.Drawing.Size(619, 557);
             this.panelOuterGL.TabIndex = 4;
             this.panelOuterGL.Resize += new System.EventHandler(this.panelOuterGL_Resize);
             // 
@@ -165,7 +166,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 547);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(376, 10);
+            this.panel2.Size = new System.Drawing.Size(619, 10);
             this.panel2.TabIndex = 75;
             // 
             // panelInnerGL
@@ -412,7 +413,7 @@
             // 
             this.buttonFullScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonFullScreen.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonFullScreen.Location = new System.Drawing.Point(258, 53);
+            this.buttonFullScreen.Location = new System.Drawing.Point(501, 53);
             this.buttonFullScreen.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.buttonFullScreen.Name = "buttonFullScreen";
             this.buttonFullScreen.Size = new System.Drawing.Size(111, 26);
@@ -427,7 +428,7 @@
             this.labelFPS.AutoSize = true;
             this.labelFPS.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelFPS.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelFPS.Location = new System.Drawing.Point(307, 33);
+            this.labelFPS.Location = new System.Drawing.Point(550, 33);
             this.labelFPS.Margin = new System.Windows.Forms.Padding(0);
             this.labelFPS.Name = "labelFPS";
             this.labelFPS.Size = new System.Drawing.Size(36, 18);
@@ -441,7 +442,7 @@
             this.labelFPSX.AutoSize = true;
             this.labelFPSX.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelFPSX.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelFPSX.Location = new System.Drawing.Point(255, 33);
+            this.labelFPSX.Location = new System.Drawing.Point(498, 33);
             this.labelFPSX.Margin = new System.Windows.Forms.Padding(0);
             this.labelFPSX.Name = "labelFPSX";
             this.labelFPSX.Size = new System.Drawing.Size(52, 18);
@@ -461,12 +462,13 @@
             this.panelFill.Location = new System.Drawing.Point(305, 10);
             this.panelFill.Name = "panelFill";
             this.panelFill.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.panelFill.Size = new System.Drawing.Size(396, 642);
+            this.panelFill.Size = new System.Drawing.Size(639, 642);
             this.panelFill.TabIndex = 73;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.checkBoxPhysX);
             this.panel1.Controls.Add(this.checkBoxCabRotater);
             this.panel1.Controls.Add(this.checkBoxAspectRatio);
             this.panel1.Controls.Add(this.checkBoxMute);
@@ -478,8 +480,23 @@
             this.panel1.Location = new System.Drawing.Point(10, 557);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(376, 85);
+            this.panel1.Size = new System.Drawing.Size(619, 85);
             this.panel1.TabIndex = 74;
+            // 
+            // checkBoxPhysX
+            // 
+            this.checkBoxPhysX.AutoSize = true;
+            this.checkBoxPhysX.Checked = true;
+            this.checkBoxPhysX.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxPhysX.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxPhysX.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.checkBoxPhysX.Location = new System.Drawing.Point(123, 60);
+            this.checkBoxPhysX.Name = "checkBoxPhysX";
+            this.checkBoxPhysX.Size = new System.Drawing.Size(64, 22);
+            this.checkBoxPhysX.TabIndex = 90;
+            this.checkBoxPhysX.Text = "PhysX";
+            this.checkBoxPhysX.UseVisualStyleBackColor = true;
+            this.checkBoxPhysX.CheckedChanged += new System.EventHandler(this.checkBoxPhysX_CheckedChanged);
             // 
             // checkBoxCabRotater
             // 
@@ -497,8 +514,6 @@
             // checkBoxAspectRatio
             // 
             this.checkBoxAspectRatio.AutoSize = true;
-            this.checkBoxAspectRatio.Checked = true;
-            this.checkBoxAspectRatio.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxAspectRatio.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxAspectRatio.ForeColor = System.Drawing.SystemColors.ControlText;
             this.checkBoxAspectRatio.Location = new System.Drawing.Point(7, 4);
@@ -516,7 +531,7 @@
             this.checkBoxMute.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxMute.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxMute.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.checkBoxMute.Location = new System.Drawing.Point(97, 32);
+            this.checkBoxMute.Location = new System.Drawing.Point(123, 32);
             this.checkBoxMute.Name = "checkBoxMute";
             this.checkBoxMute.Size = new System.Drawing.Size(60, 22);
             this.checkBoxMute.TabIndex = 73;
@@ -543,7 +558,7 @@
             this.panelRight.Controls.Add(this.panelRightTop);
             this.panelRight.Controls.Add(this.panelRightBottom);
             this.panelRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelRight.Location = new System.Drawing.Point(701, 10);
+            this.panelRight.Location = new System.Drawing.Point(944, 10);
             this.panelRight.Name = "panelRight";
             this.panelRight.Size = new System.Drawing.Size(210, 642);
             this.panelRight.TabIndex = 73;
@@ -923,14 +938,12 @@
             // radioButtonEnvCat
             // 
             this.radioButtonEnvCat.AutoSize = true;
-            this.radioButtonEnvCat.Checked = true;
             this.radioButtonEnvCat.Font = new System.Drawing.Font("Calibri", 11.25F);
             this.radioButtonEnvCat.Location = new System.Drawing.Point(10, 273);
             this.radioButtonEnvCat.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.radioButtonEnvCat.Name = "radioButtonEnvCat";
             this.radioButtonEnvCat.Size = new System.Drawing.Size(68, 22);
             this.radioButtonEnvCat.TabIndex = 77;
-            this.radioButtonEnvCat.TabStop = true;
             this.radioButtonEnvCat.Text = "Bobcat";
             this.radioButtonEnvCat.UseVisualStyleBackColor = true;
             this.radioButtonEnvCat.CheckedChanged += new System.EventHandler(this.radioButtonEnv_CheckedChanged);
@@ -986,12 +999,14 @@
             // radioButtonEnvOutside
             // 
             this.radioButtonEnvOutside.AutoSize = true;
+            this.radioButtonEnvOutside.Checked = true;
             this.radioButtonEnvOutside.Font = new System.Drawing.Font("Calibri", 11.25F);
             this.radioButtonEnvOutside.Location = new System.Drawing.Point(10, 138);
             this.radioButtonEnvOutside.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.radioButtonEnvOutside.Name = "radioButtonEnvOutside";
             this.radioButtonEnvOutside.Size = new System.Drawing.Size(75, 22);
             this.radioButtonEnvOutside.TabIndex = 71;
+            this.radioButtonEnvOutside.TabStop = true;
             this.radioButtonEnvOutside.Text = "Outside";
             this.radioButtonEnvOutside.UseVisualStyleBackColor = true;
             this.radioButtonEnvOutside.CheckedChanged += new System.EventHandler(this.radioButtonEnv_CheckedChanged);
@@ -1376,15 +1391,17 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(921, 662);
+            this.ClientSize = new System.Drawing.Size(1164, 662);
             this.Controls.Add(this.panelFill);
             this.Controls.Add(this.panelRight);
             this.Controls.Add(this.tabControl1);
             this.Enabled = false;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(10, 10);
             this.MinimumSize = new System.Drawing.Size(800, 700);
             this.Name = "FormBase";
             this.Padding = new System.Windows.Forms.Padding(10);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormBase_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormBase_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -1513,6 +1530,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panelRightTrial;
         internal System.Windows.Forms.CheckBox checkBoxCabRotater;
+        private System.Windows.Forms.CheckBox checkBoxPhysX;
     }
 }
 

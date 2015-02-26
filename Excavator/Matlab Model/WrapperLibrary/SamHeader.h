@@ -14,15 +14,13 @@ SFNC void SamInit();
 	
 SFNC float SamUpdate(
 	float * Q,
-	float * QD, 
+	float * Qd,
+	float * Flow,
+	// Back
 	float * Fuel, 
-	float * RandBack, 
 	float * CylinderPositions,
 	float * CylinderVelocities,
-	float BucketMass, 
-	float * SDF, 
-	float * SDM, 
-	float * SWF);
+	float * JointTorques);
 
 SFNC void SamTerminate(void);
 

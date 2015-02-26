@@ -22,8 +22,6 @@ namespace Excavator
             int i = (int) this.nudMinutes.Value;
 
             if (false) ;
-            else if (this.rb_XPC.Checked)
-                new TrialMarkElton(FormBase._FormBase);
             else if (this.rb_E_Flow_Keyboard.Checked)
                 new TE_FlowKeyboard(FormBase._FormBase, s, i);
             else if (this.rb_E_Flow_Sticks.Checked)
@@ -32,10 +30,7 @@ namespace Excavator
                 new TE_VelocityCylinderKeyboard(FormBase._FormBase, s, i);
             else if (this.rb_E_CylindricalVelocity_Sticks.Checked)
                 new TE_VelocityCylinderSticks(FormBase._FormBase, s, i);
-            else if (this.rb_B_CylindricalVelocity_Keyboard.Checked)
-                new T_VelocityCylinderKeyboard(FormBase._FormBase);
-            else
-                new T_FlowKeyboard(FormBase._FormBase);
+            else new TrialPillars(FormBase._FormBase);
 
             this.Close();
         }

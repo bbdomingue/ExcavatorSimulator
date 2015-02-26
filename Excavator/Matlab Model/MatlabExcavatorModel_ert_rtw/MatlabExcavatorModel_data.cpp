@@ -3,9 +3,9 @@
  *
  * Code generated for Simulink model 'MatlabExcavatorModel'.
  *
- * Model version                  : 1.203
+ * Model version                  : 1.227
  * Simulink Coder version         : 8.5 (R2013b) 08-Aug-2013
- * C/C++ source code generated on : Wed Feb 25 22:12:56 2015
+ * C/C++ source code generated on : Wed Feb 25 22:33:09 2015
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -16,28 +16,13 @@
 #include "MatlabExcavatorModel.h"
 #include "MatlabExcavatorModel_private.h"
 
-/* Block parameters (auto storage) */
-P_MatlabExcavatorModel_T MatlabExcavatorModel_P = {
-  0.001,
-
-  { 0.0, 0.4503, -0.9568, -1.1514 },
-  0.0,
-  1.0,
-  0.001,
-
-  { 0.0, 0.0, 0.0, 0.0 },
-
-  { 0.75, 0.0, 0.0, 0.0 },
-
-  { -0.75, 0.0, 0.0, 0.0 },
-
-  { 0.0, 0.0, 0.0, 0.0 },
-  0.0,
-
-  { 1.0, 1.0 },
-  0.001,
-  2500.0,
-
+/* Constant parameters (auto storage) */
+const ConstP_MatlabExcavatorModel_T MatlabExcavatorModel_ConstP = {
+  /* Pooled Parameter (Expression: torqscale)
+   * Referenced by:
+   *   '<S3>/in Nm'
+   *   '<S3>/in Nm1'
+   */
   { 0.0, 3.38, 6.76, 10.14, 13.52, 16.900000000000002, 20.28, 23.659999999999997,
     27.04, 30.42, 33.800000000000004, 37.18, 40.56, 43.94, 47.319999999999993,
     50.7, 54.08, 57.459999999999994, 60.84, 64.22, 67.600000000000009, 70.98,
@@ -47,6 +32,11 @@ P_MatlabExcavatorModel_T MatlabExcavatorModel_P = {
     141.96, 145.34, 148.72, 152.1, 155.48, 158.85999999999999, 162.24,
     165.61999999999998, 169.0 },
 
+  /* Pooled Parameter (Expression: speedscale)
+   * Referenced by:
+   *   '<S3>/in rpms'
+   *   '<S3>/in rpms1'
+   */
   { 1300.0, 1325.0, 1350.0, 1375.0, 1400.0, 1425.0, 1450.0, 1475.0, 1500.0,
     1525.0, 1550.0, 1575.0, 1600.0, 1625.0, 1650.0, 1675.0, 1700.0, 1725.0,
     1750.0, 1775.0, 1800.0, 1825.0, 1850.0, 1875.0, 1900.0, 1925.0, 1950.0,
@@ -55,6 +45,243 @@ P_MatlabExcavatorModel_T MatlabExcavatorModel_P = {
     2425.0, 2450.0, 2475.0, 2500.0, 2525.0, 2550.0, 2575.0, 2600.0, 2625.0,
     2650.0, 2675.0, 2700.0 },
 
+  /* Expression: maxincol
+   * Referenced by: '<S3>/max torq at set engine speed'
+   */
+  { 29.0, 30.0, 31.0, 32.0, 34.0, 35.0, 37.0, 39.0, 42.0, 42.0, 43.0, 44.0, 46.0,
+    46.0, 47.0, 48.0, 49.0, 49.0, 49.0, 49.0, 49.0, 49.0, 49.0, 49.0, 48.0, 48.0,
+    48.0, 49.0, 51.0, 50.0, 50.0, 50.0, 50.0, 50.0, 49.0, 48.0, 47.0, 47.0, 47.0,
+    47.0, 47.0, 47.0, 47.0, 47.0, 47.0, 47.0, 47.0, 47.0, 46.0, 42.0, 39.0, 35.0,
+    30.0, 27.0, 23.0, 19.0, 14.0 },
+
+  /* Pooled Parameter (Expression: )
+   * Referenced by:
+   *   '<S1>/S-Function'
+   *   '<S2>/S-Function'
+   *   '<S2>/S-Function1'
+   *   '<S2>/S-Function2'
+   *   '<S2>/S-Function3'
+   *   '<S4>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Pooled Parameter (Expression: Ts)
+   * Referenced by:
+   *   '<S1>/S-Function'
+   *   '<S2>/S-Function'
+   *   '<S2>/S-Function1'
+   *   '<S2>/S-Function2'
+   *   '<S2>/S-Function3'
+   *   '<S4>/S-Function'
+   */
+  0.001,
+
+  /* Computed Parameter: SFunction_P2_Size
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: ptank
+   * Referenced by: '<S1>/S-Function'
+   */
+  435.11321399999997,
+
+  /* Computed Parameter: SFunction_P3_Size
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: bulk_mod
+   * Referenced by: '<S1>/S-Function'
+   */
+  150000.0,
+
+  /* Pooled Parameter (Expression: )
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Pooled Parameter (Mixed Expressions)
+   * Referenced by: '<S1>/S-Function'
+   */
+  91.535616142098434,
+
+  /* Pooled Parameter (Expression: )
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Pooled Parameter (Mixed Expressions)
+   * Referenced by: '<S1>/S-Function'
+   */
+  122.04748818946459,
+
+  /* Pooled Parameter (Expression: )
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Pooled Parameter (Mixed Expressions)
+   * Referenced by: '<S1>/S-Function'
+   */
+  183.07123228419687,
+
+  /* Computed Parameter: SFunction_P11_Size
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: lvolr4
+   * Referenced by: '<S1>/S-Function'
+   */
+  213.58310433156302,
+
+  /* Pooled Parameter (Expression: )
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Pooled Parameter (Mixed Expressions)
+   * Referenced by: '<S1>/S-Function'
+   */
+  4.0,
+
+  /* Pooled Parameter (Expression: )
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Pooled Parameter (Mixed Expressions)
+   * Referenced by: '<S1>/S-Function'
+   */
+  5.0,
+
+  /* Pooled Parameter (Expression: )
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Pooled Parameter (Mixed Expressions)
+   * Referenced by: '<S1>/S-Function'
+   */
+  2799.2283434,
+
+  /* Computed Parameter: SFunction_P24_Size
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: leak1
+   * Referenced by: '<S1>/S-Function'
+   */
+  0.00058904146624434977,
+
+  /* Pooled Parameter (Expression: )
+   * Referenced by: '<S1>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Pooled Parameter (Mixed Expressions)
+   * Referenced by: '<S1>/S-Function'
+   */
+  0.00025244634267614991,
+
+  /* Computed Parameter: SFunction_P2_Size_n
+   * Referenced by: '<S2>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: fv_swing
+   * Referenced by: '<S2>/S-Function'
+   */
+  1.72,
+
+  /* Computed Parameter: SFunction_P3_Size_j
+   * Referenced by: '<S2>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: fc_swing
+   * Referenced by: '<S2>/S-Function'
+   */
+  87.5,
+
+  /* Computed Parameter: SFunction_P4_Size
+   * Referenced by: '<S2>/S-Function'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: fbrake
+   * Referenced by: '<S2>/S-Function'
+   */
+  50000.0,
+
+  /* Computed Parameter: SFunction1_P2_Size
+   * Referenced by: '<S2>/S-Function1'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: fv_boom
+   * Referenced by: '<S2>/S-Function1'
+   */
+  1260.0,
+
+  /* Computed Parameter: SFunction1_P3_Size
+   * Referenced by: '<S2>/S-Function1'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: fc_boom
+   * Referenced by: '<S2>/S-Function1'
+   */
+  3439.5768279000004,
+
+  /* Computed Parameter: SFunction2_P2_Size
+   * Referenced by: '<S2>/S-Function2'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: fv_arm
+   * Referenced by: '<S2>/S-Function2'
+   */
+  19300.0,
+
+  /* Computed Parameter: SFunction2_P3_Size
+   * Referenced by: '<S2>/S-Function2'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: fc_arm
+   * Referenced by: '<S2>/S-Function2'
+   */
+  325.97296735000003,
+
+  /* Computed Parameter: SFunction3_P2_Size
+   * Referenced by: '<S2>/S-Function3'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: fv_bucket
+   * Referenced by: '<S2>/S-Function3'
+   */
+  28800.0,
+
+  /* Computed Parameter: SFunction3_P3_Size
+   * Referenced by: '<S2>/S-Function3'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: fc_bucket
+   * Referenced by: '<S2>/S-Function3'
+   */
+  22.480894300000003
+};
+
+/* Constant parameters with dynamic initialization (auto storage) */
+ConstInitP_MatlabExcavatorModel_T MatlabExcavatorModel_ConstInitP = {
+  /* Expression: fuelmatrix
+   * Referenced by: '<S3>/fuel rate  matrix (kg//hr)'
+   */
   { 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864,
     0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864,
     0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864, 0.864,
@@ -827,176 +1054,7 @@ P_MatlabExcavatorModel_T MatlabExcavatorModel_P = {
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
     7.409090909, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
-  0.001,
-  0.0,
-
-  { -18.436498977169066, -76.232167057837543, 343.74128035940817,
-    108.94629020235492 },
-
-  { 83.741195846393566, 878.94577493525946, 14.439234485262316,
-    85.858030307856581 },
-
-  { 45.767808075, 63.01311815766, 63.01311815766, 63.01311815766 },
-  1.0984273938,
-
-  { 29.0, 30.0, 31.0, 32.0, 34.0, 35.0, 37.0, 39.0, 42.0, 42.0, 43.0, 44.0, 46.0,
-    46.0, 47.0, 48.0, 49.0, 49.0, 49.0, 49.0, 49.0, 49.0, 49.0, 49.0, 48.0, 48.0,
-    48.0, 49.0, 51.0, 50.0, 50.0, 50.0, 50.0, 50.0, 49.0, 48.0, 47.0, 47.0, 47.0,
-    47.0, 47.0, 47.0, 47.0, 47.0, 47.0, 47.0, 47.0, 47.0, 46.0, 42.0, 39.0, 35.0,
-    30.0, 27.0, 23.0, 19.0, 14.0 },
-  8.85075,
-
-  { 1.0, 1.0 },
-  0.001,
-
-  { 1.0, 1.0 },
-  0.001,
-
-  { 1.0, 1.0 },
-  435.11321399999997,
-
-  { 1.0, 1.0 },
-  150000.0,
-
-  { 1.0, 1.0 },
-  91.535616142098434,
-
-  { 1.0, 1.0 },
-  122.04748818946459,
-
-  { 1.0, 1.0 },
-  91.535616142098434,
-
-  { 1.0, 1.0 },
-  183.07123228419687,
-
-  { 1.0, 1.0 },
-  91.535616142098434,
-
-  { 1.0, 1.0 },
-  183.07123228419687,
-
-  { 1.0, 1.0 },
-  122.04748818946459,
-
-  { 1.0, 1.0 },
-  213.58310433156302,
-
-  { 1.0, 1.0 },
-  4.0,
-
-  { 1.0, 1.0 },
-  4.0,
-
-  { 1.0, 1.0 },
-  4.0,
-
-  { 1.0, 1.0 },
-  4.0,
-
-  { 1.0, 1.0 },
-  5.0,
-
-  { 1.0, 1.0 },
-  5.0,
-
-  { 1.0, 1.0 },
-  5.0,
-
-  { 1.0, 1.0 },
-  5.0,
-
-  { 1.0, 1.0 },
-  2799.2283434,
-
-  { 1.0, 1.0 },
-  2799.2283434,
-
-  { 1.0, 1.0 },
-  2799.2283434,
-
-  { 1.0, 1.0 },
-  2799.2283434,
-
-  { 1.0, 1.0 },
-  0.00058904146624434977,
-
-  { 1.0, 1.0 },
-  0.00025244634267614991,
-
-  { 1.0, 1.0 },
-  0.00025244634267614991,
-
-  { 1.0, 1.0 },
-  0.00025244634267614991,
-
-  { 1.0, 1.0 },
-  0.001,
-
-  { 1.0, 1.0 },
-  1.72,
-
-  { 1.0, 1.0 },
-  87.5,
-
-  { 1.0, 1.0 },
-  50000.0,
-
-  { 1.0, 1.0 },
-  0.001,
-
-  { 1.0, 1.0 },
-  1260.0,
-
-  { 1.0, 1.0 },
-  3439.5768279000004,
-
-  { 1.0, 1.0 },
-  0.001,
-
-  { 1.0, 1.0 },
-  19300.0,
-
-  { 1.0, 1.0 },
-  325.97296735000003,
-
-  { 1.0, 1.0 },
-  0.001,
-
-  { 1.0, 1.0 },
-  28800.0,
-
-  { 1.0, 1.0 },
-  22.480894300000003,
-  1.3558179488410815,
-  1.0,
-  30.0,
-  1504.6275,
-  2500.0,
-
-  { 0.0, 3.38, 6.76, 10.14, 13.52, 16.900000000000002, 20.28, 23.659999999999997,
-    27.04, 30.42, 33.800000000000004, 37.18, 40.56, 43.94, 47.319999999999993,
-    50.7, 54.08, 57.459999999999994, 60.84, 64.22, 67.600000000000009, 70.98,
-    74.36, 77.74, 81.12, 84.5, 87.88, 91.26, 94.639999999999986, 98.02, 101.4,
-    104.77999999999999, 108.16, 111.54, 114.91999999999999, 118.3, 121.68,
-    125.05999999999999, 128.44, 131.82, 135.20000000000002, 138.57999999999998,
-    141.96, 145.34, 148.72, 152.1, 155.48, 158.85999999999999, 162.24,
-    165.61999999999998, 169.0 },
-
-  { 1300.0, 1325.0, 1350.0, 1375.0, 1400.0, 1425.0, 1450.0, 1475.0, 1500.0,
-    1525.0, 1550.0, 1575.0, 1600.0, 1625.0, 1650.0, 1675.0, 1700.0, 1725.0,
-    1750.0, 1775.0, 1800.0, 1825.0, 1850.0, 1875.0, 1900.0, 1925.0, 1950.0,
-    1975.0, 2000.0, 2025.0, 2050.0, 2075.0, 2100.0, 2125.0, 2150.0, 2175.0,
-    2200.0, 2225.0, 2250.0, 2275.0, 2300.0, 2325.0, 2350.0, 2375.0, 2400.0,
-    2425.0, 2450.0, 2475.0, 2500.0, 2525.0, 2550.0, 2575.0, 2600.0, 2625.0,
-    2650.0, 2675.0, 2700.0 },
-  10.0,
-  1U,
-  1U,
-  1U,
-  1U,
-  1U
+    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }
 };
 
 /*

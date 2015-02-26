@@ -29,17 +29,14 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.rb_B_Flow_Keyboard = new System.Windows.Forms.RadioButton();
-            this.rb_XPC = new System.Windows.Forms.RadioButton();
+            this.rb_B_Pillar = new System.Windows.Forms.RadioButton();
             this.buttonTrialReset = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.rb_E_Flow_Keyboard = new System.Windows.Forms.RadioButton();
             this.rb_E_Flow_Sticks = new System.Windows.Forms.RadioButton();
             this.checkBoxSave = new System.Windows.Forms.CheckBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.nudMinutes = new System.Windows.Forms.NumericUpDown();
-            this.rb_B_CylindricalVelocity_Keyboard = new System.Windows.Forms.RadioButton();
             this.rb_E_CylindricalVelocity_Keyboard = new System.Windows.Forms.RadioButton();
             this.rb_E_CylindricalVelocity_Sticks = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinutes)).BeginInit();
@@ -56,33 +53,20 @@
             this.label1.TabIndex = 76;
             this.label1.Text = "Basic";
             // 
-            // rb_B_Flow_Keyboard
+            // rb_B_Pillar
             // 
-            this.rb_B_Flow_Keyboard.AutoSize = true;
-            this.rb_B_Flow_Keyboard.Checked = true;
-            this.rb_B_Flow_Keyboard.Font = new System.Drawing.Font("Calibri", 11.25F);
-            this.rb_B_Flow_Keyboard.Location = new System.Drawing.Point(14, 35);
-            this.rb_B_Flow_Keyboard.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.rb_B_Flow_Keyboard.Name = "rb_B_Flow_Keyboard";
-            this.rb_B_Flow_Keyboard.Size = new System.Drawing.Size(126, 22);
-            this.rb_B_Flow_Keyboard.TabIndex = 73;
-            this.rb_B_Flow_Keyboard.TabStop = true;
-            this.rb_B_Flow_Keyboard.Text = "Flow - Keyboard";
-            this.rb_B_Flow_Keyboard.UseVisualStyleBackColor = true;
-            this.rb_B_Flow_Keyboard.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
-            // 
-            // rb_XPC
-            // 
-            this.rb_XPC.AutoSize = true;
-            this.rb_XPC.Font = new System.Drawing.Font("Calibri", 11.25F);
-            this.rb_XPC.Location = new System.Drawing.Point(14, 121);
-            this.rb_XPC.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.rb_XPC.Name = "rb_XPC";
-            this.rb_XPC.Size = new System.Drawing.Size(133, 22);
-            this.rb_XPC.TabIndex = 74;
-            this.rb_XPC.Text = "Target Simulation";
-            this.rb_XPC.UseVisualStyleBackColor = true;
-            this.rb_XPC.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            this.rb_B_Pillar.AutoSize = true;
+            this.rb_B_Pillar.Checked = true;
+            this.rb_B_Pillar.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.rb_B_Pillar.Location = new System.Drawing.Point(14, 35);
+            this.rb_B_Pillar.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.rb_B_Pillar.Name = "rb_B_Pillar";
+            this.rb_B_Pillar.Size = new System.Drawing.Size(58, 22);
+            this.rb_B_Pillar.TabIndex = 73;
+            this.rb_B_Pillar.TabStop = true;
+            this.rb_B_Pillar.Text = "Pillar";
+            this.rb_B_Pillar.UseVisualStyleBackColor = true;
+            this.rb_B_Pillar.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
             // 
             // buttonTrialReset
             // 
@@ -95,17 +79,6 @@
             this.buttonTrialReset.Text = "Done";
             this.buttonTrialReset.UseVisualStyleBackColor = true;
             this.buttonTrialReset.Click += new System.EventHandler(this.buttonTrialReset_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Calibri", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(11, 100);
-            this.label2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(141, 18);
-            this.label2.TabIndex = 81;
-            this.label2.Text = "Elton (Matlab Target)";
             // 
             // label3
             // 
@@ -191,19 +164,6 @@
             0,
             0});
             // 
-            // rb_B_CylindricalVelocity_Keyboard
-            // 
-            this.rb_B_CylindricalVelocity_Keyboard.AutoSize = true;
-            this.rb_B_CylindricalVelocity_Keyboard.Font = new System.Drawing.Font("Calibri", 11.25F);
-            this.rb_B_CylindricalVelocity_Keyboard.Location = new System.Drawing.Point(14, 63);
-            this.rb_B_CylindricalVelocity_Keyboard.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.rb_B_CylindricalVelocity_Keyboard.Name = "rb_B_CylindricalVelocity_Keyboard";
-            this.rb_B_CylindricalVelocity_Keyboard.Size = new System.Drawing.Size(214, 22);
-            this.rb_B_CylindricalVelocity_Keyboard.TabIndex = 89;
-            this.rb_B_CylindricalVelocity_Keyboard.Text = "Cylindrical Velocity - Keyboard";
-            this.rb_B_CylindricalVelocity_Keyboard.UseVisualStyleBackColor = true;
-            this.rb_B_CylindricalVelocity_Keyboard.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
-            // 
             // rb_E_CylindricalVelocity_Keyboard
             // 
             this.rb_E_CylindricalVelocity_Keyboard.AutoSize = true;
@@ -237,17 +197,14 @@
             this.ClientSize = new System.Drawing.Size(571, 313);
             this.Controls.Add(this.rb_E_CylindricalVelocity_Sticks);
             this.Controls.Add(this.rb_E_CylindricalVelocity_Keyboard);
-            this.Controls.Add(this.rb_B_CylindricalVelocity_Keyboard);
             this.Controls.Add(this.nudMinutes);
             this.Controls.Add(this.checkBoxSave);
             this.Controls.Add(this.rb_E_Flow_Sticks);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.rb_E_Flow_Keyboard);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonTrialReset);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.rb_B_Flow_Keyboard);
-            this.Controls.Add(this.rb_XPC);
+            this.Controls.Add(this.rb_B_Pillar);
             this.Name = "FormPickTrial";
             this.ShowIcon = false;
             this.Text = "Pick One";
@@ -260,17 +217,14 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RadioButton rb_B_Flow_Keyboard;
-        private System.Windows.Forms.RadioButton rb_XPC;
+        private System.Windows.Forms.RadioButton rb_B_Pillar;
         private System.Windows.Forms.Button buttonTrialReset;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.RadioButton rb_E_Flow_Keyboard;
         private System.Windows.Forms.RadioButton rb_E_Flow_Sticks;
         private System.Windows.Forms.CheckBox checkBoxSave;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.NumericUpDown nudMinutes;
-        private System.Windows.Forms.RadioButton rb_B_CylindricalVelocity_Keyboard;
         private System.Windows.Forms.RadioButton rb_E_CylindricalVelocity_Keyboard;
         private System.Windows.Forms.RadioButton rb_E_CylindricalVelocity_Sticks;
 

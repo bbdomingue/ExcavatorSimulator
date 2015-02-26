@@ -63,7 +63,7 @@ namespace Excavator
             }
         }
 
-        private DrawType __DrawType = DrawType.Normal;
+        private DrawType __DrawType = DrawType.Outside;
         internal DrawType _DrawType
         {
             set
@@ -752,7 +752,7 @@ namespace Excavator
                         GL_Handler._BoolMatrixModeModelTexture = true;
                         GL_Handler._BoolTextureAlso = true;
                         Trial._Trial.drawObjectsInShadow(false);
-                        Bobcat.Draw(Trial._Trial.ActualAngles, drawCab, false);
+                        Bobcat.Draw(Trial._Trial.ActualAngles, drawCab, false);                        
                         GL_Handler._BoolTextureAlso = false;
                         break;
                     }
@@ -1244,6 +1244,16 @@ namespace Excavator
             {
                 GL_Handler.FlipFlopMatrices();
                 GL.Rotate(a, x, y, z);
+            }
+        }
+
+        internal static void MultiplyMatrix(float[] arg)
+        {
+            GL.MultMatrix(arg);
+            if (GL_Handler._BoolTextureAlso)
+            {
+                GL_Handler.FlipFlopMatrices();
+                GL.MultMatrix(arg);
             }
         }
 

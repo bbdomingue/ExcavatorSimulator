@@ -13,7 +13,7 @@ namespace Excavator
     public class EmbeddedSoilModel
     {
         const int _IntDiscreteSectionsMatlab = 256;			// number of nodes
-        const float GroundLevel = - (Bobcat._SamCatLiftHeight + Bobcat._V3RotationOffsetY + 3);	// inches
+        const float GroundLevel = - (Bobcat.dimOffsetCabY_Inches + Bobcat.dimOffsetSwing2Y_Inches + 3);	// inches
         const float	MaxDepth = 150;			// inches
         const int TRENCH_WIDTH = 24;       // inches
         const float TrenchStart = 0;        // inches
@@ -102,9 +102,13 @@ namespace Excavator
             )
         {
             // Inputs
-            
-	        // States
-	        // int numStates = ssGetNumDiscStates(S);
+            OutVLoad = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                SD_FORCE[i] = 0;
+                SD_MOMENT[i] = 0;
+                SW_FORCE[i] = 0;
+            }
 
 	        // Outputs
 	        UInt16[] LOAD = new UInt16[2];
@@ -270,9 +274,11 @@ namespace Excavator
            /*//////////////////////////////////////////////////////*    
             region = Math.Abs(y04 * 2) > EmbeddedSoilModel.TRENCH_WIDTH ? 3 : 1;
             region *= z04 < EmbeddedSoilModel.GroundLevel ? -1 : 1;
-    
-            if ((region == 1) && (z04 < SOIL[n1])) region = -1;         
-            if ((intrench == 1) && (region == -3)) region = -2;
+
+
+            if (n1 < 0) return new TrialSaver.File2_DataType();
+            else if ((region == 1) && (z04 < SOIL[n1])) region = -1;
+            else if ((region == -3) && (intrench == 1)) region = -2;
 
             intrench = (region == -1) || (region == -2) ? 1 : 0;
       
@@ -294,9 +300,9 @@ namespace Excavator
                 if (k == n1)
                     { Zs = Z04; }
                 if (k == n2)
-                    { Zs = Z03; }            
-                if (k > 255) 
-                    {k = 255;}     ///hmmmmmm...........this should never happen in the first place
+                    { Zs = Z03; }
+
+                k = Math.Max(0, Math.Min(255, k));
 
                 Zsoil = SOIL[k]; //k+1?
 
@@ -811,139 +817,130 @@ namespace Excavator
 
         public void drawTrench(bool ShadowBufferDraw)
         {
-            if (this._BoolSetupGL4)
-            {
-                this.updateGL4();
-                EmbeddedSoilModel.setColorDirt();
-                this.drawGL4(ShadowBufferDraw);
-            }
-            else this.setupGL4();
-
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, Trial._IntTextureGrass);
-
-            GL.Begin(BeginMode.Quads);
-            {
-                GL.TexCoord2(TrialMarkElton.XTextL, Trial._IntTextureDensity);
-                GL.Vertex3(XhalfL, YGround, Trial._FloatGroundPlaneDim);
-                GL.TexCoord2(TrialMarkElton.XTextL, 0);
-                GL.Vertex3(XhalfL, YGround, -Trial._FloatGroundPlaneDim);
-                GL.TexCoord2(0, 0);
-                GL.Vertex3(-Trial._FloatGroundPlaneDim, YGround, -Trial._FloatGroundPlaneDim);
-                GL.TexCoord2(0, Trial._IntTextureDensity);
-                GL.Vertex3(-Trial._FloatGroundPlaneDim, YGround, Trial._FloatGroundPlaneDim);
-
-                GL.TexCoord2(Trial._IntTextureDensity, Trial._IntTextureDensity);
-                GL.Vertex3(Trial._FloatGroundPlaneDim, YGround, Trial._FloatGroundPlaneDim);
-                GL.TexCoord2(Trial._IntTextureDensity, 0);
-                GL.Vertex3(Trial._FloatGroundPlaneDim, YGround, -Trial._FloatGroundPlaneDim);
-                GL.TexCoord2(TrialMarkElton.XTextR, 0);
-                GL.Vertex3(XhalfR, YGround, -Trial._FloatGroundPlaneDim);
-                GL.TexCoord2(TrialMarkElton.XTextR, Trial._IntTextureDensity);
-                GL.Vertex3(XhalfR, YGround, Trial._FloatGroundPlaneDim);
-
-                GL.TexCoord2(TrialMarkElton.XTextL, TrialMarkElton.ZTextBehind);
-                GL.Vertex3(XhalfL, YGround, -ZStartTrench);
-                GL.TexCoord2(TrialMarkElton.XTextL, Trial._IntTextureDensity);
-                GL.Vertex3(XhalfL, YGround, Trial._FloatGroundPlaneDim);
-                GL.TexCoord2(TrialMarkElton.XTextR, Trial._IntTextureDensity);
-                GL.Vertex3(XhalfR, YGround, Trial._FloatGroundPlaneDim);
-                GL.TexCoord2(TrialMarkElton.XTextR, TrialMarkElton.ZTextBehind);
-                GL.Vertex3(XhalfR, YGround, -ZStartTrench);
-
-                GL.TexCoord2(TrialMarkElton.XTextL, 0);
-                GL.Vertex3(XhalfL, YGround, -Trial._FloatGroundPlaneDim);
-                GL.TexCoord2(TrialMarkElton.XTextL, TrialMarkElton.ZTextFront);
-                GL.Vertex3(XhalfL, YGround, -ZEndTrench);
-                GL.TexCoord2(TrialMarkElton.XTextR, TrialMarkElton.ZTextFront);
-                GL.Vertex3(XhalfR, YGround, -ZEndTrench);
-                GL.TexCoord2(TrialMarkElton.XTextR, 0);
-                GL.Vertex3(XhalfR, YGround, -Trial._FloatGroundPlaneDim);
-            }
-            GL.End();
-
-            GL.BindTexture(TextureTarget.Texture2D, 0);
-            GL.ActiveTexture(TextureUnit.Texture7); 
-        }
-
-        private void drawGL4(bool ShadowBufferDraw)
-        {
             UInt32 uip = GL.CurrentProgram;
 
-            if (!ShadowBufferDraw)
+            if (EmbeddedSoilModel._IntTextureDirt == 0)
+                EmbeddedSoilModel._IntTextureDirt = Textures.getGLTexture(Properties.Resources.dirt4);
+
+            if (EmbeddedSoilModel._IntTextureGrass == 0)
+                EmbeddedSoilModel._IntTextureGrass = Textures.getGLTexture(Properties.Resources.grass1);
+
+            
+            if (EmbeddedSoilModel._ShadowIntProgram != 0 &&
+                EmbeddedSoilModel._ShadowIntShaderV != 0 &&
+                EmbeddedSoilModel._ShadowIntShaderF != 0)
             {
-                bool a =
-                    EmbeddedSoilModel._ShadowIntProgram != 0 &&
-                    EmbeddedSoilModel._ShadowIntShaderV != 0 &&
-                    EmbeddedSoilModel._ShadowIntShaderF != 0;
-
-                if (!a)
+                if (this._BoolSetupGL4)
                 {
-                    int sp, sv, sf;
+                    this.updateGL4();
 
-                    a = Shaders.CreateShaders(
-                        Properties.Resources.SoilVertex,
-                        Properties.Resources.SoilFragment,
-                        out sp,
-                        out sv,
-                        out sf);
+                    EmbeddedSoilModel.setColorDirt();
 
-                    if (a)
+                    // Draw Sides
+                    GL.Begin(BeginMode.Quads);
                     {
-                        EmbeddedSoilModel._ShadowIntProgram = sp;
-                        EmbeddedSoilModel._ShadowIntShaderV = sv;
-                        EmbeddedSoilModel._ShadowIntShaderF = sf;
+                        GL.Normal3(-1, 0, 0);
+                        GL.Vertex3(EmbeddedSoilModel.XhalfR, EmbeddedSoilModel.YGround, -EmbeddedSoilModel.ZEndTrench);
+                        GL.Vertex3(EmbeddedSoilModel.XhalfR, EmbeddedSoilModel.YTrenchBottom, -EmbeddedSoilModel.ZEndTrench);
+                        GL.Vertex3(EmbeddedSoilModel.XhalfR, EmbeddedSoilModel.YTrenchBottom, -EmbeddedSoilModel.ZStartTrench);
+                        GL.Vertex3(EmbeddedSoilModel.XhalfR, EmbeddedSoilModel.YGround, -EmbeddedSoilModel.ZStartTrench);
+                        GL.Normal3(1, 0, 0);
+                        GL.Vertex3(EmbeddedSoilModel.XhalfL, EmbeddedSoilModel.YGround, -EmbeddedSoilModel.ZStartTrench);
+                        GL.Vertex3(EmbeddedSoilModel.XhalfL, EmbeddedSoilModel.YTrenchBottom, -EmbeddedSoilModel.ZStartTrench);
+                        GL.Vertex3(EmbeddedSoilModel.XhalfL, EmbeddedSoilModel.YTrenchBottom, -EmbeddedSoilModel.ZEndTrench);
+                        GL.Vertex3(EmbeddedSoilModel.XhalfL, EmbeddedSoilModel.YGround, -EmbeddedSoilModel.ZEndTrench);
+                    }
+                    GL.End();
 
+                    GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Ambient, EmbeddedSoilModel.ColorFrom(EmbeddedSoilModel._ColorDirt, 0.25f));
+                    GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Diffuse, EmbeddedSoilModel.ColorFrom(EmbeddedSoilModel._ColorDirt, 1.0f));
+
+                    if (!ShadowBufferDraw)
+                    {
+                        GL.ActiveTexture(TextureUnit.Texture0);
+                        GL.BindTexture(TextureTarget.Texture2D, EmbeddedSoilModel._IntTextureDirt);
                         GL.UseProgram(EmbeddedSoilModel._ShadowIntProgram);
-                        Textures.BindTexture(EmbeddedSoilModel._ShadowIntProgram, TextureUnit.Texture0, "tex0");
-                        Textures.BindTexture(EmbeddedSoilModel._ShadowIntProgram, TextureUnit.Texture7, "ShadowMap");
-                        GL.UseProgram(0);
+                    }
+
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, this._IntInterleaveBufferID);
+                    GL.VertexPointer(3, VertexPointerType.Float, Vector3.SizeInBytes * 1, Vector3.SizeInBytes * EmbeddedSoilModel._IntTopDrawPoints);
+                    GL.NormalPointer(NormalPointerType.Float, Vector3.SizeInBytes * 1, IntPtr.Zero);
+
+                    GL.EnableClientState(ArrayCap.VertexArray);
+                    GL.EnableClientState(ArrayCap.NormalArray);
+
+                    GL.BindBuffer(BufferTarget.ElementArrayBuffer, this._IntIndicesBufferID);
+                    GL.DrawElements(BeginMode.Triangles, this._IntElementCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+
+                    if (!ShadowBufferDraw)
+                    {
+                        GL.BindTexture(TextureTarget.Texture2D, EmbeddedSoilModel._IntTextureGrass);
+                    }
+
+                    GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Ambient, EmbeddedSoilModel.ColorFrom(System.Drawing.Color.White, 0.225f));
+                    GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Diffuse, EmbeddedSoilModel.ColorFrom(System.Drawing.Color.White, 1.5f));
+
+                    GL.Begin(BeginMode.Quads);
+                    {
+                        GL.Vertex3(XhalfL, YGround, Trial._FloatGroundPlaneDim);
+                        GL.Vertex3(XhalfL, YGround, -Trial._FloatGroundPlaneDim);
+                        GL.Vertex3(-Trial._FloatGroundPlaneDim, YGround, -Trial._FloatGroundPlaneDim);
+                        GL.Vertex3(-Trial._FloatGroundPlaneDim, YGround, Trial._FloatGroundPlaneDim);
+
+                        GL.Vertex3(Trial._FloatGroundPlaneDim, YGround, Trial._FloatGroundPlaneDim);
+                        GL.Vertex3(Trial._FloatGroundPlaneDim, YGround, -Trial._FloatGroundPlaneDim);
+                        GL.Vertex3(XhalfR, YGround, -Trial._FloatGroundPlaneDim);
+                        GL.Vertex3(XhalfR, YGround, Trial._FloatGroundPlaneDim);
+
+                        GL.Vertex3(XhalfL, YGround, -ZStartTrench);
+                        GL.Vertex3(XhalfL, YGround, Trial._FloatGroundPlaneDim);
+                        GL.Vertex3(XhalfR, YGround, Trial._FloatGroundPlaneDim);
+                        GL.Vertex3(XhalfR, YGround, -ZStartTrench);
+
+                        GL.Vertex3(XhalfL, YGround, -Trial._FloatGroundPlaneDim);
+                        GL.Vertex3(XhalfL, YGround, -ZEndTrench);
+                        GL.Vertex3(XhalfR, YGround, -ZEndTrench);
+                        GL.Vertex3(XhalfR, YGround, -Trial._FloatGroundPlaneDim);
+                    }
+                    GL.End();
+
+                    if (!ShadowBufferDraw)
+                    {
+                        GL.BindTexture(TextureTarget.Texture2D, 0);
+                        GL.ActiveTexture(TextureUnit.Texture7);
+                        GL.UseProgram(uip);
                     }
                 }
+                else this.setupGL4();
+            }
+            else
+            {
+                int sp, sv, sf;
 
-                if (a)
+                if (Shaders.CreateShaders(
+                    Properties.Resources.SoilVertex,
+                    Properties.Resources.SoilFragment,
+                    out sp,
+                    out sv,
+                    out sf))
                 {
-                    if (EmbeddedSoilModel._IntTextureDirt == 0)
-                        EmbeddedSoilModel._IntTextureDirt = Textures.getGLTexture(Properties.Resources.dirt4);
+                    EmbeddedSoilModel._ShadowIntProgram = sp;
+                    EmbeddedSoilModel._ShadowIntShaderV = sv;
+                    EmbeddedSoilModel._ShadowIntShaderF = sf;
 
-                    GL.ActiveTexture(TextureUnit.Texture0);
-                    GL.BindTexture(TextureTarget.Texture2D, EmbeddedSoilModel._IntTextureDirt);
                     GL.UseProgram(EmbeddedSoilModel._ShadowIntProgram);
+                    Textures.BindTexture(EmbeddedSoilModel._ShadowIntProgram, TextureUnit.Texture0, "tex0");
+                    Textures.BindTexture(EmbeddedSoilModel._ShadowIntProgram, TextureUnit.Texture7, "ShadowMap");
+                    GL.UseProgram(uip);
                 }
             }
 
-            GL.BindBuffer(BufferTarget.ArrayBuffer, this._IntInterleaveBufferID);
-            GL.VertexPointer(3, VertexPointerType.Float, Vector3.SizeInBytes * 1, Vector3.SizeInBytes * EmbeddedSoilModel._IntTopDrawPoints);
-            GL.NormalPointer(NormalPointerType.Float, Vector3.SizeInBytes * 1, IntPtr.Zero);
 
-            GL.EnableClientState(ArrayCap.VertexArray);
-            GL.EnableClientState(ArrayCap.NormalArray);
 
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, this._IntIndicesBufferID);
-            GL.DrawElements(BeginMode.Triangles, this._IntElementCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
 
-            if (!ShadowBufferDraw)
-            {
-                GL.BindTexture(TextureTarget.Texture2D, 0);
-                GL.ActiveTexture(TextureUnit.Texture7);
-                GL.UseProgram(uip);
-            }
 
-            // Draw Sides
-            GL.Begin(BeginMode.Quads);
-            {
-                GL.Normal3(-1, 0, 0);
-                GL.Vertex3(EmbeddedSoilModel.XhalfR, EmbeddedSoilModel.YGround, -EmbeddedSoilModel.ZEndTrench);
-                GL.Vertex3(EmbeddedSoilModel.XhalfR, EmbeddedSoilModel.YTrenchBottom, -EmbeddedSoilModel.ZEndTrench);
-                GL.Vertex3(EmbeddedSoilModel.XhalfR, EmbeddedSoilModel.YTrenchBottom, -EmbeddedSoilModel.ZStartTrench);
-                GL.Vertex3(EmbeddedSoilModel.XhalfR, EmbeddedSoilModel.YGround, -EmbeddedSoilModel.ZStartTrench);
-                GL.Normal3(1, 0, 0);
-                GL.Vertex3(EmbeddedSoilModel.XhalfL, EmbeddedSoilModel.YGround, -EmbeddedSoilModel.ZStartTrench);
-                GL.Vertex3(EmbeddedSoilModel.XhalfL, EmbeddedSoilModel.YTrenchBottom, -EmbeddedSoilModel.ZStartTrench);
-                GL.Vertex3(EmbeddedSoilModel.XhalfL, EmbeddedSoilModel.YTrenchBottom, -EmbeddedSoilModel.ZEndTrench);
-                GL.Vertex3(EmbeddedSoilModel.XhalfL, EmbeddedSoilModel.YGround, -EmbeddedSoilModel.ZEndTrench);
-            }
-            GL.End();
+
+
         }
 
         internal void drawTrenchOrtho()
@@ -970,6 +967,7 @@ namespace Excavator
         public static int _ShadowIntShaderV { get; private set; }
         public static int _ShadowIntShaderF { get; private set; }
         private static int _IntTextureDirt = 0;
+        private static int _IntTextureGrass = 0;
 
         public static void GLDelete_Static()
         {
@@ -988,6 +986,12 @@ namespace Excavator
             {
                 GL.DeleteTexture(EmbeddedSoilModel._IntTextureDirt);
                 EmbeddedSoilModel._IntTextureDirt = 0;
+            }
+
+            if (EmbeddedSoilModel._IntTextureGrass != 0)
+            {
+                GL.DeleteTexture(EmbeddedSoilModel._IntTextureGrass);
+                EmbeddedSoilModel._IntTextureGrass = 0;
             }
         }
 
@@ -1241,22 +1245,20 @@ namespace Excavator
 
 
 
-        const float _FloatBoxZ = 100, _FloatBoxX = 70, boxheight = 18;
+        public const float _FloatBoxZ = 100, _FloatBoxX = 70, boxheight = 18;
         private volatile float soilheightL = 1;
         private volatile float soilheightR = 1;
 
         public void drawBins(bool ShadowBufferDraw)
         {
-            const float sc = 39.37f;
-
             if (EmbeddedSoilModel._CadObjectBoxL == null)
             {
                 EmbeddedSoilModel._CadObjectBoxL = CadObjectGenerator.fromXAML(
                     Properties.Resources.Box,
                     ObjectName: "Box Left",
-                    xScale: sc,
-                    yScale: sc,
-                    zScale: sc,
+                    xScale: StaticMethods.Conversion_Meters_To_Inches,
+                    yScale: StaticMethods.Conversion_Meters_To_Inches,
+                    zScale: StaticMethods.Conversion_Meters_To_Inches,
                     xOff: -EmbeddedSoilModel._FloatBoxX,
                     yOff: 0.0f,
                     zOff: -EmbeddedSoilModel._FloatBoxZ);
@@ -1271,9 +1273,9 @@ namespace Excavator
                 EmbeddedSoilModel._CadObjectBoxR = CadObjectGenerator.fromXAML(
                     Properties.Resources.Box,
                     ObjectName: "Box Right",
-                    xScale: sc,
-                    yScale: sc,
-                    zScale: sc,
+                    xScale: StaticMethods.Conversion_Meters_To_Inches,
+                    yScale: StaticMethods.Conversion_Meters_To_Inches,
+                    zScale: StaticMethods.Conversion_Meters_To_Inches,
                     xOff: EmbeddedSoilModel._FloatBoxX,
                     yOff: 0.0f,
                     zOff: -EmbeddedSoilModel._FloatBoxZ);
@@ -1313,8 +1315,8 @@ namespace Excavator
 
         public static void setColorDirt()
         {
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Diffuse, EmbeddedSoilModel.ColorFrom(EmbeddedSoilModel._ColorDirt, 0.6f));
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Ambient, EmbeddedSoilModel.ColorFrom(EmbeddedSoilModel._ColorDirt, 0.4f));
+            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Diffuse, EmbeddedSoilModel.ColorFrom(EmbeddedSoilModel._ColorDirt, 0.6f));
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Emission, EmbeddedSoilModel.ColorEmpty());
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, EmbeddedSoilModel.ColorEmpty());
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Shininess, new float[] { 0 });

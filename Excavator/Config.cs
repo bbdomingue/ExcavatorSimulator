@@ -15,5 +15,7 @@ namespace Excavator
         public const decimal HTY = 18.0m;
         public const decimal HTZ = 7.0m;
         public const decimal HTO = -8;
+
+        public const bool DrawPhysX = true;
     }
 }

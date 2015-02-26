@@ -53,6 +53,8 @@ namespace Excavator
             CabRotater.RotateStarted += new CabRotaterEventHandler(this.CabRotater_RotateStarted);
             CabRotater.RotateEnded += new CabRotaterEventHandler(this.CabRotater_RotateEnded);
 
+            Console.WriteLine("Save Size: " + TrialSaver.File1_DataType.dl);
+
             FormBase._FormBase = this;
         }
 
@@ -273,9 +275,6 @@ namespace Excavator
             this._GLControlTemp = new GLControl(g);
             this._GLControlTemp.Load += new EventHandler(this._GLControlTemp_Load);
             this.panelOuterGL.Controls.Add(this._GLControlTemp);
-
-
-
         }
 
         private void _GLControlTemp_Load(object sender, EventArgs e)
@@ -290,8 +289,7 @@ namespace Excavator
             this.cadHandler1.Dock = DockStyle.Fill;
             this.tabPageOpenGL.Controls.Add(this.cadHandler1);
 
-            new T_FlowKeyboard(this);
-//            new T_VelocityCylinderKeyboard(this);
+            new TE_FlowKeyboard(this, null, -1);
 
             this.panelOuterGL_Resize(sender, e);
 
@@ -305,8 +303,9 @@ namespace Excavator
             this.numericUpDownHeadYaw_ValueChanged(sender, e);
             this.numericUpDownOutsideDistance_ValueChanged(sender, e);
 
-            this.radioButtonEnv_CheckedChanged(this.radioButtonEnvNorm, e);
-            this.radioButtonEnv_CheckedChanged(this.radioButtonEnvCat, e);
+//            this.radioButtonEnv_CheckedChanged(this.radioButtonEnvNorm, e);
+//            this.radioButtonEnv_CheckedChanged(this.radioButtonEnvCat, e);
+            this.radioButtonEnv_CheckedChanged(this.radioButtonEnvOutside, e);
 
             this.numericUpDownHT_X.Value = Config.HTX;
             this.numericUpDownHT_Y.Value = Config.HTY;
@@ -321,6 +320,9 @@ namespace Excavator
 
             this.checkBoxMute.Checked = Config.Mute;
             this.checkBoxMute_CheckedChanged(sender, e);
+
+            this.checkBoxPhysX.Checked = Config.DrawPhysX;
+            this.checkBoxPhysX_CheckedChanged(sender, e);
 
             this.numericUpDownEyeSeperation.Value = Config.EyeDist;
             this.numericUpDownEyeSeperation_ValueChanged(sender, e);
@@ -405,74 +407,7 @@ namespace Excavator
                 ((-v.Y * this.panelPinkTV.Height / Bobcat._TV_Height_Inches) + ((this.panelPinkTV.Height - this.panelPinkTV2.Height) / 2));
         }
 
-
-
-
-/*            float ed = (float)this.numericUpDownEyeSeperation.Value;
-
-            Vector3 vr = new Vector3();
-            Vector3 vl = new Vector3();
-            Vector3 vm = new Vector3();
-
-            for (int i = 0; i < 3; i++)
-            {
-                float relX = sx - Bobcat._TV_V3_Lift.X;
-                float relY = sy - Bobcat._TV_V3_Lift.Y;
-                float relZ = sz - Bobcat._TV_V3_Lift.Z;
-
-                switch (i)
-                {
-                    case 0: relX += ed; break;
-                    case 1: relX -= ed; break;
-                }
-
-                relX /= Bobcat._TV_Width_Inches / 2;
-
-                float k = (float)Math.Sqrt(relY * relY + relZ * relZ);
-                float th1 = (float)Math.Atan2(relY, relZ);
-                float th3 = StaticMethods._PIF / 2 - th1;
-                float fsy = (float)Math.Cos(th3);
-                float fsd = (float)Math.Sin(th3);
-
-                fsy *= k;
-                fsd *= k;
-
-                relY = -fsy * 2 / Bobcat._TV_Height_Inches;
-
-                fsd /= Bobcat._TV_Height_Inches;
-
-                switch (i)
-                {
-                    case 0:
-                        {
-                            vr = new Vector3(relX, relY, fsd);
-                            break;
-                        }
-                    case 1:
-                        {
-                            vl = new Vector3(relX, relY, fsd);
-                            break;
-                        }
-                    case 2:
-                        {
-                            this.panel2.Left = (int)((this.panel1.Width * (relX + 1) - this.panel2.Width) / 2);
-                            this.panel2.Top = (int)((this.panel1.Height * (relY + 1) - this.panel2.Height) / 2);
-
-                            vm = new Vector3(relX, relY, fsd);
-                            break;
-                        }
-                }
-            }*/
-
-
-
-
-
-
-
-
-
-
+        
 
 
         private void numericUpDownCabRotation_ValueChanged(object sender, EventArgs e)
@@ -1042,13 +977,19 @@ namespace Excavator
             });
         }
 
-
         private void CabRotater_RotateEnded() // Called By Head Tracking Thread
         {
             this.Invoke((MethodInvoker)delegate
             {
                 this.checkBoxCabRotater.Checked = false;
             });
+        }
+
+
+        public static bool _BoolDrawPhysX { get; private set; }
+        private void checkBoxPhysX_CheckedChanged(object sender, EventArgs e)
+        {
+            FormBase._BoolDrawPhysX = this.checkBoxPhysX.Checked;
         }
 
 

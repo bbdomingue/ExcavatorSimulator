@@ -33,7 +33,7 @@ namespace Excavator
             this._WaveOut = new WaveOut(WaveCallbackInfo.FunctionCallback());
             this._WaveOut.Init(this._LoopStream);
             this._WaveOut.PlaybackStopped += new EventHandler<StoppedEventArgs>(this._WaveOut_PlaybackStopped);
-            this._WaveOut.Volume = FormBase._BoolMute ? 0 : 1;
+            this._WaveOut.Volume = 0;
             this._WaveOut.Play();
         }
 

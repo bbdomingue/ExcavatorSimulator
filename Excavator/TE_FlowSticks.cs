@@ -10,7 +10,7 @@ using MatlabExcavatorWrapper;
 
 namespace Excavator
 {
-    public class TE_FlowSticks :  TrialEmbedBase
+    public class TE_FlowSticks :  Trial
     {
         private volatile float T1 = 0.0f;
         private volatile float T2 = 0.0f;
@@ -53,6 +53,12 @@ namespace Excavator
         public override void Gui_Label_Tick(float accumulator)
         {
             base.Gui_Label_Tick(accumulator);
+            
+            StaticMethods.setNudValue(this.nudCab, this.ActualAngles.cab);
+            StaticMethods.setNudValue(this.nudBoom, this.ActualAngles.boo);
+            StaticMethods.setNudValue(this.nudArm, this.ActualAngles.arm);
+            StaticMethods.setNudValue(this.nudBucket, this.ActualAngles.buc);
+            
             ControlStick._ControlStick.updateFPS(accumulator);
         }
 
@@ -73,9 +79,12 @@ namespace Excavator
 
 
 
-        public override void MatlabUpdateSim()
+
+
+
+        public override void updateSim()
         {
-            base.MatlabUpdateSim();
+            base.updateSim();
 
             this.T1 = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
             this.T2 = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
@@ -98,13 +107,8 @@ namespace Excavator
             Bobcat.PumpModelFlow(this.T3, ref flows, 2);
             Bobcat.PumpModelFlow(this.T4, ref flows, 3);
         }
+        
 
-        public override void MatlabUpdateGui()
-        {
-            StaticMethods.setNudValue(this.nudCab, this.ActualAngles.cab);
-            StaticMethods.setNudValue(this.nudBoom, this.ActualAngles.boo);
-            StaticMethods.setNudValue(this.nudArm, this.ActualAngles.arm);
-            StaticMethods.setNudValue(this.nudBucket, this.ActualAngles.buc);
-        }
+
     }
 }

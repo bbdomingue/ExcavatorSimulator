@@ -1,0 +1,692 @@
+﻿% tau in Nm
+% q in rad
+% qd in rad/s
+
+function qddout = Newton_euler_qdd_limited(qd1,tau,EEforce,EEmoment,wristforce,mL,q1)
+
+q = [q1(1) (-pi/2 + acos(-1.68/31.5423)) q1(2) q1(3) q1(4)]; %q2 fixed straight ahead
+qd = [qd1(1) 0 qd1(2) qd1(3) qd1(4)];
+
+m =  1.0e+003 * [    1.9554    0.1411    0.1906    0.1190    0.2071];   %masses in kg
+a = [31.5423 5.6022 104 54 34.6133]*0.0254;  % link lengths in m
+
+g = -9.81;
+zerw00 = [0 0 0]';
+
+a1 = a(1);
+a2 = a(2);
+a3 = a(3);
+a4 = a(4);
+a5 = a(5);
+
+m1 = m(1);
+m2 = m(2);
+m3 = m(3);
+m4 = m(4);
+m5 = m(5);
+
+t1min = -90*pi/180;
+t1max = 90*pi/180;
+t2max = 66*pi/180;
+t2min = -63*pi/180;
+t3max = -22*pi/180;
+t3min = -145*pi/180; %-2.188768083034109
+t4max = 33*pi/180;  %0.13725870294037668
+t4min = -154*pi/180; %-2.2578906226452915
+
+% t1max = 0*pi/180;
+% t1min = -90*pi/180;
+% t2max = 0*pi/180;
+% t2min = -90*pi/180;
+% t3max = 0*pi/180;
+% t3min = -90*pi/180;
+% t4max = 0*pi/180; 
+% t4min = -90*pi/180; 
+
+limitq = zeros(4,1);
+if (q(1) >= (t1max))% - 1e-5))
+    limitq(1) = 1;
+end
+if (q(1) <= (t1min))% + 1e-5))
+    limitq(1) = -1;      
+end
+if (q(3) >= (t2max))% - 1e-5))
+    limitq(2) = 1;      
+end
+if (q(3) <= (t2min))% + 1e-5))
+    limitq(2) = -1;       
+end 
+if (q(4) >= (t3max))% - 1e-5))
+    limitq(3) = 1;      
+end
+if (q(4) <= (t3min))% + 1e-5))
+    limitq(3) = -1;        
+end
+if (q(5) >= (t4max))% - 1e-5))
+    limitq(4) = 1;       
+end
+if (q(5) <= (t4min))% + 1e-5))
+    limitq(4) = -1;       
+end 
+
+k = [0 0 0 0 0 0;
+     0 1 0 0 0 0;
+     1 0 1 1 1 1];
+      
+% %moments of inertia of a rod about it's center     
+% I01c = m1*[0     0       0;
+%           0   1/12*a1^2  0;
+%           0     0   1/12*a1^2];
+% I02c = m2*[0     0       0;
+%           0   1/12*a2^2  0;
+%           0     0   1/12*a2^2];
+% I03c = m3*[0     0       0;
+%           0   1/12*a3^2  0;
+%           0     0   1/12*a3^2];        
+% I04c = m4*[0     0       0;
+%           0   1/12*a4^2  0;
+%           0     0   1/12*a4^2]; 
+% I05c = m5*[0     0       0;
+%           0   1/12*a5^2  0;
+%           0     0   1/12*a5^2]; 
+% 
+% % moments of inertia for point mass about it's cg    
+% I01c = zeros(3,3);      
+% I02c = zeros(3,3);  
+% I03c = zeros(3,3);
+
+% I01c = ...
+%   [541.0380  -53.7206   29.1453;
+%   -53.7206  739.8405  -10.0010;
+%    29.1453  -10.0010  821.2951];
+% I02c = ...
+%    [9.1682   -0.4466    1.9129;
+%    -0.4466    8.4159    0.3530;
+%     1.9129    0.3530    5.0713];
+% I03c = ...
+%    [14.1334    1.1617    0.1186;
+%     1.1617  115.4226    0.0418;
+%     0.1186    0.0418  127.3086];
+% I04c = ...
+%    [2.0862    2.7973   -0.0254;
+%     2.7973   36.2725    0.0055;
+%    -0.0254    0.0055   37.5392];
+% I05c = ...
+%    [10.7287   -1.4331   -0.0591;
+%    -1.4331   23.1532   -0.0204;
+%    -0.0591   -0.0204   21.7086];
+      
+% r = [-a1/2 0 0;
+%     -a2/2 0 0;
+% 	-a3/2 0 0;
+% 	-a4/2 0 0;
+% 	-a5/2 0 0];
+% 
+% % radii for new "point mass" links
+% r(1,:) = [-3 2 1];
+% r(2,:) = [-a2 0 0];
+% r(3,:) = [1 0 1];
+
+% r(1,:) = [ -0.6283   -0.5043    0.1554];
+% r(2,:) = [  0.1330   -0.2861    0.0389];
+% r(3,:) = [ -1.2467    0.3606   -0.0953];
+% r(4,:) = [ -0.8555    0.0968   -0.0005];
+% r(5,:) = [ -0.6096    0.2098   -0.0010];
+
+% output of MOI_bobcat
+r =...
+  [-0.6283   -0.5043    0.1554;
+    0.1330   -0.2861    0.0389;
+   -1.2467    0.3606   -0.0953;
+   -0.8555    0.0968   -0.0005;
+   -0.6096    0.2098   -0.0010];
+I01c = ...
+[  541.0380  -53.7206   29.1453;
+  -53.7206  739.8405  -10.0010;
+   29.1453  -10.0010  821.2951];
+I02c = ...
+[    9.1682   -0.4466    1.9129;
+   -0.4466    8.4159    0.3530;
+    1.9129    0.3530    5.0713];
+I03c = ...
+[   14.1334    1.1617    0.1186;
+    1.1617  115.4226    0.0418;
+    0.1186    0.0418  127.3086];
+I04c = ...
+[    2.0862    2.7973   -0.0254;
+    2.7973   36.2725    0.0055;
+   -0.0254    0.0055   37.5392];
+I05c = (m5+mL)*...
+[   10.7287   -1.4331   -0.0591;
+   -1.4331   23.1532   -0.0204;
+   -0.0591   -0.0204   21.7086]./m5;
+m5 = m5+mL;
+  
+A01=  [cos(q(1))     -sin(q(1))      0       a1*cos(q(1));
+      sin(q(1))     cos(q(1))      0        a1*sin(q(1));
+      0               0             1                0;
+      0             0                0               1];
+
+A12=  [cos(q(2))       0          sin(q(2))             a2*cos(q(2));
+       sin(q(2))         0         -cos(q(2))           a2*sin(q(2));
+       0              1             0                  0;
+       0             0                0               1];
+
+A23=  [cos(q(3))    -sin(q(3))       0               a3*cos(q(3));
+      sin(q(3))    cos(q(3))        0               a3*sin(q(3));
+      0              0               1              0;
+      0             0               0               1]; 
+  
+A34=  [cos(q(4))    -sin(q(4))       0               a4*cos(q(4));
+      sin(q(4))    cos(q(4))        0               a4*sin(q(4));
+      0              0               1              0;
+      0             0               0               1];
+  
+A45=  [cos(q(5))    -sin(q(5))       0               a5*cos(q(5));
+      sin(q(5))    cos(q(5))        0               a5*sin(q(5));
+      0             0               1               0;
+      0             0               0               1]; 
+  
+A56 = eye(4);
+A02 = A01*A12;
+A03 = A02*A23;
+A04 = A03*A34;
+A05 = A04*A45;
+
+A01R = transpose(A01(1:3,1:3));
+onew00 = (A01R*(zerw00));
+onekz0 = (k(:,1));
+onew01 = onew00 + qd(1)*(onekz0);
+onepstar1 = [a(1),0,0];
+onepstar1G = r(1,:);
+A01R = transpose(A01(1:3,1:3));
+
+A12R = transpose(A12(1:3,1:3));
+twow01 = (A12R*(onew01));
+twokz1 = (k(:,2));
+twow02 = twow01 + qd(2)*(twokz1);
+twopstar2 = [a(2),0,0];
+twopstar2G = r(2,:);
+A02R = transpose(A02(1:3,1:3));
+
+A23R = transpose(A23(1:3,1:3));
+thrw02 = (A23R*(twow02));
+thrkz2 = (k(:,3));
+thrw03 = thrw02 + qd(3)*(thrkz2);
+thrpstar3 = [a(3),0,0];
+thrpstar3G = r(3,:);
+A03R = transpose(A03(1:3,1:3));
+
+A34R = transpose(A34(1:3,1:3));
+forw03 = (A34R*(thrw03));
+forkz3 = (k(:,4));
+forw04 = forw03 + qd(4)*(forkz3);
+forpstar4 = [a(4),0,0];
+forpstar4G = r(4,:);
+A04R = transpose(A04(1:3,1:3));
+
+A45R = transpose(A45(1:3,1:3));
+fivw04 = (A45R*(forw04));
+fivkz4 = (k(:,5));
+fivw05 = fivw04 + qd(5)*(fivkz4);
+fivpstar5 = [a(5),0,0];
+fivpstar5G = r(5,:);
+A05R = transpose(A05(1:3,1:3));
+gvec = [0; 0; -g];
+
+sixF5c6 = (A05R*EEforce);
+sixM5c6 = (A05R*EEmoment);
+% sixF5c6 = (A05R'*EEforce)
+% sixM5c6 = (A05R'*EEmoment);
+A56R = transpose(A56(1:3,1:3));
+%A05*[EEforce; 0]
+
+fivF5c6 = (transpose(A56R)*(sixF5c6));
+fivM5c6 = (transpose(A56R)*(sixM5c6));
+% fivM5c6qddc = A56R*EEmoment;
+fivM5c6qddc = fivM5c6;
+fivF5c6qddc = fivF5c6;
+
+%onealfa01 = qdd(1)*onekz0;
+onealfa01qdd1 = onekz0;
+
+twoalfa02qdd1 = A12R*onealfa01qdd1;
+%twoalfa02qdd2 = twokz1;
+twoalfa02qddc = cross(twow01,twokz1*qd(2));
+%twoalfa02 = twoalfa02qdd1*qdd(1) + twoalfa02qdd2*qdd(2)+twoalfa02qddc;
+
+thralfa03qdd1 = (A23R*twoalfa02qdd1);
+%thralfa03qdd2 = (A23R*twoalfa02qdd2);
+thralfa03qdd3 = thrkz2;
+thralfa03qddc = (A23R*twoalfa02qddc) + cross(thrw02,thrkz2*qd(3));
+%thralfa03 = thralfa03qdd1*qdd(1) + thralfa03qdd2*qdd(2) + thralfa03qdd3*qdd(3) + thralfa03qddc;
+
+foralfa04qdd1 = (A34R*thralfa03qdd1);
+%foralfa04qdd2 = (A34R*thralfa03qdd2);
+foralfa04qdd3 = (A34R*thralfa03qdd3);
+foralfa04qdd4 = forkz3;
+foralfa04qddc = (A34R*thralfa03qddc)+ cross(forw03,forkz3*qd(4));
+%foralfa04 = foralfa04qdd1*qdd(1) + foralfa04qdd2*qdd(2) + foralfa04qdd3*qdd(3) + foralfa04qdd4*qdd(4) + foralfa04qddc;
+
+fivalfa05qdd1 = (A45R*foralfa04qdd1);
+%fivalfa05qdd2 = (A45R*foralfa04qdd2);
+fivalfa05qdd3 = (A45R*foralfa04qdd3);
+fivalfa05qdd4 = (A45R*foralfa04qdd4);
+fivalfa05qdd5 = fivkz4;
+fivalfa05qddc = (A45R*foralfa04qddc)+ cross(fivw04,fivkz4*qd(5));
+%fivalfa05 = fivalfa05qdd1*qdd(1) + fivalfa05qdd2*qdd(2) + fivalfa05qdd3*qdd(3) + fivalfa05qdd4*qdd(4) + fivalfa05qdd5*qdd(5) + fivalfa05qddc;
+
+onea01qdd1 = cross(onealfa01qdd1,onepstar1)';
+onea01qddc = cross(onew01,cross(onew01,onepstar1))';
+%onea01 = qdd(1)*onea01qdd1 + onea01qddc;
+
+twoa02qdd1 = A12R*([-onepstar1(2) onepstar1(1) 0]') + cross((A12R*(onekz0)),twopstar2)';
+%twoa02qdd2 = cross(twoalfa02qdd2,twopstar2)';
+twoa02qddc = A12R*onea01qddc + cross(twoalfa02qddc,twopstar2)' + transpose(cross(twow02,cross(twow02,twopstar2)));
+%twoa02 = twoa02qdd1*(qdd(1)) + twoa02qdd2*qdd(2) + twoa02qddc;
+
+thra03qdd1 = A23R*twoa02qdd1 + cross(thralfa03qdd1,thrpstar3)';
+%thra03qdd2 = A23R*twoa02qdd2 + cross(thralfa03qdd2,thrpstar3)';
+thra03qdd3 = cross(thralfa03qdd3,thrpstar3)';
+thra03qddc = A23R*twoa02qddc + cross(thralfa03qddc,thrpstar3)' + transpose(cross(thrw03,cross(thrw03,thrpstar3)));
+%thra03 = thra03qdd1*qdd(1) + thra03qdd2*qdd(2) + thra03qdd3*qdd(3) + thra03qddc;
+
+fora04qdd1 = A34R*thra03qdd1 + cross(foralfa04qdd1,forpstar4)';
+%fora04qdd2 = A34R*thra03qdd2 + cross(foralfa04qdd2,forpstar4)';
+fora04qdd3 = A34R*thra03qdd3 + cross(foralfa04qdd3,forpstar4)';
+fora04qdd4 = cross(foralfa04qdd3,forpstar4)';
+fora04qddc = A34R*thra03qddc + cross(foralfa04qddc,forpstar4)'+ transpose(cross(forw04,cross(forw04,forpstar4)));
+%fora04 = fora04qdd1*qdd(1) + fora04qdd2*qdd(2) + fora04qdd3*qdd(3) + fora04qdd4*qdd(4) + fora04qddc;
+
+fiva05qdd1 = A45R*fora04qdd1 + cross(fivalfa05qdd1,fivpstar5)';
+%fiva05qdd2 = A45R*fora04qdd2 + cross(fivalfa05qdd2,fivpstar5)';
+fiva05qdd3 = A45R*fora04qdd3 + cross(fivalfa05qdd3,fivpstar5)';
+fiva05qdd4 = A45R*fora04qdd4 + cross(fivalfa05qdd4,fivpstar5)';
+fiva05qdd5 = cross(fivalfa05qdd4,fivpstar5)';
+fiva05qddc = A45R*fora04qddc + cross(fivalfa05qddc,fivpstar5)'+ transpose(cross(fivw05,cross(fivw05,fivpstar5)));
+%fiva05 = fiva05qdd1*qdd(1) + fiva05qdd2*qdd(2) + fiva05qdd3*qdd(3) + fiva05qdd4*qdd(4) + fiva05qdd5*qdd(5) + fiva05qddc;
+
+fiva05Gqdd1 = fiva05qdd1 + cross(fivalfa05qdd1,fivpstar5G)';
+%fiva05Gqdd2 = fiva05qdd2 + cross(fivalfa05qdd2,fivpstar5G)';
+fiva05Gqdd3 = fiva05qdd3 + cross(fivalfa05qdd3,fivpstar5G)';
+fiva05Gqdd4 = fiva05qdd4 + cross(fivalfa05qdd4,fivpstar5G)';
+fiva05Gqdd5 = fiva05qdd5 + cross(fivalfa05qdd5,fivpstar5G)';
+fiva05Gqddc = fiva05qddc + cross(fivalfa05qddc,fivpstar5G)' + transpose(cross(fivw05,cross(fivw05,fivpstar5G)));
+%fiva05G = fiva05Gqdd1*qdd(1) + fiva05Gqdd2*qdd(2) + fiva05Gqdd3*qdd(3) + fiva05Gqdd4*qdd(4) + fiva05Gqdd5*qdd(5) + fiva05Gqddc;
+
+fora04Gqdd1 = fora04qdd1 + cross(foralfa04qdd1,forpstar4G)';
+%fora04Gqdd2 = fora04qdd2 + cross(foralfa04qdd2,forpstar4G)';
+fora04Gqdd3 = fora04qdd3 + cross(foralfa04qdd3,forpstar4G)';
+fora04Gqdd4 = fora04qdd4 + cross(foralfa04qdd4,forpstar4G)';
+fora04Gqddc = fora04qddc + cross(foralfa04qddc,forpstar4G)' + transpose(cross(forw04,cross(forw04,forpstar4G)));
+%fora04G = fora04Gqdd1*qdd(1) + fora04Gqdd2*qdd(2) + fora04Gqdd3*qdd(3) + fora04Gqdd4*qdd(4) + fora04Gqddc;
+
+thra03Gqdd1 = thra03qdd1 + cross(thralfa03qdd1,thrpstar3G)';
+%thra03Gqdd2 = thra03qdd2 + cross(thralfa03qdd2,thrpstar3G)';
+thra03Gqdd3 = thra03qdd3 + cross(thralfa03qdd3,thrpstar3G)';
+thra03Gqddc = thra03qddc + cross(thralfa03qddc,thrpstar3G)' + transpose(cross(thrw03,cross(thrw03,thrpstar3G)));
+%thra03G = thra03Gqdd1*qdd(1) + thra03Gqdd2*qdd(2) + thra03Gqdd3*qdd(3) + thra03Gqddc;
+
+twoa02Gqdd1 = twoa02qdd1 + cross(twoalfa02qdd1,twopstar2G)';
+%twoa02Gqdd2 = twoa02qdd2 + cross(twoalfa02qdd2,twopstar2G)';
+twoa02Gqddc = twoa02qddc + cross(twoalfa02qddc,twopstar2G)' + transpose(cross(twow02,cross(twow02,twopstar2G)));
+%twoa02G = twoa02Gqdd1*qdd(1) + twoa02Gqdd2*qdd(2) + twoa02Gqddc;
+
+onea01Gqdd1 = onea01qdd1 + cross(onealfa01qdd1,onepstar1G)';
+onea01Gqddc = onea01qddc + transpose(cross(onew01,cross(onew01,onepstar1G)));
+%onea01G = onea01Gqdd1*qdd(1) + onea01Gqddc;
+
+oneH01 = (I01c*(onew01));
+oneMc01qdd1 = I01c*onealfa01qdd1;
+oneMc01qddc = cross(onew01,oneH01);
+%oneM01 = oneMc01qdd1*qdd(1) + oneMc01qddc;
+
+twoH02 = (I02c*(twow02));
+twoMc02qdd1 = I02c*twoalfa02qdd1;
+%twoMc02qdd2 = I02c*twoalfa02qdd2;
+twoMc02qddc = I02c*twoalfa02qddc + cross(twow02,twoH02);
+%twoM02 = twoMc02qdd1*qdd(1) + twoMc02qdd2*qdd(2) + twoMc02qddc;
+
+thrH03 = (I03c*(thrw03));
+thrMc03qdd1 = I03c*thralfa03qdd1;
+%thrMc03qdd2 = I03c*thralfa03qdd2;
+thrMc03qdd3 = I03c*thralfa03qdd3;
+thrMc03qddc = I03c*thralfa03qddc + cross(thrw03,thrH03);
+%thrM03 = thrMc03qdd1*qdd(1) + thrMc03qdd2*qdd(2) + thrMc03qdd3*qdd(3) + thrMc03qddc;
+
+forH04 = (I04c*(forw04));
+forMc04qdd1 = I04c*foralfa04qdd1;
+%forMc04qdd2 = I04c*foralfa04qdd2;
+forMc04qdd3 = I04c*foralfa04qdd3;
+forMc04qdd4 = I04c*foralfa04qdd4;
+forMc04qddc = I04c*foralfa04qddc + cross(forw04,forH04);
+%forM04 = forMc04qdd1*qdd(1) + forMc04qdd2*qdd(2) + forMc04qdd3*qdd(3) + forMc04qdd4*qdd(4) + forMc04qddc;
+
+fivH05 = (I05c*(fivw05));
+fivMc05qdd1 = I05c*fivalfa05qdd1;
+%fivMc05qdd2 = I05c*fivalfa05qdd2;
+fivMc05qdd3 = I05c*fivalfa05qdd3;
+fivMc05qdd4 = I05c*fivalfa05qdd4;
+fivMc05qdd5 = I05c*fivalfa05qdd5;
+fivMc05qddc = I05c*fivalfa05qddc + cross(fivw05,fivH05);
+%fivM05 = fivMc05qdd1*qdd(1) + fivMc05qdd2*qdd(2) + fivMc05qdd3*qdd(3) + fivMc05qdd4*qdd(4) + fivMc05qdd5*qdd(5) + fivMc05qddc;
+
+oneF01qdd1 = m1*(onea01Gqdd1);
+oneF01qddc = m1*(A01R*gvec + onea01Gqddc);
+%oneF01 = oneF01qdd1*qdd(1) + oneF01qddc;
+
+twoF02qdd1 = m2*(twoa02Gqdd1);
+%twoF02qdd2 = m2*(twoa02Gqdd2);
+twoF02qddc = m2*(A02R*gvec + twoa02Gqddc);
+%twoF02 = twoF02qdd1*qdd(1) + twoF02qdd2*qdd(2) + twoF02qddc;
+
+thrF03qdd1 = m3*(thra03Gqdd1);
+%thrF03qdd2 = m3*(thra03Gqdd2);
+thrF03qdd3 = m3*(thra03Gqdd3);
+thrF03qddc = m3*(A03R*gvec + thra03Gqddc);
+%thrF03 = thrF03qdd1*qdd(1) + thrF03qdd2*qdd(2) + thrF03qdd3*qdd(3) + thrF03qddc;
+
+forF04qdd1 = m4*(fora04Gqdd1);
+%forF04qdd2 = m4*(fora04Gqdd2);
+forF04qdd3 = m4*(fora04Gqdd3);
+forF04qdd4 = m4*(fora04Gqdd4);
+forF04qddc = m4*(A04R*gvec + fora04Gqddc);
+%forF04 = forF04qdd1*qdd(1) + forF04qdd2*qdd(2) + forF04qdd3*qdd(3) + forF04qdd4*qdd(4) + forF04qddc;
+
+fivF05qdd1 = m5*(fiva05Gqdd1);
+%fivF05qdd2 = m5*(fiva05Gqdd2);
+fivF05qdd3 = m5*(fiva05Gqdd3);
+fivF05qdd4 = m5*(fiva05Gqdd4);
+fivF05qdd5 = m5*(fiva05Gqdd5);
+fivF05qddc = m5*(A05R*gvec + fiva05Gqddc);
+%fivF05 = fivF05qdd1*qdd(1) + fivF05qdd2*qdd(2) + fivF05qdd3*qdd(3) + fivF05qdd4*qdd(4) + fivF05qdd5*qdd(5) + fivF05qddc;
+
+fivF4c5qddc = fivF5c6 + fivF05qddc;
+fivF4c5qdd1 = fivF05qdd1;
+%fivF4c5qdd2 = fivF05qdd2;
+fivF4c5qdd3 = fivF05qdd3;
+fivF4c5qdd4 = fivF05qdd4;
+fivF4c5qdd5 = fivF05qdd5;
+%fivF4c5 = fivF4c5qddc + fivF4c5qdd1*qdd(1) + fivF4c5qdd2*qdd(2) + fivF4c5qdd3*qdd(3) + fivF4c5qdd4*qdd(4) + fivF4c5qdd5*qdd(5);
+
+forF3c4qddc = transpose(A45R)*fivF4c5qddc + forF04qddc + (A04R*(wristforce));
+%forF3c4qddc = transpose(A45R)*fivF4c5qddc + forF04qddc;
+forF3c4qdd1 = transpose(A45R)*fivF4c5qdd1 + forF04qdd1;
+%forF3c4qdd2 = transpose(A45R)*fivF4c5qdd2 + forF04qdd2;
+forF3c4qdd3 = transpose(A45R)*fivF4c5qdd3 + forF04qdd3;
+forF3c4qdd4 = transpose(A45R)*fivF4c5qdd4 + forF04qdd4;
+forF3c4qdd5 = transpose(A45R)*fivF4c5qdd5;
+%forF3c4 = forF3c4qddc + forF3c4qdd1*qdd(1) + forF3c4qdd2*qdd(2) + forF3c4qdd3*qdd(3) + forF3c4qdd4*qdd(4) + forF3c4qdd5*qdd(5);
+
+thrF2c3qddc = transpose(A34R)*forF3c4qddc + thrF03qddc;
+thrF2c3qdd1 = transpose(A34R)*forF3c4qdd1 + thrF03qdd1;
+%thrF2c3qdd2 = transpose(A34R)*forF3c4qdd2 + thrF03qdd2;
+thrF2c3qdd3 = transpose(A34R)*forF3c4qdd3 + thrF03qdd3;
+thrF2c3qdd4 = transpose(A34R)*forF3c4qdd4;
+thrF2c3qdd5 = transpose(A34R)*forF3c4qdd5;
+%thrF2c3 = thrF2c3qddc + thrF2c3qdd1*qdd(1) + thrF2c3qdd2*qdd(2) + thrF2c3qdd3*qdd(3) + thrF2c3qdd4*qdd(4) + thrF2c3qdd5*qdd(5);
+
+twoF1c2qddc = transpose(A23R)*thrF2c3qddc + twoF02qddc;
+twoF1c2qdd1 = transpose(A23R)*thrF2c3qdd1 + twoF02qdd1;
+%twoF1c2qdd2 = transpose(A23R)*thrF2c3qdd2 + twoF02qdd2;
+twoF1c2qdd3 = transpose(A23R)*thrF2c3qdd3;
+twoF1c2qdd4 = transpose(A23R)*thrF2c3qdd4;
+twoF1c2qdd5 = transpose(A23R)*thrF2c3qdd5;
+%twoF1c2 = twoF1c2qddc + twoF1c2qdd1*qdd(1) + twoF1c2qdd2*qdd(2) + twoF1c2qdd3*qdd(3) + twoF1c2qdd4*qdd(4) + twoF1c2qdd5*qdd(5);
+
+fivM4c5qddc = fivM5c6qddc + fivMc05qddc + cross(fivpstar5,fivF5c6qddc)' + cross((fivpstar5+fivpstar5G),fivF05qddc)';
+fivM4c5qdd1 = fivMc05qdd1 + cross((fivpstar5+fivpstar5G),fivF05qdd1)';
+%fivM4c5qdd2 = fivMc05qdd2 + cross((fivpstar5+fivpstar5G),fivF05qdd2)';
+fivM4c5qdd3 = fivMc05qdd3 + cross((fivpstar5+fivpstar5G),fivF05qdd3)';
+fivM4c5qdd4 = fivMc05qdd4 + cross((fivpstar5+fivpstar5G),fivF05qdd4)';
+fivM4c5qdd5 = fivMc05qdd5 + cross((fivpstar5+fivpstar5G),fivF05qdd5)';
+%fivM4c5 = fivM4c5qddc + fivM4c5qdd1*qdd(1) + fivM4c5qdd2*qdd(2) + fivM4c5qdd3*qdd(3) + fivM4c5qdd4*qdd(4) + fivM4c5qdd5*qdd(5);
+
+forM3c4qddc = (A45R)'*fivM4c5qddc + forMc04qddc + cross(forpstar4,A45R'*fivF4c5qddc)' + cross((forpstar4+forpstar4G),forF04qddc)' ...
+    + transpose(cross(forpstar4,A04R*(wristforce)));
+%forM3c4qddc = (A45R)'*fivM4c5qddc + forMc04qddc + cross(forpstar4,A45R'*fivF4c5qddc)' + cross((forpstar4+forpstar4G),forF04qddc)';
+forM3c4qdd1 = (A45R)'*fivM4c5qdd1 + forMc04qdd1 + cross(forpstar4,A45R'*fivF4c5qdd1)' + cross((forpstar4+forpstar4G),forF04qdd1)';
+%forM3c4qdd2 = (A45R)'*fivM4c5qdd2 + forMc04qdd2 + cross(forpstar4,A45R'*fivF4c5qdd2)' + cross((forpstar4+forpstar4G),forF04qdd2)';
+forM3c4qdd3 = (A45R)'*fivM4c5qdd3 + forMc04qdd3 + cross(forpstar4,A45R'*fivF4c5qdd3)' + cross((forpstar4+forpstar4G),forF04qdd3)';
+forM3c4qdd4 = (A45R)'*fivM4c5qdd4 + forMc04qdd4 + cross(forpstar4,A45R'*fivF4c5qdd4)' + cross((forpstar4+forpstar4G),forF04qdd4)';
+forM3c4qdd5 = (A45R)'*fivM4c5qdd5 + cross(forpstar4,A45R'*fivF4c5qdd5)';
+%forM3c4 = forM3c4qddc + forM3c4qdd1*qdd(1) + forM3c4qdd2*qdd(2) + forM3c4qdd3*qdd(3) + forM3c4qdd4*qdd(4) + forM3c4qdd5*qdd(5);
+
+thrM2c3qddc = A34R'*forM3c4qddc + thrMc03qddc + cross(thrpstar3,A34R'*forF3c4qddc)' + cross((thrpstar3+thrpstar3G),thrF03qddc)';
+thrM2c3qdd1 = A34R'*forM3c4qdd1 + thrMc03qdd1 + cross(thrpstar3,A34R'*forF3c4qdd1)' + cross((thrpstar3+thrpstar3G),thrF03qdd1)';
+%thrM2c3qdd2 = A34R'*forM3c4qdd2 + thrMc03qdd2 + cross(thrpstar3,A34R'*forF3c4qdd2)' + cross((thrpstar3+thrpstar3G),thrF03qdd2)';
+thrM2c3qdd3 = A34R'*forM3c4qdd3 + thrMc03qdd3 + cross(thrpstar3,A34R'*forF3c4qdd3)' + cross((thrpstar3+thrpstar3G),thrF03qdd3)';
+thrM2c3qdd4 = A34R'*forM3c4qdd4 + cross(thrpstar3,A34R'*forF3c4qdd4)';
+thrM2c3qdd5 = A34R'*forM3c4qdd5 + cross(thrpstar3,A34R'*forF3c4qdd5)';
+%thrM2c3 = thrM2c3qddc + thrM2c3qdd1*qdd(1) + thrM2c3qdd2*qdd(2) + thrM2c3qdd3*qdd(3) + thrM2c3qdd4*qdd(4) + thrM2c3qdd5*qdd(5);
+
+twoM1c2qddc = A23R'*thrM2c3qddc + twoMc02qddc + cross(twopstar2,A23R'*thrF2c3qddc)' + cross((twopstar2+twopstar2G),twoF02qddc)';
+twoM1c2qdd1 = A23R'*thrM2c3qdd1 + twoMc02qdd1 + cross(twopstar2,A23R'*thrF2c3qdd1)' + cross((twopstar2+twopstar2G),twoF02qdd1)';
+%twoM1c2qdd2 = A23R'*thrM2c3qdd2 + twoMc02qdd2 + cross(twopstar2,A23R'*thrF2c3qdd2)' + cross((twopstar2+twopstar2G),twoF02qdd2)';
+twoM1c2qdd3 = A23R'*thrM2c3qdd3 + cross(twopstar2,A23R'*thrF2c3qdd3)';
+twoM1c2qdd4 = A23R'*thrM2c3qdd4 + cross(twopstar2,A23R'*thrF2c3qdd4)';
+twoM1c2qdd5 = A23R'*thrM2c3qdd5 + cross(twopstar2,A23R'*thrF2c3qdd5)';
+%twoM1c2 = twoM1c2qddc + twoM1c2qdd1*qdd(1) + twoM1c2qdd2*qdd(2) + twoM1c2qdd3*qdd(3) + twoM1c2qdd4*qdd(4) + twoM1c2qdd5*qdd(5);
+
+tau5qddc = fivM5c6qddc + fivMc05qddc + (cross(fivpstar5,fivF5c6qddc))' + (cross((fivpstar5+fivpstar5G),fivF05qddc))';
+tau5qdd5 = fivMc05qdd5 + (cross((fivpstar5+fivpstar5G),fivF05qdd5))';
+tau5qdd4 = fivMc05qdd4 + (cross((fivpstar5+fivpstar5G),fivF05qdd4))';
+tau5qdd3 = fivMc05qdd3 + (cross((fivpstar5+fivpstar5G),fivF05qdd3))';
+%tau5qdd2 = fivMc05qdd2 + (cross((fivpstar5+fivpstar5G),fivF05qdd2))';
+tau5qdd1 = fivMc05qdd1 + (cross((fivpstar5+fivpstar5G),fivF05qdd1))';
+% tau5 = tau5qddc + tau5qdd1*qdd(1)+tau5qdd2*qdd(2)+tau5qdd3*qdd(3)+tau5qdd4*qdd(4)+tau5qdd5*qdd(5);
+
+tau4qddc = A45R'*fivM4c5qddc + forMc04qddc + cross(forpstar4,A45R'*fivF4c5qddc)' + cross((forpstar4+forpstar4G),forF04qddc)';
+tau4qdd1 = A45R'*fivM4c5qdd1 + forMc04qdd1 + cross(forpstar4,A45R'*fivF4c5qdd1)' + cross((forpstar4+forpstar4G),forF04qdd1)';
+%tau4qdd2 = A45R'*fivM4c5qdd2 + forMc04qdd2 + cross(forpstar4,A45R'*fivF4c5qdd2)' + cross((forpstar4+forpstar4G),forF04qdd2)';
+tau4qdd3 = A45R'*fivM4c5qdd3 + forMc04qdd3 + cross(forpstar4,A45R'*fivF4c5qdd3)' + cross((forpstar4+forpstar4G),forF04qdd3)';
+tau4qdd4 = A45R'*fivM4c5qdd4 + forMc04qdd4 + cross(forpstar4,A45R'*fivF4c5qdd4)' + cross((forpstar4+forpstar4G),forF04qdd4)';
+tau4qdd5 = A45R'*fivM4c5qdd5 + cross(forpstar4,A45R'*fivF4c5qdd5)';
+% tau4 = tau4qddc + tau4qdd1*qdd(1)+tau4qdd2*qdd(2)+tau4qdd3*qdd(3)+tau4qdd4*qdd(4)+tau4qdd5*qdd(5);
+
+tau3qddc = A34R'*forM3c4qddc + thrMc03qddc + cross(thrpstar3,A34R'*forF3c4qddc)' + cross((thrpstar3+thrpstar3G),thrF03qddc)';
+tau3qdd1 = A34R'*forM3c4qdd1 + thrMc03qdd1 + cross(thrpstar3,A34R'*forF3c4qdd1)' + cross((thrpstar3+thrpstar3G),thrF03qdd1)';
+%tau3qdd2 = A34R'*forM3c4qdd2 + thrMc03qdd2 + cross(thrpstar3,A34R'*forF3c4qdd2)' + cross((thrpstar3+thrpstar3G),thrF03qdd2)';
+tau3qdd3 = A34R'*forM3c4qdd3 + thrMc03qdd3 + cross(thrpstar3,A34R'*forF3c4qdd3)' + cross((thrpstar3+thrpstar3G),thrF03qdd3)';
+tau3qdd4 = A34R'*forM3c4qdd4 + cross(thrpstar3,A34R'*forF3c4qdd4)';
+tau3qdd5 = A34R'*forM3c4qdd5 + cross(thrpstar3,A34R'*forF3c4qdd5)';
+% tau3 = tau3qddc + tau3qdd1*qdd(1)+tau3qdd2*qdd(2)+tau3qdd3*qdd(3)+tau3qdd4*qdd(4)+tau3qdd5*qdd(5);
+
+% tau2qddc = A23R'*thrM2c3qddc + twoMc02qddc + cross(twopstar2,A23R'*thrF2c3qddc)' + cross((twopstar2+twopstar2G),twoF02qddc)';
+% tau2qdd1 = A23R'*thrM2c3qdd1 + twoMc02qdd1 + cross(twopstar2,A23R'*thrF2c3qdd1)' + cross((twopstar2+twopstar2G),twoF02qdd1)';
+% %tau2qdd2 = A23R'*thrM2c3qdd2 + twoMc02qdd2 + cross(twopstar2,A23R'*thrF2c3qdd2)' + cross((twopstar2+twopstar2G),twoF02qdd2)';
+% tau2qdd3 = A23R'*thrM2c3qdd3 + cross(twopstar2,A23R'*thrF2c3qdd3)';
+% tau2qdd4 = A23R'*thrM2c3qdd4 + cross(twopstar2,A23R'*thrF2c3qdd4)';
+% tau2qdd5 = A23R'*thrM2c3qdd5 + cross(twopstar2,A23R'*thrF2c3qdd5)';
+% tau2 = tau2qddc + tau2qdd1*qdd(1)+tau2qdd2*qdd(2)+tau2qdd3*qdd(3)+tau2qdd4*qdd(4)+tau2qdd5*qdd(5);
+
+tau1qddc = A12R'*twoM1c2qddc + oneMc01qddc + cross(onepstar1,A12R'*twoF1c2qddc)' + cross((onepstar1+onepstar1G),oneF01qddc)';
+tau1qdd1 = A12R'*twoM1c2qdd1 + oneMc01qdd1 + cross(onepstar1,A12R'*twoF1c2qdd1)' + cross((onepstar1+onepstar1G),oneF01qdd1)';
+%tau1qdd2 = A12R'*twoM1c2qdd2 + cross(onepstar1,A12R'*twoF1c2qdd2)';
+tau1qdd3 = A12R'*twoM1c2qdd3 + cross(onepstar1,A12R'*twoF1c2qdd3)';
+tau1qdd4 = A12R'*twoM1c2qdd4 + cross(onepstar1,A12R'*twoF1c2qdd4)';
+tau1qdd5 = A12R'*twoM1c2qdd5 + cross(onepstar1,A12R'*twoF1c2qdd5)';
+% tau1 = tau1qddc + tau1qdd1*qdd(1)+tau1qdd2*qdd(2)+tau1qdd3*qdd(3)+tau1qdd4*qdd(4)+tau1qdd5*qdd(5);
+
+t1qddc = tau1qddc'*(A01(1:3,1:3)'*k(:,1));
+t1qdd1 = tau1qdd1'*(A01(1:3,1:3)'*k(:,1));
+%t1qdd2 = tau1qdd2'*(A01(1:3,1:3)'*k(:,1));
+t1qdd3 = tau1qdd3'*(A01(1:3,1:3)'*k(:,1));
+t1qdd4 = tau1qdd4'*(A01(1:3,1:3)'*k(:,1));
+t1qdd5 = tau1qdd5'*(A01(1:3,1:3)'*k(:,1));
+% t1 = t1qddc + t1qdd1*qdd(1)+t1qdd2*qdd(2)+t1qdd3*qdd(3)+t1qdd4*qdd(4)+t1qdd5*qdd(5);
+
+% t2qddc = tau2qddc'*(A12(1:3,1:3)'*k(:,1));
+% t2qdd1 = tau2qdd1'*(A12(1:3,1:3)'*k(:,1));
+% t2qdd2 = tau2qdd2'*(A12(1:3,1:3)'*k(:,1));
+% t2qdd3 = tau2qdd3'*(A12(1:3,1:3)'*k(:,1));
+% t2qdd4 = tau2qdd4'*(A12(1:3,1:3)'*k(:,1));
+% t2qdd5 = tau2qdd5'*(A12(1:3,1:3)'*k(:,1));
+% t2 = t2qddc + t2qdd1*qdd(1)+t2qdd2*qdd(2)+t2qdd3*qdd(3)+t2qdd4*qdd(4)+t2qdd5*qdd(5);
+
+t3qddc = tau3qddc'*(A23(1:3,1:3)'*k(:,1));
+t3qdd1 = tau3qdd1'*(A23(1:3,1:3)'*k(:,1));
+%t3qdd2 = tau3qdd2'*(A23(1:3,1:3)'*k(:,1));
+t3qdd3 = tau3qdd3'*(A23(1:3,1:3)'*k(:,1));
+t3qdd4 = tau3qdd4'*(A23(1:3,1:3)'*k(:,1));
+t3qdd5 = tau3qdd5'*(A23(1:3,1:3)'*k(:,1));
+% t3 = t3qddc + t3qdd1*qdd(1)+t3qdd2*qdd(2)+t3qdd3*qdd(3)+t3qdd4*qdd(4)+t3qdd5*qdd(5);
+
+t4qddc = tau4qddc'*(A34(1:3,1:3)'*k(:,1));
+t4qdd1 = tau4qdd1'*(A34(1:3,1:3)'*k(:,1));
+%t4qdd2 = tau4qdd2'*(A34(1:3,1:3)'*k(:,1));
+t4qdd3 = tau4qdd3'*(A34(1:3,1:3)'*k(:,1));
+t4qdd4 = tau4qdd4'*(A34(1:3,1:3)'*k(:,1));
+t4qdd5 = tau4qdd5'*(A34(1:3,1:3)'*k(:,1));
+% t4 = t4qddc + t4qdd1*qdd(1)+t4qdd2*qdd(2)+t4qdd3*qdd(3)+t4qdd4*qdd(4)+t4qdd5*qdd(5);t3qddc = tau3qddc'*(A23(1:3,1:3)'*k(:,1));
+
+t5qddc = tau5qddc'*(A45(1:3,1:3)'*k(:,1));
+t5qdd1 = tau5qdd1'*(A45(1:3,1:3)'*k(:,1));
+%t5qdd2 = tau5qdd2'*(A45(1:3,1:3)'*k(:,1));
+t5qdd3 = tau5qdd3'*(A45(1:3,1:3)'*k(:,1));
+t5qdd4 = tau5qdd4'*(A45(1:3,1:3)'*k(:,1));
+t5qdd5 = tau5qdd5'*(A45(1:3,1:3)'*k(:,1));
+% t5 = t5qddc + t5qdd1*qdd(1)+t5qdd2*qdd(2)+t5qdd3*qdd(3)+t5qdd4*qdd(4)+t5qdd5*qdd(5);t3qddc = tau3qddc'*(A23(1:3,1:3)'*k(:,1));
+
+%eliminate the qdd2 terms since offset doesn't move in normal motion
+qddmat = [t1qdd1  t1qdd3 t1qdd4 t1qdd5;
+          %t2qdd1  t2qdd3 t2qdd4 t2qdd5;
+          t3qdd1  t3qdd3 t3qdd4 t3qdd5;
+          t4qdd1  t4qdd3 t4qdd4 t4qdd5;
+          t5qdd1  t5qdd3 t5qdd4 t5qdd5];
+%qddcmat = [t1qddc t2qddc t3qddc t4qddc t5qddc]';      
+qddcmat = [t1qddc t3qddc t4qddc t5qddc]';
+
+% tau = (qddmat*qdd'+qddcmat)';
+qdd = qddmat\(tau - qddcmat);
+%qdd5 = [qdd4(1) 0 qdd4(2) qdd4(3) qdd4(4)];
+
+qddmatnew3 = zeros(3,3);
+qddcmatnew3 = zeros(3,1);
+taunew3 = zeros(3,1);
+%qdd3 = zeros(3,1);
+
+qddmatnew2 = zeros(2,2);
+qddcmatnew2 = zeros(2,1);
+taunew2 = zeros(2,1);
+%qdd2 = zeros(2,1);
+
+qddmatnew1 = zeros(1,1);
+qddcmatnew1 = zeros(1,1);
+taunew1 = zeros(1,1);
+
+%count = 0;
+max = 0;
+for n = 1:4
+    if (limitq(n) == sign(qdd(n)))
+        max = n;
+    end
+end
+
+if (max > 0)  
+    i = 0;
+    for p = 1:4
+        j = 0;
+        if (p ~= max)
+            i = i+1;
+            for n = 1:4
+                if (n ~= max)
+                    j = j + 1;   
+                    qddmatnew3(i,j) = qddmat(p,n);
+                end
+            end   
+            qddcmatnew3(i,1) = qddcmat(p);
+            taunew3(i,1) = tau(p);           
+        end
+    end  
+    qddnew3 = qddmatnew3\(taunew3 - qddcmatnew3);
+    
+    i = 0;
+    for n = 1:4
+        if (n ~= max)
+            i = i+1;   
+            qdd(n) = qddnew3(i);            
+        else
+            qdd(n) = 0;
+        end
+    end
+    
+    max2 = 0;
+    for n = 1:4
+        if ((limitq(n) == sign(qdd(n))) && (n ~= max))
+            max2 = n;
+        end
+    end
+    if (max2 > 0)  
+        i = 0;
+        for p = 1:4
+            j = 0;
+            if ((p ~= max2) && (p ~= max))
+                i = i+1;
+                for n = 1:4
+                    if ((n ~= max2) && (n ~= max))
+                        j = j + 1;   
+                        qddmatnew2(i,j) = qddmat(p,n);
+                    end
+                end   
+                qddcmatnew2(i,1) = qddcmat(p);
+                taunew2(i,1) = tau(p);           
+            end
+        end        
+        qddnew2 = qddmatnew2\(taunew2 - qddcmatnew2);
+
+        i = 0;
+        for n = 1:4
+            if ((n ~= max2) && (n ~= max))
+                i = i+1;   
+                qdd(n) = qddnew2(i);            
+            else
+                qdd(n) = 0;
+            end
+        end
+    
+        max3 = 0;
+        for n = 1:4
+            if ((limitq(n) == sign(qdd(n))) && (n ~= max) && (n ~= max2))
+                max3 = n;
+            end
+        end
+        if (max3 > 0)  
+            i = 0;
+            for p = 1:4
+                j = 0;
+                if ((p ~= max3) && (p ~= max2) && (p ~= max))
+                    i = i+1;
+                    for n = 1:4
+                        if ((n ~= max3) && (n ~= max2) && (n ~= max))
+                            j = j + 1;   
+                            qddmatnew1(i,j) = qddmat(p,n);
+                        end
+                    end   
+                    qddcmatnew1(i,1) = qddcmat(p);
+                    taunew1(i,1) = tau(p);           
+                end
+            end      
+            qddnew1 = qddmatnew1\(taunew1 - qddcmatnew1);
+
+            i = 0;
+            for n = 1:4
+                if ((n ~= max3) && (n ~= max2) && (n ~= max))
+                    i = i+1;   
+                    qdd(n) = qddnew1(i);            
+                else
+                    qdd(n) = 0;
+                end
+            end
+
+            for n = 1:4
+                if ((limitq(n) == sign(qdd(n))) && (n ~= max) && (n ~= max2) && (n ~= max3))
+                    qdd = zeros(4,1);
+                end
+            end
+        end
+    end
+end    
+    
+
+qddout = qdd;

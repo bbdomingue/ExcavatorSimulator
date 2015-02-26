@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Excavator
 {
-    public class TE_FlowKeyboard : TrialEmbedBase
+    public class TE_FlowKeyboard : Trial
     {
         private volatile float T1 = 0.0f;
         private volatile float T2 = 0.0f;
@@ -43,8 +43,6 @@ namespace Excavator
 
             this.Controls.Add(this.controlKeyboard1);
             this.controlKeyboard1.Dock = DockStyle.Top;
-            this.controlKeyboard1.SendToBack();
-
             this.controlKeyboard1.noSwing();
         }
 
@@ -58,8 +56,10 @@ namespace Excavator
             return "Flow with Keyboard";
         }
 
-        public override void MatlabUpdateSim()
+        public override void updateSim()
         {
+ 	        base.updateSim();
+
             var fts = this.controlKeyboard1.getInts();
 
             this.T1 = fts[1];
@@ -76,8 +76,10 @@ namespace Excavator
             Bobcat.PumpModelFlow(this.T4, ref flows, 3);
         }
 
-        public override void MatlabUpdateGui()
+        public override void  Gui_Label_Tick(float accumulator)
         {
+ 	        base.Gui_Label_Tick(accumulator);
+
             StaticMethods.setNudValue(this.nudCab, this.ActualAngles.cab);
             StaticMethods.setNudValue(this.nudBoom, this.ActualAngles.boo);
             StaticMethods.setNudValue(this.nudArm, this.ActualAngles.arm);

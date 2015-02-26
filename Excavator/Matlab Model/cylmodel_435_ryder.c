@@ -193,6 +193,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     const real_T *y = (const real_T*) ssGetInputPortSignal(S,0);	// first input port is cylinder position
     const real_T *v = (const real_T*) ssGetInputPortSignal(S,1);	// second input port is cylinder velocity
     const real_T *flow = (const real_T*) ssGetInputPortSignal(S,2);	// third input port is pump flow
+    
 	real_T *phead = (real_T*) ssGetOutputPortSignal(S,0);			// first output port is headside pressure
 	real_T *prod = (real_T*) ssGetOutputPortSignal(S,1);			// second output port is rodside pressure
 	uint16_T *VOLUME = ssGetOutputPortSignal(S,2);         			// third output is engine volume
@@ -228,6 +229,9 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     real_T noise = 0, power = 0, basepower; 
     real_T pumpvalveflow;//motorvalveflow
 
+    real_T absFlow;
+    real_T absMoFlowPlusLeakage;
+    
 	for (k = 0; k < 4; k++) {
 		//STATES[k] = 0;		//headside pressures
         phead[k] = STATES[k];
@@ -250,7 +254,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             motorv = v[k]/(2*pi)*gear_ratio;                    // calculate velocity of the motor (rev/s)
             motor_flow = motorv * motor_disp_per_rev;			// calculate flow through the motor (in^3/s)
             
-           if (abs(flow[k]) > abs(motor_flow + leakage[k]) )
+            absFlow = flow[k];
+            absMoFlowPlusLeakage = motor_flow + leakage[k];
+            
+
+            /*if ((abs(absFlow) > abs(absMoFlowPlusLeakage)) && ((absFlow * absMoFlowPlusLeakage) > 0) )
             //if ( ( (motor_flow > 0) && (phead[k] < ptank) ) || ( (motor_flow < 0) && (prod[k] < ptank) ) )
             {
                 pumpvalveflow = abs(flow[k] - (motor_flow + leakage[k]));
@@ -259,8 +267,38 @@ static void mdlOutputs(SimStruct *S, int_T tid)
             else
             {
                 pumpvalveflow = 0;
-                motorvalveflow[0] = abs(-flow[k] + (motor_flow + leakage[k]));
+//SFS           motorvalveflow[0] = abs(-flow[k] + (motor_flow + leakage[k]));
+/*SFS*         motorvalveflow[0] = abs(abs(absFlow) - abs(absMoFlowPlusLeakage));                
+            }*/
+            
+            if (absFlow > 0)
+            {
+                if (absFlow > absMoFlowPlusLeakage)
+                {
+                    pumpvalveflow = absFlow - absMoFlowPlusLeakage;
+                    motorvalveflow[0] = 0;
+                }
+                else
+                {
+                    pumpvalveflow = 0;
+                    motorvalveflow[0] = 0;
+                }
             }
+            else
+            {
+                if (absFlow < absMoFlowPlusLeakage)
+                {
+                    pumpvalveflow = absFlow - absMoFlowPlusLeakage;
+                    motorvalveflow[0] = 0;
+                }
+                else
+                {
+                    pumpvalveflow = 0;
+                    motorvalveflow[0] = 0;
+                }
+            }
+                
+            
             outwithit[0] = motor_flow;
             outwithit[1] = leakage[k];
             outwithit[2] = flow[k];
@@ -318,7 +356,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         STATES[k] = phead[k];
         STATES[k+4] = prod[k];
     
-       power = power + abs((phead[k] - prod[k])*flow[k]);
+         power = power + abs((phead[k] - prod[k])*flow[k]);
        //noise = floor(noise + flow[k]);
 	}
     

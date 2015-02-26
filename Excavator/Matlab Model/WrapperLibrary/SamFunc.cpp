@@ -10,46 +10,30 @@ void SamInit(void)
 
 float SamUpdate(
 	float * Q,
-	float * QD, 
+	float * Qd,
+	float * Flow,
+	// Back
 	float * Fuel, 
-	float * RandBack, 
 	float * CylinderPositions,
 	float * CylinderVelocities,
-	float BucketMass, 
-	float * SDF, 
-	float * SDM, 
-	float * SWF)
+	float * JointTorques)
 {	
-	MatlabExcavatorModel_U.Soil_Dig_Force[0] = SDF[0];
-	MatlabExcavatorModel_U.Soil_Dig_Force[1] = SDF[1];
-	MatlabExcavatorModel_U.Soil_Dig_Force[2] = SDF[2];
+	MatlabExcavatorModel_U.Flow[0] = Flow[0];
+	MatlabExcavatorModel_U.Flow[1] = Flow[1];
+	MatlabExcavatorModel_U.Flow[2] = Flow[2];
+	MatlabExcavatorModel_U.Flow[3] = Flow[3];
 
-	MatlabExcavatorModel_U.Soil_Dig_Moment[0] = SDM[0];
-	MatlabExcavatorModel_U.Soil_Dig_Moment[1] = SDM[1];
-	MatlabExcavatorModel_U.Soil_Dig_Moment[2] = SDM[2];
+	MatlabExcavatorModel_U.Q[0] = Q[0];
+	MatlabExcavatorModel_U.Q[1] = Q[1];
+	MatlabExcavatorModel_U.Q[2] = Q[2];
+	MatlabExcavatorModel_U.Q[3] = Q[3];
 
-	MatlabExcavatorModel_U.Soil_Wrist_Force[0] = SWF[0];
-	MatlabExcavatorModel_U.Soil_Wrist_Force[1] = SWF[1];
-	MatlabExcavatorModel_U.Soil_Wrist_Force[2] = SWF[2];
-
-	MatlabExcavatorModel_U.Soil_Bucket_Mass = BucketMass;
-
-//	MatlabExcavatorModel_B.q[0] = Q[0]; // Settting Q to the rotate value!;
+	MatlabExcavatorModel_U.Qd[0] = Qd[0];
+	MatlabExcavatorModel_U.Qd[1] = Qd[1];
+	MatlabExcavatorModel_U.Qd[2] = Qd[2];
+	MatlabExcavatorModel_U.Qd[3] = Qd[3];
 
 	MatlabExcavatorModel_step();
-
-	Q[0] = MatlabExcavatorModel_Y.Q[0];
-	Q[1] = MatlabExcavatorModel_Y.Q[1];
-	Q[2] = MatlabExcavatorModel_Y.Q[2];
-	Q[3] = MatlabExcavatorModel_Y.Q[3];
-
-	QD[0] = MatlabExcavatorModel_Y.Qd[0];
-	QD[1] = MatlabExcavatorModel_Y.Qd[1];
-	QD[2] = MatlabExcavatorModel_Y.Qd[2];
-	QD[3] = MatlabExcavatorModel_Y.Qd[3];
-
-	RandBack[0] = MatlabExcavatorModel_Y.BreakOn[0];
-	RandBack[1] = MatlabExcavatorModel_Y.Flow[0];
 
 	Fuel[0] = MatlabExcavatorModel_Y.FuelInstant;
 	Fuel[1] = MatlabExcavatorModel_Y.FuelTotal;
@@ -64,6 +48,11 @@ float SamUpdate(
 	CylinderVelocities[2] = MatlabExcavatorModel_Y.CylinderVelocity[2];
 	CylinderVelocities[3] = MatlabExcavatorModel_Y.CylinderVelocity[3];
 
+	JointTorques[0] = MatlabExcavatorModel_Y.JointTorques[0];
+	JointTorques[1] = MatlabExcavatorModel_Y.JointTorques[1];
+	JointTorques[2] = MatlabExcavatorModel_Y.JointTorques[2];
+	JointTorques[3] = MatlabExcavatorModel_Y.JointTorques[3];
+
 	return MatlabExcavatorModel_Y.Time;
 }
 
@@ -71,12 +60,3 @@ void SamTerminate(void)
 {
 	MatlabExcavatorModel_terminate();
 }
-
-void setJointFlows(float * flows)
-{
-	MatlabExcavatorModel_U.Flow1 = flows[0];
-	MatlabExcavatorModel_U.Flow2 = flows[1];
-	MatlabExcavatorModel_U.Flow3 = flows[2];
-	MatlabExcavatorModel_U.Flow4 = flows[3];
-}
-
