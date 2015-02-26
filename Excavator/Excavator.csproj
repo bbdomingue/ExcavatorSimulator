@@ -21,7 +21,7 @@
     <OutputPath>..\..\..\..\..\Build\Excavator\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -172,6 +172,7 @@
     <EmbeddedResource Include="Trial.resx">
       <DependentUpon>Trial.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="EmbeddedSoilModel.pdf" />
     <None Include="Resources\Images\green.jpg" />
     <None Include="Resources\Images\HeightMap.bmp" />
     <Content Include="Resources\GL_Trees\tree1.txt" />

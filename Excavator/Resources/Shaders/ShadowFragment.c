@@ -17,19 +17,11 @@ void main()
 		shadowCoordinateWdivide.z -= 0.0001;
 
 		float distanceFromLight = texture(ShadowMap, shadowCoordinateWdivide.st).z;
-		if ((distanceFromLight < shadowCoordinateWdivide.z)) shadow_intensity = min(0.3, shadow_intensity);
-
-/*		gl_FragColor = clamp(ambColor + shadow * difColor, 0.0, 1.0);
+		if ((distanceFromLight < shadowCoordinateWdivide.z))
+			gl_FragColor = clamp((ambColor + (difColor * 0.15)), 0.0, 1.0);
+		else
+			gl_FragColor = clamp(ambColor + difColor * clamp(0.15 + shadow_intensity * 0.85, 0.0, 1.0), 0.0, 1.0);
 	}
 	else
-	{
-		gl_FragColor.r = b1 ? 1 : 0;
-		gl_FragColor.g = b2 ? 1 : 0;
-		gl_FragColor.b = 0;*/
-	}
-
-	gl_FragColor = clamp(
-		(ambColor + shadow_intensity * difColor), 
-		0.0, 
-		1.0); 		
+		gl_FragColor = clamp(ambColor + difColor * clamp(0.15 + shadow_intensity * 0.85, 0.0, 1.0), 0.0, 1.0);
 }

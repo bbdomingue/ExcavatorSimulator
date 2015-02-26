@@ -22,7 +22,7 @@ void main()
 	else
 		vertex_light_position = normalize(vec3(gl_LightSource[0].position - gl_ModelViewMatrix * gl_Vertex));
 
-	shadow_intensity = max(dot(vertex_normal, vertex_light_position), 0.0) * 0.85 + 0.15;
+	shadow_intensity = max(dot(vertex_normal, vertex_light_position), 0.0);
 
 	texCoords = vec2(gl_Vertex[0] / 40, gl_Vertex[2] / 40);
 }

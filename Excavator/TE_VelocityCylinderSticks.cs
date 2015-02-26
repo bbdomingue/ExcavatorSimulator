@@ -20,17 +20,13 @@ namespace Excavator
 
         private Panel panelSpacer1 = new Panel();
 
-        public TE_VelocityCylinderSticks()
-        {
-        }
-
         public override void Deconstruct()
         {
             base.Deconstruct();
         }
 
-        public TE_VelocityCylinderSticks(FormBase fb, string saveFile, int minutes)
-            : base(fb, false, saveFile, minutes)
+        public TE_VelocityCylinderSticks()
+            : base()
         {
             if (this.DesignMode) return;
 
@@ -38,16 +34,11 @@ namespace Excavator
             this.Controls.Add(this.panelSpacer1);
             this.panelSpacer1.Dock = DockStyle.Top;
             this.panelSpacer1.SendToBack();
-            this.panelSpacer1.BackColor = fb.BackColor;
+            this.panelSpacer1.BackColor = FormBase.Instance.BackColor;
 
             this.Controls.Add(ControlStick._ControlStick);
             ControlStick._ControlStick.Dock = DockStyle.Top;
             ControlStick._ControlStick.SendToBack();
-        }
-
-        public override bool hasGhost()
-        {
-            return false;
         }
 
         public override string getName()
@@ -55,23 +46,13 @@ namespace Excavator
             return "Cylinder Flow with Sticks";
         }
 
-        public override void Gui_Label_Tick(float accumulator)
+        public override void Gui_30MS_Tick(float accumulator)
         {
-            base.Gui_Label_Tick(accumulator);
-            
-            StaticMethods.setNudValue(this.nudCab, this.ActualAngles.cab);
-            StaticMethods.setNudValue(this.nudBoom, this.ActualAngles.boo);
-            StaticMethods.setNudValue(this.nudArm, this.ActualAngles.arm);
-            StaticMethods.setNudValue(this.nudBucket, this.ActualAngles.buc);
-            
+            base.Gui_30MS_Tick(accumulator);
             ControlStick._ControlStick.updateFPS(accumulator);
-        }
-
-        public override void Gui_Draw_Tick()
-        {
-            base.Gui_Draw_Tick();
             ControlStick._ControlStick.updateControlGUI();
         }
+
 
 
 
@@ -82,10 +63,16 @@ namespace Excavator
         {
             base.updateSim();
 
-            this.T1 = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
-            this.T2 = -ControlStick._ControlStick.getValForStick(ControlStick.l_FB, true);
-            this.T3 = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
-            this.T4 = ControlStick._ControlStick.getValForStick(ControlStick.r_LR, true);
+            float temp;
+
+            temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
+            this.T1 = temp * Math.Abs(temp);
+            temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_FB, true);
+            this.T2 = temp * Math.Abs(temp);
+            temp = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
+            this.T3 = temp * Math.Abs(temp);
+            temp = ControlStick._ControlStick.getValForStick(ControlStick.r_LR, true);
+            this.T4 = temp * Math.Abs(temp);
         }
 
         private Vector2 _LastDelta = new Vector2();
@@ -128,8 +115,8 @@ namespace Excavator
 
             this._LastDelta = Vector2.Multiply(this._LastDelta, mx > ABSMX ? ABSMX / mx : 1);
 
-            double dA = this.clampQ2_Radians(A + this._LastDelta.X) - A;
-            double dB = this.clampQ3_Radians(B + this._LastDelta.Y) - B;
+            double dA = Trial.clampQ2_Radians(A + this._LastDelta.X) - A;
+            double dB = Trial.clampQ3_Radians(B + this._LastDelta.Y) - B;
 
             const float cutoff = 0.001f * ABSMX;
 
@@ -172,10 +159,8 @@ namespace Excavator
             Bobcat.PumpModelFlow(this.T1, ref flows, 0);
 
             Bobcat.JointToCylinder(1, ref Q, ref Qd_Desired, ref CYL_POS_DESIRED, ref CYL_VEL_DESIRED);
-            Bobcat.PumpModelVelocity(1, ref CYL_VEL_DESIRED, ref CYL_VEL, ref flows);
-
             Bobcat.JointToCylinder(2, ref Q, ref Qd_Desired, ref CYL_POS_DESIRED, ref CYL_VEL_DESIRED);
-            Bobcat.PumpModelVelocity(2, ref CYL_VEL_DESIRED, ref CYL_VEL, ref flows);
+            Bobcat.PumpModelVelocity(ref CYL_VEL_DESIRED, ref CYL_VEL, ref flows);
 
             Bobcat.PumpModelFlow(-this.T2, ref flows, 3);
         }

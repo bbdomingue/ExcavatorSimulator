@@ -20,26 +20,17 @@ namespace Excavator
         private Panel panelSpacer1 = new Panel();
 
         public TE_FlowSticks()
-        {
-        }
-
-        public TE_FlowSticks(FormBase fb, string saveFile, int minutes)
-            : base(fb, false, saveFile, minutes)
+            : base()
         {
             this.panelSpacer1.Size = new Size(100, 3);
             this.Controls.Add(this.panelSpacer1);
             this.panelSpacer1.Dock = DockStyle.Top;
             this.panelSpacer1.SendToBack();
-            this.panelSpacer1.BackColor = fb.BackColor;
+            this.panelSpacer1.BackColor = FormBase.Instance.BackColor;
 
             this.Controls.Add(ControlStick._ControlStick);
             ControlStick._ControlStick.Dock = DockStyle.Top;
             ControlStick._ControlStick.SendToBack();
-        }
-
-        public override bool hasGhost()
-        {
-            return false;
         }
 
         public override string getName()
@@ -50,24 +41,12 @@ namespace Excavator
 
 
 
-        public override void Gui_Label_Tick(float accumulator)
+        public override void Gui_30MS_Tick(float accumulator)
         {
-            base.Gui_Label_Tick(accumulator);
-            
-            StaticMethods.setNudValue(this.nudCab, this.ActualAngles.cab);
-            StaticMethods.setNudValue(this.nudBoom, this.ActualAngles.boo);
-            StaticMethods.setNudValue(this.nudArm, this.ActualAngles.arm);
-            StaticMethods.setNudValue(this.nudBucket, this.ActualAngles.buc);
-            
+            base.Gui_30MS_Tick(accumulator);
             ControlStick._ControlStick.updateFPS(accumulator);
-        }
-
-        public override void Gui_Draw_Tick()
-        {
-            base.Gui_Draw_Tick();
             ControlStick._ControlStick.updateControlGUI();
         }
-
 
         public override void Deconstruct()
         {
@@ -86,10 +65,16 @@ namespace Excavator
         {
             base.updateSim();
 
-            this.T1 = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
-            this.T2 = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
-            this.T3 = ControlStick._ControlStick.getValForStick(ControlStick.l_FB, true);
-            this.T4 = -ControlStick._ControlStick.getValForStick(ControlStick.r_LR, true);
+            float temp;
+            
+            temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
+            this.T1 = temp * Math.Abs(temp);
+            temp = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
+            this.T2 = temp * Math.Abs(temp);
+            temp = ControlStick._ControlStick.getValForStick(ControlStick.l_FB, true);
+            this.T3 = temp * Math.Abs(temp);
+            temp = -ControlStick._ControlStick.getValForStick(ControlStick.r_LR, true);
+            this.T4 = temp * Math.Abs(temp);
         }
 
         public override unsafe void fillControlFloats(float* f)

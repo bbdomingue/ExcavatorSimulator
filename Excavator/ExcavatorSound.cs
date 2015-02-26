@@ -15,55 +15,96 @@ namespace Excavator
 {
     public class ExcavatorSound
     {
-        public static bool CanStop { get { return ExcavatorSound.LiveSounds == 0; } }
-        private static int LiveSounds = 0;
+        private static readonly object InstanceLock = new object();
+        private static readonly object LockWave = new object();
 
-        private static Byte[] _Data = null;
-        
+        private static ExcavatorSound _Instance = null;
+        internal static ExcavatorSound Instance
+        {
+            get
+            {
+                lock (InstanceLock)
+                {
+                    if (_Instance == null) _Instance = new ExcavatorSound();
+                    return _Instance;
+                }
+            }
+        }
+
+        public static bool CanStop { get { lock (InstanceLock) return Instance == null; } }
+
         private WaveOut _WaveOut = null;
         private LoopStream _LoopStream = null;
 
-        public ExcavatorSound()
+        private ExcavatorSound()
         {
-            if (ExcavatorSound.LiveSounds == 0) FormBase.addThread();
-
-            ExcavatorSound.LiveSounds++;
-
+            FormBase.addThread();
             this._LoopStream = new LoopStream(new WaveFileReader(Properties.Resources.excavator_idle));
-            this._WaveOut = new WaveOut(WaveCallbackInfo.FunctionCallback());
-            this._WaveOut.Init(this._LoopStream);
-            this._WaveOut.PlaybackStopped += new EventHandler<StoppedEventArgs>(this._WaveOut_PlaybackStopped);
-            this._WaveOut.Volume = 0;
-            this._WaveOut.Play();
+            lock (LockWave)            
+            {
+                this._WaveOut = new WaveOut(WaveCallbackInfo.FunctionCallback());
+                this._WaveOut.Init(this._LoopStream);
+                this._WaveOut.PlaybackStopped += new EventHandler<StoppedEventArgs>(this._WaveOut_PlaybackStopped);
+                this._WaveOut.Volume = 0;
+                this._WaveOut.Play();
+            }
         }
 
         ~ExcavatorSound()
         {
         }
 
+        private static bool _Mute;
+        public static bool Mute
+        {
+            set
+            {
+                lock (LockWave)
+                {
+                    _Mute = value;
+                }
+            }
+        }
+
         public void setVolume(float f)
         {
-            this._WaveOut.Volume = f;
+            lock (LockWave)            
+                this._WaveOut.Volume = _Mute ? 0 : f;
         }
 
         public void setSpeed(float f)
         {
-            this._LoopStream.Speed = f;
+            lock (LockWave)
+                this._LoopStream.Speed = f;
         }
 
         private void _WaveOut_PlaybackStopped(object sender, StoppedEventArgs e)
         {
-            ExcavatorSound.LiveSounds--;
-            if (ExcavatorSound.LiveSounds == 0) FormBase.subThread();
+            FormBase.subThread();
         }
 
-        public void Stop()
+        public static void Stop()
         {
-            if (this._WaveOut != null)
+            lock (InstanceLock)
             {
-                this._WaveOut.Stop();
-                this._WaveOut.Dispose();
-                this._WaveOut = null;
+                if (_Instance != null)
+                {
+                    _Instance.StopP();
+                    _Instance = null;
+                }
+            }           
+        }
+
+        private void StopP()
+        {
+            lock (LockWave)
+            {
+                if (this._WaveOut != null)
+                {
+                    this._WaveOut.Stop();
+                    this._WaveOut.Dispose();
+                    this._WaveOut = null;
+                }
             }
         }
     }

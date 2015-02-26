@@ -32,6 +32,16 @@ namespace Excavator
             return StaticMethods.toRadiansF((float)d);
         }
 
+        internal static float toRadiansF(decimal d)
+        {
+            return StaticMethods.toRadiansF((float)d);
+        }
+
+        internal static float toRadiansF(int d)
+        {
+            return StaticMethods.toRadiansF((float)d);
+        }
+
 
 
         internal static double toRadiansD(int f)

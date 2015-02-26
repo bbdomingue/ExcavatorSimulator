@@ -3,6 +3,7 @@ varying vec4 vertex_shadow;
 varying vec3 vertex_light_position;
 varying vec3 vertex_normal;
 
+
 varying vec4 ambColor;
 varying vec4 difColor;
 varying float shadow_intensity;
@@ -21,6 +22,5 @@ void main()
 	else
 		vertex_light_position = normalize(vec3(gl_LightSource[0].position - gl_ModelViewMatrix * gl_Vertex));
 
-	shadow_intensity = max(dot(vertex_normal, vertex_light_position), 0.0) * 0.85 + 0.15;
-
+	shadow_intensity = max(dot(vertex_normal, vertex_light_position), 0.0);
 }

@@ -14,22 +14,58 @@ namespace Excavator
 
     public class CabRotater
     {
-        public static volatile float _CAB_Q_RETURN_VALID_IF_BELOW_1000 = 1001;
+        public static volatile float CabDegrees = -100;
+
+        private static readonly float CabAmplitude = StaticMethods.toRadiansF(65);
+
+        private static bool _BoolReset = false;
+        private static int _DateTime = 0;
 
         private static object LockOb = new object();
         private static float _Cab_Q = 0;
         private static float _Cab_Qd = 0;
-        private static float _Cab_Break = 0;
-        private static float _Cab_Flow = 0;
+        private static float _Cab_Kp = 0;
+        private static float _Cab_Kd = 0;
 
-        public static void setValues(float Q, float Qd, float brk, float flow)
+        /// <summary>
+        /// Thread Save!
+        /// Use Radians FOOL
+        /// </summary>
+        /// <param name="Q"></param>
+        /// <param name="Qd"></param>
+        public static void setAngleValues(float Q, float Qd)
         {
             lock (CabRotater.LockOb)
             {
                 CabRotater._Cab_Q = Q;
                 CabRotater._Cab_Qd = Qd;
-                CabRotater._Cab_Break = brk;
-                CabRotater._Cab_Flow = flow;
+            }
+        }
+
+        public static void ResetFor30Seconds()
+        {
+            lock (CabRotater.LockOb)
+            {
+                CabRotater._DateTime = Environment.TickCount;
+                CabRotater._BoolReset = true;
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// Thread Save!
+        /// </summary>
+        /// <param name="Kp"></param>
+        /// <param name="Kd"></param>
+        public static void setGainValues(float Kp, float Kd)
+        {
+            Console.WriteLine("Cab Kp: " + Kp + ", Cab Kd: " + Kd);
+            lock (CabRotater.LockOb)
+            {
+                CabRotater._Cab_Kp = Kp;
+                CabRotater._Cab_Kd = Kd;
             }
         }
 
@@ -67,11 +103,12 @@ namespace Excavator
         [StructLayout(LayoutKind.Explicit, Pack = 1)]
         public unsafe struct CabDataSentToExcavator
         {
-            [FieldOffset(0)] public fixed byte data[32];
+            [FieldOffset(0)] public fixed byte data[40];
             [FieldOffset(0)] public double Cab_Q;
             [FieldOffset(8)] public double Cab_Qd;
-            [FieldOffset(16)] public double Cab_Flow;
-            [FieldOffset(24)] public double Cab_Break;
+            [FieldOffset(16)] public double Kill;
+            [FieldOffset(24)] public double Kp;
+            [FieldOffset(32)] public double Kd;
         };
 
         [StructLayout(LayoutKind.Explicit, Pack = 1)]
@@ -94,7 +131,13 @@ namespace Excavator
             Console.WriteLine("Start Send Cab");
 
             int size = sizeof(CabDataSentToExcavator);
-            var dataStruct = new CabDataSentToExcavator();
+            var dataStruct = new CabDataSentToExcavator()
+            {
+                Kill = 2,
+                Kp = 0,
+                Kd = 0
+            };
+
             Byte[] dataBytes = new byte[size];
 
             int i;
@@ -108,11 +151,25 @@ namespace Excavator
                 {
                     lock (CabRotater.LockOb)
                     {
-                        dataStruct.Cab_Q = CabRotater._Cab_Q;
-                        dataStruct.Cab_Qd = CabRotater._Cab_Qd;
-                        dataStruct.Cab_Break = CabRotater._Cab_Break;
-                        dataStruct.Cab_Flow = CabRotater._Cab_Flow;
+                        if (CabRotater._BoolReset)
+                        {
+                            dataStruct.Cab_Q = 0;
+                            dataStruct.Cab_Qd = 0;
+                            dataStruct.Kp = 6;
+                            dataStruct.Kd = 0;
+
+                            CabRotater._BoolReset = Environment.TickCount - CabRotater._DateTime < 20000;
+                        }
+                        else
+                        {
+                            dataStruct.Cab_Q = CabRotater._Cab_Q;
+                            dataStruct.Cab_Qd = CabRotater._Cab_Qd;
+                            dataStruct.Kp = CabRotater._Cab_Kp;
+                            dataStruct.Kd = CabRotater._Cab_Kd;
+                        }
                     }
+
+                    dataStruct.Cab_Q = Math.Max(-CabAmplitude, Math.Min(CabAmplitude, dataStruct.Cab_Q));
 
                     for (i = 0; i < size; i++) dataBytes[i] = dataStruct.data[i];
 
@@ -120,6 +177,11 @@ namespace Excavator
 
                     Thread.Sleep(1);
                 }
+
+                dataStruct.Kill = 0;
+                for (i = 0; i < size; i++) dataBytes[i] = dataStruct.data[i];
+                _UdpClientSend.Send(dataBytes, size);
+
                 _UdpClientSend.Close();
             }
             catch (Exception exc)
@@ -138,11 +200,9 @@ namespace Excavator
 
         private static unsafe void tsr()
         {
-            Thread.CurrentThread.Name = "Send Read Excavator Data";
+            Thread.CurrentThread.Name = "Start Read Excavator Data";
 
             FormBase.addThread();
-
-            Console.WriteLine("Start Read Excavator Data");
 
             Socket mListener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPEndPoint _IPEndPoint = new IPEndPoint(IPAddress.Parse(XPC.HOST_IP), HOST_RECIEVE_CAB_INP);
@@ -166,10 +226,7 @@ namespace Excavator
                     {
                         mListener.Receive(dataBytes, 0, size, SocketFlags.None);
                         for (i = 0; i < size; i++) dataStruct.data[i] = dataBytes[i];
-                        CabRotater._CAB_Q_RETURN_VALID_IF_BELOW_1000 = (float)dataStruct.Cab_Q;
-
-                        if (dataStruct.Cab_Q != 0) Console.WriteLine("G:" + dataStruct.Cab_Q);
-
+                        CabRotater.CabDegrees = StaticMethods.toDegreesF(dataStruct.Cab_Q);
                         remainder = mListener.Available % size;
                         if (remainder != 0) Console.WriteLine("Cabs Remain: " + remainder);
                     }
@@ -181,16 +238,11 @@ namespace Excavator
                 MessageBox.Show(exc.Message);
             }
 
-            CabRotater._CAB_Q_RETURN_VALID_IF_BELOW_1000 = 1001;
-
             mListener.Dispose();
 
             Console.WriteLine("Stop Read Excavator Data");
 
             FormBase.subThread();
         }
-
-
-
     }
 }

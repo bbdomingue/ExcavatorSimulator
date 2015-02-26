@@ -131,9 +131,7 @@ namespace Excavator
             }
         }
 
-        private float fpsPR = 0;
         private float fpsPU = 0;
-        private float fpsPRF = 0;
         private float fpsPUF = 0;
         
         public void updateControlGUI() // Called at 30 fps
@@ -205,7 +203,7 @@ namespace Excavator
 
             try
             {
-                SerialPort port = new SerialPort(this.port, 19200);
+                SerialPort port = new SerialPort(this.port, 57600);
 
                 try
                 {

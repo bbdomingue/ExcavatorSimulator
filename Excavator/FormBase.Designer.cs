@@ -37,26 +37,22 @@
             this.buttonTrialReset = new System.Windows.Forms.Button();
             this.buttonTrialNew = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.numericUpDownCabRotation = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
-            this.numericUpDownBucket = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.numericUpDownArm = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDownBoom = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDownSwing = new System.Windows.Forms.NumericUpDown();
             this.buttonFullScreen = new System.Windows.Forms.Button();
             this.labelFPS = new System.Windows.Forms.Label();
             this.labelFPSX = new System.Windows.Forms.Label();
             this.timerResize = new System.Windows.Forms.Timer(this.components);
             this.panelFill = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonResetSoil = new System.Windows.Forms.Button();
             this.checkBoxPhysX = new System.Windows.Forms.CheckBox();
-            this.checkBoxCabRotater = new System.Windows.Forms.CheckBox();
             this.checkBoxAspectRatio = new System.Windows.Forms.CheckBox();
             this.checkBoxMute = new System.Windows.Forms.CheckBox();
             this.checkBoxShowSide = new System.Windows.Forms.CheckBox();
+            this.checkBoxCabRotater = new System.Windows.Forms.CheckBox();
             this.panelRight = new System.Windows.Forms.Panel();
             this.panelRightTrial = new System.Windows.Forms.Panel();
             this.panelRightTop = new System.Windows.Forms.Panel();
@@ -64,6 +60,11 @@
             this.labelTrial = new System.Windows.Forms.Label();
             this.panelRightBottom = new System.Windows.Forms.Panel();
             this.panelRightBottomFill = new System.Windows.Forms.Panel();
+            this.labelAngleBucket = new System.Windows.Forms.Label();
+            this.labelAngleArm = new System.Windows.Forms.Label();
+            this.labelAngleBoom = new System.Windows.Forms.Label();
+            this.labelAngleCab = new System.Windows.Forms.Label();
+            this.labelAngleSwing = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.labelHeadYaw = new System.Windows.Forms.Label();
             this.numericUpDownHeadPitch = new System.Windows.Forms.NumericUpDown();
@@ -72,6 +73,7 @@
             this.numericUpDownEyeSeperation = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownHeadYaw = new System.Windows.Forms.NumericUpDown();
             this.tabPageScenery = new System.Windows.Forms.TabPage();
+            this.labelRandom = new System.Windows.Forms.Label();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
@@ -117,12 +119,27 @@
             this.label10 = new System.Windows.Forms.Label();
             this.numericUpDownHeadX = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
+            this.tabPageCab = new System.Windows.Forms.TabPage();
+            this.labelCabHardware = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.nudCabKd = new System.Windows.Forms.NumericUpDown();
+            this.nudCabKp = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.tabPageSave = new System.Windows.Forms.TabPage();
+            this.labelTimeLeft = new System.Windows.Forms.Label();
+            this.labelTimeLeftX = new System.Windows.Forms.Label();
+            this.buttonBeginSave = new System.Windows.Forms.Button();
+            this.nudSession = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
+            this.nudSubject = new System.Windows.Forms.NumericUpDown();
+            this.label19 = new System.Windows.Forms.Label();
+            this.buttonSavePath = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBoxSavePath = new System.Windows.Forms.TextBox();
+            this.fbdSavePath = new System.Windows.Forms.FolderBrowserDialog();
             this.panelOuterGL.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCabRotation)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBucket)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownArm)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBoom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSwing)).BeginInit();
             this.panelFill.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelRight.SuspendLayout();
@@ -152,6 +169,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadX)).BeginInit();
+            this.tabPageCab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCabKd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCabKp)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.tabPageSave.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSession)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSubject)).BeginInit();
             this.SuspendLayout();
             // 
             // panelOuterGL
@@ -163,7 +187,7 @@
             this.panelOuterGL.Location = new System.Drawing.Point(10, 0);
             this.panelOuterGL.Margin = new System.Windows.Forms.Padding(0);
             this.panelOuterGL.Name = "panelOuterGL";
-            this.panelOuterGL.Size = new System.Drawing.Size(619, 557);
+            this.panelOuterGL.Size = new System.Drawing.Size(619, 581);
             this.panelOuterGL.TabIndex = 4;
             this.panelOuterGL.Resize += new System.EventHandler(this.panelOuterGL_Resize);
             // 
@@ -171,7 +195,7 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.DimGray;
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 547);
+            this.panel2.Location = new System.Drawing.Point(0, 571);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(619, 10);
@@ -223,205 +247,69 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(10, 76);
-            this.label7.Margin = new System.Windows.Forms.Padding(0);
+            this.label7.Location = new System.Drawing.Point(10, 71);
+            this.label7.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(97, 18);
             this.label7.TabIndex = 62;
             this.label7.Text = "Cab Roatation:";
             // 
-            // numericUpDownCabRotation
-            // 
-            this.numericUpDownCabRotation.DecimalPlaces = 1;
-            this.numericUpDownCabRotation.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDownCabRotation.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownCabRotation.Location = new System.Drawing.Point(129, 74);
-            this.numericUpDownCabRotation.Margin = new System.Windows.Forms.Padding(0);
-            this.numericUpDownCabRotation.Maximum = new decimal(new int[] {
-            1801,
-            0,
-            0,
-            65536});
-            this.numericUpDownCabRotation.Minimum = new decimal(new int[] {
-            1801,
-            0,
-            0,
-            -2147418112});
-            this.numericUpDownCabRotation.Name = "numericUpDownCabRotation";
-            this.numericUpDownCabRotation.Size = new System.Drawing.Size(76, 26);
-            this.numericUpDownCabRotation.TabIndex = 1;
-            this.numericUpDownCabRotation.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownCabRotation.ValueChanged += new System.EventHandler(this.numericUpDownCabRotation_ValueChanged);
-            // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(10, 140);
-            this.label5.Margin = new System.Windows.Forms.Padding(0);
+            this.label5.Location = new System.Drawing.Point(10, 127);
+            this.label5.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 18);
             this.label5.TabIndex = 58;
             this.label5.Text = "Arm:";
             // 
-            // numericUpDownBucket
-            // 
-            this.numericUpDownBucket.DecimalPlaces = 1;
-            this.numericUpDownBucket.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDownBucket.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownBucket.Location = new System.Drawing.Point(129, 170);
-            this.numericUpDownBucket.Margin = new System.Windows.Forms.Padding(0);
-            this.numericUpDownBucket.Maximum = new decimal(new int[] {
-            33,
-            0,
-            0,
-            0});
-            this.numericUpDownBucket.Minimum = new decimal(new int[] {
-            154,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownBucket.Name = "numericUpDownBucket";
-            this.numericUpDownBucket.Size = new System.Drawing.Size(76, 26);
-            this.numericUpDownBucket.TabIndex = 61;
-            this.numericUpDownBucket.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(10, 172);
-            this.label6.Margin = new System.Windows.Forms.Padding(0);
+            this.label6.Location = new System.Drawing.Point(10, 155);
+            this.label6.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(54, 18);
             this.label6.TabIndex = 60;
             this.label6.Text = "Bucket:";
             // 
-            // numericUpDownArm
-            // 
-            this.numericUpDownArm.DecimalPlaces = 1;
-            this.numericUpDownArm.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDownArm.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownArm.Location = new System.Drawing.Point(129, 138);
-            this.numericUpDownArm.Margin = new System.Windows.Forms.Padding(0);
-            this.numericUpDownArm.Maximum = new decimal(new int[] {
-            35,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownArm.Minimum = new decimal(new int[] {
-            145,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownArm.Name = "numericUpDownArm";
-            this.numericUpDownArm.Size = new System.Drawing.Size(76, 26);
-            this.numericUpDownArm.TabIndex = 59;
-            this.numericUpDownArm.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownArm.Value = new decimal(new int[] {
-            90,
-            0,
-            0,
-            -2147483648});
-            // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(10, 44);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
+            this.label3.Location = new System.Drawing.Point(10, 43);
+            this.label3.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 18);
             this.label3.TabIndex = 44;
             this.label3.Text = "Swing:";
             // 
-            // numericUpDownBoom
-            // 
-            this.numericUpDownBoom.DecimalPlaces = 1;
-            this.numericUpDownBoom.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDownBoom.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownBoom.Location = new System.Drawing.Point(129, 106);
-            this.numericUpDownBoom.Margin = new System.Windows.Forms.Padding(0);
-            this.numericUpDownBoom.Maximum = new decimal(new int[] {
-            66,
-            0,
-            0,
-            0});
-            this.numericUpDownBoom.Minimum = new decimal(new int[] {
-            63,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownBoom.Name = "numericUpDownBoom";
-            this.numericUpDownBoom.Size = new System.Drawing.Size(76, 26);
-            this.numericUpDownBoom.TabIndex = 47;
-            this.numericUpDownBoom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownBoom.Value = new decimal(new int[] {
-            40,
-            0,
-            0,
-            0});
-            // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(10, 106);
-            this.label4.Margin = new System.Windows.Forms.Padding(0);
+            this.label4.Location = new System.Drawing.Point(10, 99);
+            this.label4.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(48, 18);
             this.label4.TabIndex = 46;
             this.label4.Text = "Boom:";
             // 
-            // numericUpDownSwing
-            // 
-            this.numericUpDownSwing.DecimalPlaces = 1;
-            this.numericUpDownSwing.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDownSwing.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownSwing.Location = new System.Drawing.Point(129, 42);
-            this.numericUpDownSwing.Margin = new System.Windows.Forms.Padding(0);
-            this.numericUpDownSwing.Maximum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            0});
-            this.numericUpDownSwing.Minimum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownSwing.Name = "numericUpDownSwing";
-            this.numericUpDownSwing.Size = new System.Drawing.Size(76, 26);
-            this.numericUpDownSwing.TabIndex = 45;
-            this.numericUpDownSwing.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // buttonFullScreen
             // 
             this.buttonFullScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonFullScreen.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonFullScreen.Location = new System.Drawing.Point(501, 53);
+            this.buttonFullScreen.Location = new System.Drawing.Point(501, 29);
             this.buttonFullScreen.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.buttonFullScreen.Name = "buttonFullScreen";
             this.buttonFullScreen.Size = new System.Drawing.Size(111, 26);
@@ -436,7 +324,7 @@
             this.labelFPS.AutoSize = true;
             this.labelFPS.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelFPS.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelFPS.Location = new System.Drawing.Point(550, 33);
+            this.labelFPS.Location = new System.Drawing.Point(550, 9);
             this.labelFPS.Margin = new System.Windows.Forms.Padding(0);
             this.labelFPS.Name = "labelFPS";
             this.labelFPS.Size = new System.Drawing.Size(36, 18);
@@ -450,7 +338,7 @@
             this.labelFPSX.AutoSize = true;
             this.labelFPSX.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelFPSX.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelFPSX.Location = new System.Drawing.Point(498, 33);
+            this.labelFPSX.Location = new System.Drawing.Point(498, 9);
             this.labelFPSX.Margin = new System.Windows.Forms.Padding(0);
             this.labelFPSX.Name = "labelFPSX";
             this.labelFPSX.Size = new System.Drawing.Size(52, 18);
@@ -476,8 +364,8 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.buttonResetSoil);
             this.panel1.Controls.Add(this.checkBoxPhysX);
-            this.panel1.Controls.Add(this.checkBoxCabRotater);
             this.panel1.Controls.Add(this.checkBoxAspectRatio);
             this.panel1.Controls.Add(this.checkBoxMute);
             this.panel1.Controls.Add(this.labelFPS);
@@ -485,20 +373,34 @@
             this.panel1.Controls.Add(this.buttonFullScreen);
             this.panel1.Controls.Add(this.labelFPSX);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(10, 557);
+            this.panel1.Location = new System.Drawing.Point(10, 581);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(619, 85);
+            this.panel1.Size = new System.Drawing.Size(619, 61);
             this.panel1.TabIndex = 74;
+            // 
+            // buttonResetSoil
+            // 
+            this.buttonResetSoil.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonResetSoil.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonResetSoil.Location = new System.Drawing.Point(379, 30);
+            this.buttonResetSoil.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.buttonResetSoil.Name = "buttonResetSoil";
+            this.buttonResetSoil.Size = new System.Drawing.Size(111, 26);
+            this.buttonResetSoil.TabIndex = 91;
+            this.buttonResetSoil.Text = "Reset Soil";
+            this.buttonResetSoil.UseVisualStyleBackColor = true;
+            this.buttonResetSoil.Click += new System.EventHandler(this.buttonResetSoil_Click);
             // 
             // checkBoxPhysX
             // 
+            this.checkBoxPhysX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxPhysX.AutoSize = true;
             this.checkBoxPhysX.Checked = true;
             this.checkBoxPhysX.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxPhysX.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxPhysX.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.checkBoxPhysX.Location = new System.Drawing.Point(123, 60);
+            this.checkBoxPhysX.Location = new System.Drawing.Point(194, 36);
             this.checkBoxPhysX.Name = "checkBoxPhysX";
             this.checkBoxPhysX.Size = new System.Drawing.Size(64, 22);
             this.checkBoxPhysX.TabIndex = 90;
@@ -506,25 +408,13 @@
             this.checkBoxPhysX.UseVisualStyleBackColor = true;
             this.checkBoxPhysX.CheckedChanged += new System.EventHandler(this.checkBoxPhysX_CheckedChanged);
             // 
-            // checkBoxCabRotater
-            // 
-            this.checkBoxCabRotater.AutoCheck = false;
-            this.checkBoxCabRotater.AutoSize = true;
-            this.checkBoxCabRotater.Font = new System.Drawing.Font("Calibri", 11.25F);
-            this.checkBoxCabRotater.Location = new System.Drawing.Point(7, 60);
-            this.checkBoxCabRotater.Name = "checkBoxCabRotater";
-            this.checkBoxCabRotater.Size = new System.Drawing.Size(94, 22);
-            this.checkBoxCabRotater.TabIndex = 89;
-            this.checkBoxCabRotater.Text = "Rotate Cab";
-            this.checkBoxCabRotater.UseVisualStyleBackColor = true;
-            this.checkBoxCabRotater.Click += new System.EventHandler(this.checkBoxCabRotater_Click);
-            // 
             // checkBoxAspectRatio
             // 
+            this.checkBoxAspectRatio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxAspectRatio.AutoSize = true;
             this.checkBoxAspectRatio.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxAspectRatio.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.checkBoxAspectRatio.Location = new System.Drawing.Point(7, 4);
+            this.checkBoxAspectRatio.Location = new System.Drawing.Point(8, 5);
             this.checkBoxAspectRatio.Name = "checkBoxAspectRatio";
             this.checkBoxAspectRatio.Size = new System.Drawing.Size(171, 22);
             this.checkBoxAspectRatio.TabIndex = 71;
@@ -534,12 +424,13 @@
             // 
             // checkBoxMute
             // 
+            this.checkBoxMute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxMute.AutoSize = true;
             this.checkBoxMute.Checked = true;
             this.checkBoxMute.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxMute.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxMute.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.checkBoxMute.Location = new System.Drawing.Point(123, 32);
+            this.checkBoxMute.Location = new System.Drawing.Point(194, 8);
             this.checkBoxMute.Name = "checkBoxMute";
             this.checkBoxMute.Size = new System.Drawing.Size(60, 22);
             this.checkBoxMute.TabIndex = 73;
@@ -549,16 +440,30 @@
             // 
             // checkBoxShowSide
             // 
+            this.checkBoxShowSide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxShowSide.AutoSize = true;
             this.checkBoxShowSide.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxShowSide.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.checkBoxShowSide.Location = new System.Drawing.Point(7, 32);
+            this.checkBoxShowSide.Location = new System.Drawing.Point(8, 33);
             this.checkBoxShowSide.Name = "checkBoxShowSide";
             this.checkBoxShowSide.Size = new System.Drawing.Size(93, 22);
             this.checkBoxShowSide.TabIndex = 69;
             this.checkBoxShowSide.Text = "Side Ortho";
             this.checkBoxShowSide.UseVisualStyleBackColor = true;
             this.checkBoxShowSide.CheckedChanged += new System.EventHandler(this.checkBoxShowSide_CheckedChanged);
+            // 
+            // checkBoxCabRotater
+            // 
+            this.checkBoxCabRotater.AutoCheck = false;
+            this.checkBoxCabRotater.AutoSize = true;
+            this.checkBoxCabRotater.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.checkBoxCabRotater.Location = new System.Drawing.Point(18, 15);
+            this.checkBoxCabRotater.Name = "checkBoxCabRotater";
+            this.checkBoxCabRotater.Size = new System.Drawing.Size(94, 22);
+            this.checkBoxCabRotater.TabIndex = 89;
+            this.checkBoxCabRotater.Text = "Rotate Cab";
+            this.checkBoxCabRotater.UseVisualStyleBackColor = true;
+            this.checkBoxCabRotater.Click += new System.EventHandler(this.checkBoxCabRotater_Click);
             // 
             // panelRight
             // 
@@ -577,7 +482,7 @@
             this.panelRightTrial.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelRightTrial.Location = new System.Drawing.Point(0, 110);
             this.panelRightTrial.Name = "panelRightTrial";
-            this.panelRightTrial.Size = new System.Drawing.Size(210, 322);
+            this.panelRightTrial.Size = new System.Drawing.Size(210, 334);
             this.panelRightTrial.TabIndex = 72;
             // 
             // panelRightTop
@@ -618,39 +523,100 @@
             // 
             this.panelRightBottom.Controls.Add(this.panelRightBottomFill);
             this.panelRightBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelRightBottom.Location = new System.Drawing.Point(0, 432);
+            this.panelRightBottom.Location = new System.Drawing.Point(0, 444);
             this.panelRightBottom.Name = "panelRightBottom";
             this.panelRightBottom.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.panelRightBottom.Size = new System.Drawing.Size(210, 210);
+            this.panelRightBottom.Size = new System.Drawing.Size(210, 198);
             this.panelRightBottom.TabIndex = 70;
             // 
             // panelRightBottomFill
             // 
             this.panelRightBottomFill.BackColor = System.Drawing.Color.White;
+            this.panelRightBottomFill.Controls.Add(this.labelAngleBucket);
+            this.panelRightBottomFill.Controls.Add(this.labelAngleArm);
+            this.panelRightBottomFill.Controls.Add(this.labelAngleBoom);
+            this.panelRightBottomFill.Controls.Add(this.labelAngleCab);
+            this.panelRightBottomFill.Controls.Add(this.labelAngleSwing);
             this.panelRightBottomFill.Controls.Add(this.label14);
             this.panelRightBottomFill.Controls.Add(this.label3);
             this.panelRightBottomFill.Controls.Add(this.label6);
             this.panelRightBottomFill.Controls.Add(this.label7);
-            this.panelRightBottomFill.Controls.Add(this.numericUpDownArm);
-            this.panelRightBottomFill.Controls.Add(this.numericUpDownSwing);
-            this.panelRightBottomFill.Controls.Add(this.numericUpDownBucket);
-            this.panelRightBottomFill.Controls.Add(this.numericUpDownCabRotation);
-            this.panelRightBottomFill.Controls.Add(this.numericUpDownBoom);
             this.panelRightBottomFill.Controls.Add(this.label4);
             this.panelRightBottomFill.Controls.Add(this.label5);
             this.panelRightBottomFill.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelRightBottomFill.Location = new System.Drawing.Point(0, 10);
             this.panelRightBottomFill.Name = "panelRightBottomFill";
             this.panelRightBottomFill.Padding = new System.Windows.Forms.Padding(10);
-            this.panelRightBottomFill.Size = new System.Drawing.Size(210, 200);
+            this.panelRightBottomFill.Size = new System.Drawing.Size(210, 188);
             this.panelRightBottomFill.TabIndex = 63;
+            // 
+            // labelAngleBucket
+            // 
+            this.labelAngleBucket.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelAngleBucket.AutoSize = true;
+            this.labelAngleBucket.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAngleBucket.Location = new System.Drawing.Point(151, 155);
+            this.labelAngleBucket.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.labelAngleBucket.Name = "labelAngleBucket";
+            this.labelAngleBucket.Size = new System.Drawing.Size(49, 18);
+            this.labelAngleBucket.TabIndex = 69;
+            this.labelAngleBucket.Text = "Swing:";
+            // 
+            // labelAngleArm
+            // 
+            this.labelAngleArm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelAngleArm.AutoSize = true;
+            this.labelAngleArm.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAngleArm.Location = new System.Drawing.Point(151, 127);
+            this.labelAngleArm.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.labelAngleArm.Name = "labelAngleArm";
+            this.labelAngleArm.Size = new System.Drawing.Size(49, 18);
+            this.labelAngleArm.TabIndex = 68;
+            this.labelAngleArm.Text = "Swing:";
+            // 
+            // labelAngleBoom
+            // 
+            this.labelAngleBoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelAngleBoom.AutoSize = true;
+            this.labelAngleBoom.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAngleBoom.Location = new System.Drawing.Point(151, 99);
+            this.labelAngleBoom.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.labelAngleBoom.Name = "labelAngleBoom";
+            this.labelAngleBoom.Size = new System.Drawing.Size(49, 18);
+            this.labelAngleBoom.TabIndex = 67;
+            this.labelAngleBoom.Text = "Swing:";
+            // 
+            // labelAngleCab
+            // 
+            this.labelAngleCab.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelAngleCab.AutoSize = true;
+            this.labelAngleCab.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAngleCab.Location = new System.Drawing.Point(151, 71);
+            this.labelAngleCab.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.labelAngleCab.Name = "labelAngleCab";
+            this.labelAngleCab.Size = new System.Drawing.Size(49, 18);
+            this.labelAngleCab.TabIndex = 66;
+            this.labelAngleCab.Text = "Swing:";
+            // 
+            // labelAngleSwing
+            // 
+            this.labelAngleSwing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelAngleSwing.AutoSize = true;
+            this.labelAngleSwing.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAngleSwing.Location = new System.Drawing.Point(151, 43);
+            this.labelAngleSwing.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.labelAngleSwing.Name = "labelAngleSwing";
+            this.labelAngleSwing.Size = new System.Drawing.Size(49, 18);
+            this.labelAngleSwing.TabIndex = 65;
+            this.labelAngleSwing.Text = "Swing:";
             // 
             // label14
             // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Calibri", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
-            this.label14.Location = new System.Drawing.Point(10, 12);
-            this.label14.Margin = new System.Windows.Forms.Padding(0);
+            this.label14.Location = new System.Drawing.Point(10, 15);
+            this.label14.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(108, 18);
             this.label14.TabIndex = 64;
@@ -767,6 +733,7 @@
             // 
             // tabPageScenery
             // 
+            this.tabPageScenery.Controls.Add(this.labelRandom);
             this.tabPageScenery.Controls.Add(this.numericUpDown4);
             this.tabPageScenery.Controls.Add(this.numericUpDown3);
             this.tabPageScenery.Controls.Add(this.numericUpDown2);
@@ -782,6 +749,20 @@
             this.tabPageScenery.TabIndex = 3;
             this.tabPageScenery.Text = "Scenery";
             this.tabPageScenery.UseVisualStyleBackColor = true;
+            // 
+            // labelRandom
+            // 
+            this.labelRandom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelRandom.AutoSize = true;
+            this.labelRandom.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRandom.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelRandom.Location = new System.Drawing.Point(119, 261);
+            this.labelRandom.Margin = new System.Windows.Forms.Padding(0);
+            this.labelRandom.Name = "labelRandom";
+            this.labelRandom.Size = new System.Drawing.Size(36, 18);
+            this.labelRandom.TabIndex = 93;
+            this.labelRandom.Text = "1245";
+            this.labelRandom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // numericUpDown4
             // 
@@ -964,7 +945,7 @@
             this.tabPageOpenGL.Padding = new System.Windows.Forms.Padding(10);
             this.tabPageOpenGL.Size = new System.Drawing.Size(287, 616);
             this.tabPageOpenGL.TabIndex = 2;
-            this.tabPageOpenGL.Text = "OpenGL";
+            this.tabPageOpenGL.Text = "CAD";
             this.tabPageOpenGL.UseVisualStyleBackColor = true;
             // 
             // tabPageInterface
@@ -975,7 +956,7 @@
             this.tabPageInterface.Name = "tabPageInterface";
             this.tabPageInterface.Size = new System.Drawing.Size(287, 616);
             this.tabPageInterface.TabIndex = 0;
-            this.tabPageInterface.Text = "Interface";
+            this.tabPageInterface.Text = "View";
             this.tabPageInterface.UseVisualStyleBackColor = true;
             // 
             // panelViewMode
@@ -1000,7 +981,7 @@
             this.panelViewMode.Location = new System.Drawing.Point(12, 12);
             this.panelViewMode.Margin = new System.Windows.Forms.Padding(3, 10, 3, 10);
             this.panelViewMode.Name = "panelViewMode";
-            this.panelViewMode.Size = new System.Drawing.Size(257, 594);
+            this.panelViewMode.Size = new System.Drawing.Size(261, 594);
             this.panelViewMode.TabIndex = 76;
             // 
             // numericUpDownOutsideDistance
@@ -1212,6 +1193,8 @@
             this.tabControl1.Controls.Add(this.tabPageOpenGL);
             this.tabControl1.Controls.Add(this.tabPageScenery);
             this.tabControl1.Controls.Add(this.tabPageHeadSpace);
+            this.tabControl1.Controls.Add(this.tabPageCab);
+            this.tabControl1.Controls.Add(this.tabPageSave);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Left;
             this.tabControl1.Location = new System.Drawing.Point(10, 10);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
@@ -1249,7 +1232,7 @@
             this.tabPageHeadSpace.Name = "tabPageHeadSpace";
             this.tabPageHeadSpace.Size = new System.Drawing.Size(287, 616);
             this.tabPageHeadSpace.TabIndex = 4;
-            this.tabPageHeadSpace.Text = "View";
+            this.tabPageHeadSpace.Text = "Head";
             this.tabPageHeadSpace.UseVisualStyleBackColor = true;
             // 
             // labelHT_O
@@ -1517,6 +1500,291 @@
             this.label9.TabIndex = 81;
             this.label9.Text = "Head X:";
             // 
+            // tabPageCab
+            // 
+            this.tabPageCab.Controls.Add(this.labelCabHardware);
+            this.tabPageCab.Controls.Add(this.label18);
+            this.tabPageCab.Controls.Add(this.label16);
+            this.tabPageCab.Controls.Add(this.label17);
+            this.tabPageCab.Controls.Add(this.nudCabKd);
+            this.tabPageCab.Controls.Add(this.nudCabKp);
+            this.tabPageCab.Controls.Add(this.numericUpDown6);
+            this.tabPageCab.Controls.Add(this.checkBoxCabRotater);
+            this.tabPageCab.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCab.Name = "tabPageCab";
+            this.tabPageCab.Size = new System.Drawing.Size(287, 616);
+            this.tabPageCab.TabIndex = 5;
+            this.tabPageCab.Text = "Cab";
+            this.tabPageCab.UseVisualStyleBackColor = true;
+            // 
+            // labelCabHardware
+            // 
+            this.labelCabHardware.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelCabHardware.AutoSize = true;
+            this.labelCabHardware.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCabHardware.Location = new System.Drawing.Point(178, 176);
+            this.labelCabHardware.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.labelCabHardware.Name = "labelCabHardware";
+            this.labelCabHardware.Size = new System.Drawing.Size(30, 18);
+            this.labelCabHardware.TabIndex = 101;
+            this.labelCabHardware.Text = "ang";
+            // 
+            // label18
+            // 
+            this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(15, 176);
+            this.label18.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(111, 18);
+            this.label18.TabIndex = 100;
+            this.label18.Text = "Hardware Angle:";
+            // 
+            // label16
+            // 
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(15, 112);
+            this.label16.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(94, 18);
+            this.label16.TabIndex = 99;
+            this.label16.Text = "Controlelr Kd:";
+            // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(15, 80);
+            this.label17.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(94, 18);
+            this.label17.TabIndex = 98;
+            this.label17.Text = "Controller Kp:";
+            // 
+            // nudCabKd
+            // 
+            this.nudCabKd.DecimalPlaces = 2;
+            this.nudCabKd.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.nudCabKd.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nudCabKd.Location = new System.Drawing.Point(181, 110);
+            this.nudCabKd.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudCabKd.Name = "nudCabKd";
+            this.nudCabKd.Size = new System.Drawing.Size(80, 26);
+            this.nudCabKd.TabIndex = 96;
+            this.nudCabKd.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudCabKd.ValueChanged += new System.EventHandler(this.nudCabK_ValueChanged);
+            // 
+            // nudCabKp
+            // 
+            this.nudCabKp.DecimalPlaces = 2;
+            this.nudCabKp.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.nudCabKp.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nudCabKp.Location = new System.Drawing.Point(181, 78);
+            this.nudCabKp.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudCabKp.Name = "nudCabKp";
+            this.nudCabKp.Size = new System.Drawing.Size(80, 26);
+            this.nudCabKp.TabIndex = 94;
+            this.nudCabKp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudCabKp.Value = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.nudCabKp.ValueChanged += new System.EventHandler(this.nudCabK_ValueChanged);
+            // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.Enabled = false;
+            this.numericUpDown6.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.numericUpDown6.Location = new System.Drawing.Point(181, 14);
+            this.numericUpDown6.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(80, 26);
+            this.numericUpDown6.TabIndex = 92;
+            this.numericUpDown6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDown6.Value = new decimal(new int[] {
+            350,
+            0,
+            0,
+            0});
+            // 
+            // tabPageSave
+            // 
+            this.tabPageSave.Controls.Add(this.labelTimeLeft);
+            this.tabPageSave.Controls.Add(this.labelTimeLeftX);
+            this.tabPageSave.Controls.Add(this.buttonBeginSave);
+            this.tabPageSave.Controls.Add(this.nudSession);
+            this.tabPageSave.Controls.Add(this.label15);
+            this.tabPageSave.Controls.Add(this.nudSubject);
+            this.tabPageSave.Controls.Add(this.label19);
+            this.tabPageSave.Controls.Add(this.buttonSavePath);
+            this.tabPageSave.Controls.Add(this.label8);
+            this.tabPageSave.Controls.Add(this.textBoxSavePath);
+            this.tabPageSave.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSave.Name = "tabPageSave";
+            this.tabPageSave.Size = new System.Drawing.Size(287, 616);
+            this.tabPageSave.TabIndex = 6;
+            this.tabPageSave.Text = "Save";
+            this.tabPageSave.UseVisualStyleBackColor = true;
+            // 
+            // labelTimeLeft
+            // 
+            this.labelTimeLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelTimeLeft.AutoSize = true;
+            this.labelTimeLeft.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTimeLeft.Location = new System.Drawing.Point(179, 191);
+            this.labelTimeLeft.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.labelTimeLeft.Name = "labelTimeLeft";
+            this.labelTimeLeft.Size = new System.Drawing.Size(30, 18);
+            this.labelTimeLeft.TabIndex = 103;
+            this.labelTimeLeft.Text = "ang";
+            // 
+            // labelTimeLeftX
+            // 
+            this.labelTimeLeftX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelTimeLeftX.AutoSize = true;
+            this.labelTimeLeftX.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTimeLeftX.Location = new System.Drawing.Point(16, 191);
+            this.labelTimeLeftX.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.labelTimeLeftX.Name = "labelTimeLeftX";
+            this.labelTimeLeftX.Size = new System.Drawing.Size(69, 18);
+            this.labelTimeLeftX.TabIndex = 102;
+            this.labelTimeLeftX.Text = "Time Left:";
+            // 
+            // buttonBeginSave
+            // 
+            this.buttonBeginSave.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.buttonBeginSave.Location = new System.Drawing.Point(130, 152);
+            this.buttonBeginSave.Name = "buttonBeginSave";
+            this.buttonBeginSave.Size = new System.Drawing.Size(76, 27);
+            this.buttonBeginSave.TabIndex = 84;
+            this.buttonBeginSave.Text = "Begin";
+            this.buttonBeginSave.UseVisualStyleBackColor = true;
+            this.buttonBeginSave.Click += new System.EventHandler(this.buttonBeginSave_Click);
+            // 
+            // nudSession
+            // 
+            this.nudSession.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudSession.Location = new System.Drawing.Point(130, 120);
+            this.nudSession.Maximum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.nudSession.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.nudSession.Name = "nudSession";
+            this.nudSession.Size = new System.Drawing.Size(76, 26);
+            this.nudSession.TabIndex = 83;
+            this.nudSession.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudSession.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.nudSession.ValueChanged += new System.EventHandler(this.nudSessionSubject_ValueChanged);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(17, 88);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(54, 18);
+            this.label15.TabIndex = 80;
+            this.label15.Text = "Subject";
+            // 
+            // nudSubject
+            // 
+            this.nudSubject.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudSubject.Location = new System.Drawing.Point(130, 86);
+            this.nudSubject.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.nudSubject.Name = "nudSubject";
+            this.nudSubject.Size = new System.Drawing.Size(76, 26);
+            this.nudSubject.TabIndex = 81;
+            this.nudSubject.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.nudSubject.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.nudSubject.ValueChanged += new System.EventHandler(this.nudSessionSubject_ValueChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(17, 120);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(59, 18);
+            this.label19.TabIndex = 82;
+            this.label19.Text = "Session:";
+            // 
+            // buttonSavePath
+            // 
+            this.buttonSavePath.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.buttonSavePath.Location = new System.Drawing.Point(139, 16);
+            this.buttonSavePath.Name = "buttonSavePath";
+            this.buttonSavePath.Size = new System.Drawing.Size(89, 27);
+            this.buttonSavePath.TabIndex = 79;
+            this.buttonSavePath.Text = "Browse";
+            this.buttonSavePath.UseVisualStyleBackColor = true;
+            this.buttonSavePath.Click += new System.EventHandler(this.buttonSavePath_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Calibri", 11.25F);
+            this.label8.Location = new System.Drawing.Point(17, 20);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(116, 18);
+            this.label8.TabIndex = 42;
+            this.label8.Text = "Save Base Folder:";
+            // 
+            // textBoxSavePath
+            // 
+            this.textBoxSavePath.Location = new System.Drawing.Point(19, 53);
+            this.textBoxSavePath.Name = "textBoxSavePath";
+            this.textBoxSavePath.Size = new System.Drawing.Size(252, 20);
+            this.textBoxSavePath.TabIndex = 1;
+            this.textBoxSavePath.TextChanged += new System.EventHandler(this.textBoxSavePath_TextChanged);
+            // 
             // FormBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1537,11 +1805,6 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormBase_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panelOuterGL.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCabRotation)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBucket)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownArm)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBoom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSwing)).EndInit();
             this.panelFill.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1577,6 +1840,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHeadX)).EndInit();
+            this.tabPageCab.ResumeLayout(false);
+            this.tabPageCab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCabKd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCabKp)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.tabPageSave.ResumeLayout(false);
+            this.tabPageSave.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSession)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSubject)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1602,11 +1874,6 @@
         private System.Windows.Forms.CheckBox checkBoxTrialPause;
         private System.Windows.Forms.Button buttonTrialReset;
         private System.Windows.Forms.Button buttonTrialNew;
-        internal System.Windows.Forms.NumericUpDown numericUpDownCabRotation;
-        internal System.Windows.Forms.NumericUpDown numericUpDownBucket;
-        internal System.Windows.Forms.NumericUpDown numericUpDownArm;
-        internal System.Windows.Forms.NumericUpDown numericUpDownBoom;
-        internal System.Windows.Forms.NumericUpDown numericUpDownSwing;
         private System.Windows.Forms.TabPage tabPageScenery;
         private System.Windows.Forms.NumericUpDown numericUpDownSkyBoxDim;
         private System.Windows.Forms.Label labelSkyBoxDistance;
@@ -1670,6 +1937,33 @@
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button buttonResetSoil;
+        private System.Windows.Forms.Label labelAngleBucket;
+        private System.Windows.Forms.Label labelAngleArm;
+        private System.Windows.Forms.Label labelAngleBoom;
+        private System.Windows.Forms.Label labelAngleCab;
+        private System.Windows.Forms.Label labelAngleSwing;
+        internal System.Windows.Forms.Label labelRandom;
+        private System.Windows.Forms.TabPage tabPageCab;
+        private System.Windows.Forms.NumericUpDown nudCabKd;
+        private System.Windows.Forms.NumericUpDown nudCabKp;
+        private System.Windows.Forms.NumericUpDown numericUpDown6;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label labelCabHardware;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TabPage tabPageSave;
+        private System.Windows.Forms.Button buttonSavePath;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBoxSavePath;
+        private System.Windows.Forms.FolderBrowserDialog fbdSavePath;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown nudSubject;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.NumericUpDown nudSession;
+        private System.Windows.Forms.Button buttonBeginSave;
+        private System.Windows.Forms.Label labelTimeLeft;
+        private System.Windows.Forms.Label labelTimeLeftX;
     }
 }
 

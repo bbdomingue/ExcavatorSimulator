@@ -22,18 +22,14 @@ namespace Excavator
         private ControlKeyboardCylinder controlKeyboard1 = new ControlKeyboardCylinder();
         private Panel panelSpacer1 = new Panel();      
 
-        public TE_VelocityCylinderKeyboard()
-        {
-        }
-
         public override void Deconstruct()
         {
             base.Deconstruct();
             this.controlKeyboard1.Deconstruct();
         }
 
-        public TE_VelocityCylinderKeyboard(FormBase fb, string saveFile, int minutes)
-            : base(fb, false, saveFile, minutes)
+        public TE_VelocityCylinderKeyboard()
+            : base()
         {
             if (this.DesignMode) return;
 
@@ -41,16 +37,11 @@ namespace Excavator
             this.Controls.Add(this.panelSpacer1);
             this.panelSpacer1.Dock = DockStyle.Top;
             this.panelSpacer1.SendToBack();
-            this.panelSpacer1.BackColor = fb.BackColor;
+            this.panelSpacer1.BackColor = FormBase.Instance.BackColor;
 
             this.Controls.Add(this.controlKeyboard1);
             this.controlKeyboard1.Dock = DockStyle.Top;
             this.controlKeyboard1.SendToBack();
-        }
-
-        public override bool hasGhost()
-        {
-            return false;
         }
 
         public override string getName()
@@ -113,8 +104,8 @@ namespace Excavator
 
             this._LastDelta = Vector2.Multiply(this._LastDelta, mx > ABSMX ? ABSMX / mx : 1);
 
-            double dA = this.clampQ2_Radians(A + this._LastDelta.X) - A;
-            double dB = this.clampQ3_Radians(B + this._LastDelta.Y) - B;
+            double dA = Trial.clampQ2_Radians(A + this._LastDelta.X) - A;
+            double dB = Trial.clampQ3_Radians(B + this._LastDelta.Y) - B;
 
             const float cutoff = 0.001f * ABSMX;
 
@@ -157,10 +148,8 @@ namespace Excavator
             Bobcat.PumpModelFlow(this.T1, ref flows, 0);
 
             Bobcat.JointToCylinder(1, ref Q, ref Qd_Desired, ref CYL_POS_DESIRED, ref CYL_VEL_DESIRED);
-            Bobcat.PumpModelVelocity(1, ref CYL_VEL_DESIRED, ref CYL_VEL, ref flows);
-
             Bobcat.JointToCylinder(2, ref Q, ref Qd_Desired, ref CYL_POS_DESIRED, ref CYL_VEL_DESIRED);
-            Bobcat.PumpModelVelocity(2, ref CYL_VEL_DESIRED, ref CYL_VEL, ref flows);
+            Bobcat.PumpModelVelocity(ref CYL_VEL_DESIRED, ref CYL_VEL, ref flows);
 
             Bobcat.PumpModelFlow(-this.T2, ref flows, 3);
         }
@@ -170,15 +159,9 @@ namespace Excavator
 
 
 
-        public override void  Gui_Label_Tick(float accumulator)
+        public override void  Gui_30MS_Tick(float accumulator)
         {
-         	base.Gui_Label_Tick(accumulator);
-
-            StaticMethods.setNudValue(this.nudCab, this.ActualAngles.cab);
-            StaticMethods.setNudValue(this.nudBoom, this.ActualAngles.boo);
-            StaticMethods.setNudValue(this.nudArm, this.ActualAngles.arm);
-            StaticMethods.setNudValue(this.nudBucket, this.ActualAngles.buc);
-
+         	base.Gui_30MS_Tick(accumulator);
             this.controlKeyboard1.updateGui();
         }
     }

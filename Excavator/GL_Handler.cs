@@ -159,7 +159,6 @@ namespace Excavator
             this._GhostIntShaderF = 0;
             this._GhostIntShaderV = 0;
 
-            Trial._Trial.GLDelete();
             Bobcat.GLDelete();
             Trial.GLDelete_Static();
             EmbeddedSoilModel.GLDelete_Static();
@@ -208,7 +207,7 @@ namespace Excavator
             float specular = 1.0f;
             float ambient = 1.0f;
 
-            this.setLightPos(this._FloatsLightPos);
+            this.setLightPos();
             GL.Light(LightName.Light0, LightParameter.Diffuse,
                 new float[] { diffuse, diffuse, diffuse, 1.0f });
             GL.Light(LightName.Light0, LightParameter.Ambient,
@@ -266,6 +265,10 @@ namespace Excavator
         private Matrix4 _MatrixModelM;
 
         private float _FloatCabYaw = 0;
+        private Bobcat.BobcatAngles ActualAngles = Bobcat.BobcatAngles.Zero;
+        private Bobcat.BobcatAngles GhostAngles = Bobcat.BobcatAngles.Zero;
+        private float _FloatDrawTime = 0;
+        public static volatile bool DrawGhost = false;
 
         public float _FloatHeadYaw = 0;
         public float _FloatHeadPitch = 0;
@@ -602,10 +605,10 @@ namespace Excavator
         {
             if (this._BoolGlNotLoaded) return;
 
-            Trial._Trial.updateTime();
-            Trial._Trial.updateSim();
-
-            this._FloatCabYaw = Trial._Trial.ActualAngles.cab;
+            this._FloatCabYaw = Bobcat.ActualAngles.cab;
+            this.ActualAngles = Bobcat.ActualAngles;
+            this.GhostAngles = Bobcat.GhostAngles;
+            this._FloatDrawTime = Trial.getTime();
 
             this.updateMatrices();
 
@@ -736,7 +739,7 @@ namespace Excavator
         {
             GL.Light(LightName.Light0, LightParameter.Position, this._FloatsLightPos);
 
-            bool drawCab = !FormBase._FormBase._BoolFullScreen || (
+            bool drawCab = !FormBase.Instance._BoolFullScreen || (
                 this.__DrawType == DrawType.Outside ||
                 this.__DrawType == DrawType.ShadowBufferGraphics);
 
@@ -744,21 +747,21 @@ namespace Excavator
             {
                 case DrawStage.Ghost:
                     {
-                        Bobcat.Draw(Trial._Trial.GhostAngles, false, false);
+                        Bobcat.Draw(this.GhostAngles, false, false);
                         break;
                     }
                 case DrawStage.NormalInsideShadow:
                     {
                         GL_Handler._BoolMatrixModeModelTexture = true;
                         GL_Handler._BoolTextureAlso = true;
-                        Trial._Trial.drawObjectsInShadow(false);
-                        Bobcat.Draw(Trial._Trial.ActualAngles, drawCab, false);                        
+                        Trial.drawObjectsInShadow(false, this._FloatDrawTime);
+                        Bobcat.Draw(this.ActualAngles, drawCab, false);                        
                         GL_Handler._BoolTextureAlso = false;
                         break;
                     }
                 case DrawStage.NormalOutsideShadow:
                     {
-                        Trial._Trial.drawObjectsNotInShadow();
+                        Trial.drawObjectsNotInShadow(this.ActualAngles);
 
                         if (this._SkyBox != null)
                         {
@@ -790,13 +793,9 @@ namespace Excavator
         // Lighting
         ///////////////////////////////////////////
 
-        private float[] _FloatsLightPos = new float[] { 5000, 15000, -3000, 1 };
-        private void setLightPos(float[] thereHadBetterBe4ValuesInThisArrayYouTwat)
+        private readonly float[] _FloatsLightPos = new float[] { 8000, 15000, 4000, 0 };
+        private void setLightPos()
         {
-            // And Last value should be 0 (1 specifies light location, 0 specifies infinity)
-
-            this._FloatsLightPos = thereHadBetterBe4ValuesInThisArrayYouTwat;
-
             Vector3 lightPos = new Vector3(this._FloatsLightPos[0], this._FloatsLightPos[1], this._FloatsLightPos[2]);
 
             lightPos.Normalize();
@@ -924,15 +923,15 @@ namespace Excavator
                     300);
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.LoadIdentity();
-                GL.Rotate(- 90 - Trial._Trial.ActualAngles.cab, Vector3.UnitY);
+                GL.Rotate(- 90 - this.ActualAngles.cab, Vector3.UnitY);
 
                 GL.Disable(EnableCap.Lighting);
-                Trial._Trial.drawOrtho();
+                EmbeddedSoilModel.drawTrenchOrtho();
 
                 GL.Enable(EnableCap.Lighting);
                 GL.Light(LightName.Light0, LightParameter.Position, this._FloatsLightPos);
 
-                Bobcat.Draw(Trial._Trial.ActualAngles, true, true);
+                Bobcat.Draw(this.ActualAngles, true, true);
 
                 GL.BindFramebuffer(FramebufferTarget.FramebufferExt, 0); // return to visible framebuffer
                 GL.DrawBuffer(DrawBufferMode.Back);
@@ -1446,8 +1445,8 @@ namespace Excavator
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.LoadMatrix(ref this._ShadowMatrix4MapModelView);
 
-                Trial._Trial.drawObjectsInShadow(true);
-                Bobcat.Draw(Trial._Trial.ActualAngles, true, true);// draw cab, in shadow buffer
+                Trial.drawObjectsInShadow(true, this._FloatDrawTime);
+                Bobcat.Draw(this.ActualAngles, true, true);// draw cab, in shadow buffer
 
                 // This is matrix transform every coordinate x,y,z Moving from unit cube [-1,1] to [0,1]  
 
@@ -1464,7 +1463,7 @@ namespace Excavator
                 GL.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
                 GL.ActiveTexture(TextureUnit.Texture0);
 
-                bool drawGhost = (Trial._Trial.hasGhost()) && (this._EnumGhostSetup == EnumGLSetup.good);
+                bool drawGhost = (GL_Handler.DrawGhost) && (this._EnumGhostSetup == EnumGLSetup.good);
 
                 if (this.__DrawType == DrawType.CatLaces)
                 {
@@ -1492,7 +1491,7 @@ namespace Excavator
 
                     if (drawGhost) this.drawGhost(true, false);
                     else this.dontDrawGhost();
-                    
+
                     GL.Disable(EnableCap.StencilTest);
                 }
                 else // Normal (not laced)

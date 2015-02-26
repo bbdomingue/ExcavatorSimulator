@@ -19,7 +19,7 @@ namespace Excavator
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormBase());
+            Application.Run(FormBase.Instance);
         }
     }
 }

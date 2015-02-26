@@ -14,7 +14,7 @@ using SamSeifert.HeadTracker;
 
 namespace Excavator
 {
-    internal static class Bobcat
+    public static class Bobcat
     {
         internal const float dimOffsetCabY_Inches = 31.0f;
         internal const float dimOffsetCabX_Inches = -1.0f;
@@ -102,28 +102,58 @@ namespace Excavator
 
 
 
-
-        internal class BobcatAngles
+        private static Bobcat.BobcatAngles _ActualAngles = new Bobcat.BobcatAngles();
+        private static Bobcat.BobcatAngles _GhostAngles = new Bobcat.BobcatAngles();
+        private static object AnglesLock = new object();
+        public static BobcatAngles ActualAngles
         {
-            internal static BobcatAngles Zero = new BobcatAngles();
+            get
+            {
+                lock (AnglesLock)
+                {
+                    return _ActualAngles;
+                }
+            }
+            set
+            {
+                lock (AnglesLock)
+                {
+                    _ActualAngles = value;
+                }
+            }
+        }
+        public static BobcatAngles GhostAngles
+        {
+            get
+            {
+                lock (AnglesLock)
+                {
+                    return _GhostAngles;
+                }
+            }
+            set
+            {
+                lock (AnglesLock)
+                {
+                    _GhostAngles = value;
+                }
+            }
+        }
+
+        public struct BobcatAngles
+        {
+            public static BobcatAngles Zero = new BobcatAngles() { arm = 0, boo = 0, buc = 0, cab = 0, swi = 0 };
+            
             /// <summary>
             /// Copies argument to target
             /// </summary>
             /// <param name="FROM"></param>
-            internal void copy(BobcatAngles from)
-            {
-                this.cab = from.cab;
-                this.swi = from.swi;
-                this.boo = from.boo;
-                this.arm = from.arm;
-                this.buc = from.buc;
-            }
 
-            internal float cab;
-            internal float swi;
-            internal float boo;
-            internal float arm;
-            internal float buc;
+            public float cab;
+            public float swi;
+            public float boo;
+            public float arm;
+            public float buc;
         }
 
 
@@ -378,9 +408,8 @@ namespace Excavator
                         GL_Handler.Rotate(35, 0, 0, 1);
                         GL_Handler.Translate(slidex / 2 - 0.365f, slidey / 2 + 2.11f, 0);	//correct for the slp origin
 
-                        Bobcat._COBucket.draw(useC);
-//                        Bobcat._COBucketSimple.draw(useC);
-//
+                        if (FormBase._BoolDrawPhysX) Bobcat._COBucketSimple.draw(useC);
+                        else Bobcat._COBucket.draw(useC);
                     }
                     GL_Handler.PopMatrix();
 
@@ -569,8 +598,6 @@ namespace Excavator
                 zScale:sc);
             Bobcat._COButt = CadObjectGenerator.fromXAML(Properties.Resources.Dull_Butt, ObjectName: "Butt");
 
-            const float r = Bobcat._Float_Head_Tracker_Ball_Size;
-
             Bobcat.SetupHeadAndTV();
 
             Bobcat._H1 = CadObjectGenerator.CreateSphere(Vector3.Zero, 1, Color.Red.ToArgb());
@@ -589,7 +616,7 @@ namespace Excavator
                 Bobcat._HT2
             }, "Head Tracker Setup");
 
-            FormBase._FormBase.addCadItems(Bobcat.objects());
+            FormBase.Instance.addCadItems(Bobcat.objects());
 
             foreach (var co in new CadObject[] {
                     Bobcat._COArmCyl,
@@ -951,215 +978,10 @@ namespace Excavator
 
 
         const float tau = 13.3333f; // Taken From LoadVars.m
-
-        
         const float a1_sim = 31.5423f;
         public const float a4_sim = 34.6133f; //34.6593
         const float d1 = -1.68f;
         public static readonly float q2 = (float)(-pi / 2 + Math.Acos(d1 / a1_sim));
-
-
-        /// <summary>
-        /// Defined by Elton in in J2T_435.c
-        /// Used in Soil Model
-        /// Takes Joint Angles and Gives Poistions??? I think
-        /// </summary>
-        /// <param name="Ybh"></param>
-        /// <param name="Vbh"></param>
-        /// <param name="Q"></param>
-        /// <param name="QD"></param>
-        public static void JointToTask435(ref float[] Ybh, ref float[] Vbh, ref float[] Q, ref float[] QD)
-        {
-            /************************************************************
-                        variable and parameters definitions
-            ************************************************************/
-            float x, y, z, phi;
-            float x2, x3, x4, y2, y3, y4, z3, z4;
-            float t1, t2, t3, t4;
-            float w1, w2, w3, w4;
-            float vx, vy, vz, vphi; // float vr, vtheta, wx, wy, wz;
-            float c1, c12, c3, c34, c345;
-            float s1, s12, s3, s34, s345;
-            float J11, J12, J13, J14, J21, J22, J23, J24, J31, J33, J34; // float J15, J25, J32, J35, J41, J42, J43, J44, J45, J51, J52, J53, J54, J55;
-            float q1, q3, q4, q5;
-            float qd1, qd3, qd4, qd5; // float qd2;
-
-            /************************************************************
-                        Joint-Space Input Variables
-            /************************************************************
-                    x = task space x, y, z and phi (bucket angle) (in)
-                    v = task space velocity (in/s)
-                    t = theta = joint angle (rad)
-                    w = omega = joint velocity (rad/s)
-            ************************************************************/
-
-            t1 = Q[0];
-            t2 = Q[1];
-            t3 = Q[2];
-            t4 = Q[3];
-            w1 = QD[0];
-            w2 = QD[1];
-            w3 = QD[2];
-            w4 = QD[3];
-
-            q1 = t1 - Bobcat.q2;
-            q3 = t2;
-            q4 = t3;
-            q5 = t4;
-
-            qd1 = w1;
-            //            qd2 = 0;
-            qd3 = w2;
-            qd4 = w3;
-            qd5 = w4;
-
-            ///************************************************************
-            //			Trig/Link Length Calculations
-            //************************************************************/ 
-
-            c1 = (float)Math.Cos(q1);
-            c3 = (float)Math.Cos(q3);
-            c12 = (float)Math.Cos(q1 + Bobcat.q2);
-            c34 = (float)Math.Cos(q3 + q4);
-            c345 = (float)Math.Cos(q3 + q4 + q5);
-
-            s1 = (float)Math.Sin(q1);
-            s3 = (float)Math.Sin(q3);
-            s12 = (float)Math.Sin(q1 + Bobcat.q2);
-            s34 = (float)Math.Sin(q3 + q4);
-            s345 = (float)Math.Sin(q3 + q4 + q5);
-
-            ///************************************************************
-            //			Position Calculations
-            //************************************************************/
-            //    p02 = [Bobcat.a1_sim*c1-d1*s1 Bobcat.a1_sim*s1+d1*c1 0];
-            //    p03 = p02 + [Bobcat.a2*c2*c1 Bobcat.a2*c2*s1 Bobcat.a2*s2];
-            //    p04 = p03 + [Bobcat.a3*(c23)*c1 Bobcat.a3*(c23)*s1 Bobcat.a3*(s23)];
-            //    //p0tip = p03 + [Bobcat.a1_sim*(c234)*c1 Bobcat.a1_sim*(c234)*s1 Bobcat.a1_sim*(s234)];
-
-            x2 = (Bobcat.a1_sim * c1 + Bobcat.a1 * c12);
-            y2 = (Bobcat.a1_sim * s1 + Bobcat.a1 * s12);
-
-            x3 = x2 + Bobcat.LensBoom * c3 * c12;
-            y3 = y2 + Bobcat.LensBoom * c3 * s12;
-            z3 = Bobcat.LensBoom * s3;
-
-            x4 = x3 + Bobcat.LensArm * c34 * c12;
-            y4 = y3 + Bobcat.LensArm * c34 * s12;
-            z4 = z3 + Bobcat.LensArm * s34;
-
-            x = x4 + Bobcat.a1_sim * c345 * c12;
-            y = y4 + Bobcat.a1_sim * c345 * s12;
-            z = z4 + Bobcat.a1_sim * s345;
-            phi = t4;
-
-            q1 = q1 + Bobcat.q2;
-            c1 = (float)Math.Cos(q1);
-            c12 = (float)Math.Cos(q1 + Bobcat.q2);
-            s1 = (float)Math.Sin(q1);
-            s12 = (float)Math.Sin(q1 + Bobcat.q2);
-
-            // 	/************************************************************
-            // 				Velocity Calculations
-            // 	*************************************************************
-            // 			V = J(th)*omega
-            // 	************************************************************/
-            //  cartesian jacobian
-            //     J11 = -Bobcat.a1_sim*s1-Bobcat.a1*s12-Bobcat.a2*c3*s12-Bobcat.a3*c34*s12-Bobcat.a1_sim*c345*s12;
-            //     J12 = -Bobcat.a1*s12-Bobcat.a2*c3*s12-Bobcat.a3*c34*s12-Bobcat.a1_sim*c345*s12;
-            //     J13 = -c12*(Bobcat.a2*s3+Bobcat.a3*s34+Bobcat.a1_sim*s345);
-            //     J14 = -c12*(Bobcat.a3*s34+Bobcat.a1_sim*s345);
-            //     J15 = -c12*Bobcat.a1_sim*s345;
-            //     J21 = Bobcat.a1_sim*c1+Bobcat.a1*c12+Bobcat.a2*c3*c12+Bobcat.a3*c34*c12+Bobcat.a1_sim*c345*c12;
-            //     J22 = Bobcat.a1*c12+Bobcat.a2*c3*c12+Bobcat.a3*c34*c12+Bobcat.a1_sim*c345*c12;
-            //     J23 = -s12*(Bobcat.a2*s3+Bobcat.a3*s34+Bobcat.a1_sim*s345);
-            //     J24 = -s12*(Bobcat.a3*s34+Bobcat.a1_sim*s345);
-            //     J25 = -s12*Bobcat.a1_sim*s345;
-            //     J31 = 0;
-            //     J32 = 0;
-            //     J33 = s12*(Bobcat.a2*c3*s12+Bobcat.a3*c34*s12+Bobcat.a1_sim*c345*s12)+c12*(Bobcat.a2*c3*c12+Bobcat.a3*c34*c12+Bobcat.a1_sim*c345*c12);
-            //     J34 = s12*(Bobcat.a3*c34*s12+Bobcat.a1_sim*c345*s12)+c12*(Bobcat.a3*c34*c12+Bobcat.a1_sim*c345*c12);
-            //     J35 = s12*s12*Bobcat.a1_sim*c345+c12*c12*Bobcat.a1_sim*c345;
-            //     J41 = 0;
-            //     J42 = 0;
-            //     J43 = s12;
-            //     J44 = s12;
-            //     J45 = s12;
-            //     J51 = 0;
-            //     J52 = 0;
-            //     J53 = -c12;
-            //     J54 = -c12;
-            //     J55 = -c12;
-            // 
-            //     vx = J11*qd1 + J12*qd2 + J13*qd3 + J14*qd4 + J15*qd5;
-            //     vy = J21*qd1 + J22*qd2 + J23*qd3 + J24*qd4 + J25*qd5;
-            //     vz = J31*qd1 + J32*qd2 + J33*qd3 + J34*qd4 + J35*qd5;
-            //     wx = J41*qd1 + J42*qd2 + J43*qd3 + J44*qd4 + J45*qd5;
-            //     wy = J51*qd1 + J52*qd2 + J53*qd3 + J54*qd4 + J55*qd5;
-            //     wz = qd1;
-            //     vphi = w4;
-
-            J11 = -Bobcat.a1_sim * s1 - Bobcat.a1 * s12 - Bobcat.LensBoom * c3 * s12 - Bobcat.LensArm * c34 * s12 - Bobcat.a1_sim * c345 * s12;
-            J12 = -Bobcat.a1 * s12 - Bobcat.LensBoom * c3 * s12 - Bobcat.LensArm * c34 * s12 - Bobcat.a1_sim * c345 * s12;
-            J13 = -c12 * (Bobcat.LensBoom * s3 + Bobcat.LensArm * s34 + Bobcat.a1_sim * s345);
-            J14 = -c12 * (Bobcat.LensArm * s34 + Bobcat.a1_sim * s345);
-            //J15 = -c12*Bobcat.a1_sim*s345;
-            J21 = Bobcat.a1_sim * c1 + Bobcat.a1 * c12 + Bobcat.LensBoom * c3 * c12 + Bobcat.LensArm * c34 * c12 + Bobcat.a1_sim * c345 * c12;
-            J22 = Bobcat.a1 * c12 + Bobcat.LensBoom * c3 * c12 + Bobcat.LensArm * c34 * c12 + Bobcat.a1_sim * c345 * c12;
-            J23 = -s12 * (Bobcat.LensBoom * s3 + Bobcat.LensArm * s34 + Bobcat.a1_sim * s345);
-            J24 = -s12 * (Bobcat.LensArm * s34 + Bobcat.a1_sim * s345);
-            //J25 = -s12*Bobcat.a1_sim*s345;
-            J31 = 0;
-            //            J32 = 0;
-            J33 = s12 * (Bobcat.LensBoom * c3 * s12 + Bobcat.LensArm * c34 * s12 + Bobcat.a1_sim * c345 * s12) + c12 * (Bobcat.LensBoom * c3 * c12 + Bobcat.LensArm * c34 * c12 + Bobcat.a1_sim * c345 * c12);
-            J34 = s12 * (Bobcat.LensArm * c34 * s12 + Bobcat.a1_sim * c345 * s12) + c12 * (Bobcat.LensArm * c34 * c12 + Bobcat.a1_sim * c345 * c12);
-            //J35 = Bobcat.a1_sim*c345;//s12^2*Bobcat.a1_sim*c345+c12^2*Bobcat.a1_sim*c345;
-            // J41 = 0;
-            // J42 = 0;
-            // J43 = s12;
-            // J44 = s12;
-            // J45 = s12;
-            // J51 = 0;
-            // J52 = 0;
-            // J53 = -c12;
-            // J54 = -c12;
-            // J55 = -c12;
-
-            vx = J11 * qd1 + J13 * qd3 + J14 * qd4;
-            vy = J21 * qd1 + J23 * qd3 + J24 * qd4;
-            vz = J31 * qd1 + J33 * qd3 + J34 * qd4;
-            vphi = qd5;
-
-            //tau = jacob'*force;  
-            //vel = jacob*omega;
-
-            /************************************************************
-                        Cylinder-Space Output Variables
-            ************************************************************/
-            Ybh[0] = x4;
-            Ybh[1] = y4;
-            Ybh[2] = z4;
-            Ybh[3] = phi;
-            Vbh[0] = vx;
-            Vbh[1] = vy;
-            Vbh[2] = vz;
-            Vbh[3] = vphi;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         /// <summary>
@@ -1307,7 +1129,6 @@ namespace Excavator
         /// <param name="LAST_FLOW"></param>
         /// <param name="FLOW"></param>
         public static void PumpModelVelocity(
-            int i,
             // Input
             ref float[] CylinderVelocitiesDesired, 
             ref float[] CylinderVelocities,
@@ -1317,44 +1138,30 @@ namespace Excavator
         {
             float[] vgain = new float[] { 0, -10f, -10f, -10f };
 
-            float cmd = vgain[i] * (CylinderVelocities[i] - CylinderVelocitiesDesired[i]);
+            int i;
+            i = 1;
+            float cmd1 = (vgain[i] * (CylinderVelocities[i] - CylinderVelocitiesDesired[i])) / maxPumpFlowArray[i];
+            float fuf1 = FLOW[i];
+            i = 2;
+            float cmd2 = (vgain[i] * (CylinderVelocities[i] - CylinderVelocitiesDesired[i])) / maxPumpFlowArray[i];
+            float fuf2 = FLOW[i];
 
-            cmd /= maxPumpFlowArray[i];
+            var max = Math.Max(Math.Abs(cmd1), Math.Abs(cmd2));
 
-            float fuf = FLOW[i];
+            if (max > 1)
+            {
+                cmd1 /= max;
+                cmd2 /= max;
+            }
 
-            Bobcat.PumpModelFlow(cmd, ref FLOW, i);
+            Bobcat.PumpModelFlow(cmd1, ref FLOW, 1);
+            Bobcat.PumpModelFlow(cmd2, ref FLOW, 2);
 
-            const float alph = 0.90f;
+            const float alph = 0.8f;
             const float alph1m = 1 - alph;
-            FLOW[i] = fuf * alph + FLOW[i] * alph1m;
+            FLOW[1] = fuf1 * alph + FLOW[1] * alph1m;
+            FLOW[2] = fuf2 * alph + FLOW[2] * alph1m;
 
-
-            /*           
-             * 
-             *             float pumpflow = LAST_FLOW[i];
-            if (pumpflowcmd > maxpumpflow)	// if commanded flow is greater than the maximum
-                        {
-                            pumpflowcmd = maxpumpflow;	// set command to the maximum pump flow
-                        }
-                        else
-                        {
-                            if (pumpflowcmd < -maxpumpflow)	// if the command flow is less than the minimum
-                            {
-                                pumpflowcmd = -maxpumpflow;	// then set the command = minimum pump flow
-                            }
-                        }
-
-                        FLOW[i] = pumpflow + tau * Ts * (pumpflowcmd - pumpflow); 	// actual delivered flow (in^3/s)
-                        LAST_FLOW[i] = FLOW[i];		// save flow values as states */
-
-
-            /*
-            OUT[0] = v[0] - vdes[0];
-            OUT[1] = vdes[0];
-            OUT[2] = v[0];// - vdes[k]);
-            OUT[3] = pumpflowcmd[0];   
-            */
         }
 
         public static void PumpModelFlow(float cmd, ref float[] flow, int i)
@@ -1826,11 +1633,9 @@ namespace Excavator
             }
         }
 
-
-        internal static void DrawSimpleBucket()
+        internal static void DrawBucketSimple()
         {
-            if (Bobcat._COBucketSimple != null)
-                Bobcat._COBucketSimple.draw(false);
+//            _COBucket.draw(false);
         }
     }
 }

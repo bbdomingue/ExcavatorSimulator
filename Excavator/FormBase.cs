@@ -27,16 +27,24 @@ namespace Excavator
 {
     public partial class FormBase : Form
     {
-        private GL_Handler _GL_Handler = new GL_Handler();
+        private static FormBase _Instance = null;
+        internal static FormBase Instance
+        {
+            get
+            {
+                if (_Instance == null) _Instance = new FormBase();
+                return _Instance;
+            }
+        }
 
-        internal static FormBase _FormBase;
+        private GL_Handler _GL_Handler = new GL_Handler();
 
         private static volatile int _IntThreadCount = 0;
         internal static volatile bool _BoolThreadAlive = true;
 
         private CadHandler cadHandler1;
 
-        public FormBase()
+        private FormBase()
         {
             this.InitializeComponent();
 
@@ -53,9 +61,7 @@ namespace Excavator
             CabRotater.RotateStarted += new CabRotaterEventHandler(this.CabRotater_RotateStarted);
             CabRotater.RotateEnded += new CabRotaterEventHandler(this.CabRotater_RotateEnded);
 
-            Console.WriteLine("Save Size: " + TrialSaver.File1_DataType.dl);
-
-            FormBase._FormBase = this;
+            this.textBoxSavePath.Text = Properties.Settings.Default.SavePath;
         }
 
 
@@ -70,16 +76,18 @@ namespace Excavator
 
 
 
-        internal void RefreshTrial()
+        internal void RefreshTrial(Trial t)
         {
             while (this.panelRightTrial.Controls.Count > 0) this.panelRightTrial.Controls.RemoveAt(0);
 
-            this.panelRightTrial.Controls.Add(Trial._Trial);
+            if (t == null) return;
 
-            Trial._Trial.BackColor = Color.White;
-            Trial._Trial.Dock = DockStyle.Fill;
+            this.panelRightTrial.Controls.Add(t);
 
-            this.labelTrial.Text = Trial._Trial.getName();
+            t.BackColor = Color.White;
+            t.Dock = DockStyle.Fill;
+
+            this.labelTrial.Text = t.getName();
         }
 
 
@@ -136,19 +144,19 @@ namespace Excavator
 
         internal static void addThread()
         {
-            FormBase f = FormBase._FormBase;
+            FormBase f = FormBase.Instance;
             if (f.InvokeRequired) f.Invoke((MethodInvoker)delegate { FormBase.addThread(); });
             else FormBase._IntThreadCount++;
         }
 
         internal static void subThread()
         {
-            FormBase f = FormBase._FormBase;
+            FormBase f = FormBase.Instance;
             if (f.InvokeRequired) f.Invoke((MethodInvoker)delegate { FormBase.subThread(); });
             else
             {
                 FormBase._IntThreadCount--;
-                if (FormBase._IntThreadCount == 0 && !FormBase._BoolThreadAlive) FormBase._FormBase.Close();
+                if (FormBase._IntThreadCount == 0 && !FormBase._BoolThreadAlive) FormBase.Instance.Close();
             }
         }
 
@@ -158,14 +166,15 @@ namespace Excavator
             else
             {
                 Properties.Settings.Default.Save();
-                Trial._Trial.Deconstruct();
+                Trial.DeconstructS();
             }
 
             HeadTrackerManager.Stop();
             ControlStick.Stop();
+            TrialSaver.Stop();
 
             FormBase._BoolThreadAlive = false;
-            FormBase._FormBase.Enabled = false;
+            FormBase.Instance.Enabled = false;
         }
 
         private void FormBase_FormClosed(object sender, FormClosedEventArgs e)
@@ -186,7 +195,7 @@ namespace Excavator
             {
                 this._FormFullScreen = new Form();
                 FormPickScreen.SetupForm(this._FormFullScreen);
-                FormBase._FormBase.setFullScreenForm(this._FormFullScreen);
+                FormBase.Instance.setFullScreenForm(this._FormFullScreen);
             }
         }
 
@@ -218,6 +227,8 @@ namespace Excavator
 
 
 
+        public static volatile float floatRandom;
+
         private void Application_Idle(object sender, EventArgs e)
         {
             if (FormBase._BoolThreadAlive)
@@ -227,9 +238,21 @@ namespace Excavator
                     this._GL_Handler.Invalidate();
                 }
             }
-            else
+
+            if (Trial.UpdateMainThreadS()) // TRUE EVERY 30 MS
             {
-                Trial._Trial.Gui_Draw_Tick();
+                var ba = Bobcat.ActualAngles;
+                this.labelAngleCab.Text = ba.cab.ToString("0.0");
+                this.labelAngleSwing.Text = ba.swi.ToString("0.0");
+                this.labelAngleBoom.Text = ba.boo.ToString("0.0");
+                this.labelAngleArm.Text = ba.arm.ToString("0.0");
+                this.labelAngleBucket.Text = ba.buc.ToString("0.0");
+                this.labelFPS.Text = Trial.FPS.ToString("0");
+                
+                this.labelCabHardware.Text = CabRotater.CabDegrees.ToString();
+                this.labelTimeLeft.Text = TrialSaver._TimeLeft.ToString("00.0");
+
+                this.labelRandom.Text = floatRandom.ToString();
             }
         }
 
@@ -289,7 +312,7 @@ namespace Excavator
             this.cadHandler1.Dock = DockStyle.Fill;
             this.tabPageOpenGL.Controls.Add(this.cadHandler1);
 
-            new TE_FlowKeyboard(this, null, -1);
+            new TE_FlowKeyboard();
 
             this.panelOuterGL_Resize(sender, e);
 
@@ -326,6 +349,8 @@ namespace Excavator
 
             this.numericUpDownEyeSeperation.Value = Config.EyeDist;
             this.numericUpDownEyeSeperation_ValueChanged(sender, e);
+
+            this.nudCabK_ValueChanged(sender, e);
 
             this._GL_Handler.setControl(this.panelInnerGL);
 
@@ -408,18 +433,6 @@ namespace Excavator
         }
 
         
-
-
-        private void numericUpDownCabRotation_ValueChanged(object sender, EventArgs e)
-        {
-            decimal value = this.numericUpDownCabRotation.Value;
-            if (Math.Abs(value) == 180.1m)
-            {
-                value = 179.9m * (value > 0 ? -1 : 1);
-                this.numericUpDownCabRotation.Value = value;
-            }
-        }
-
 
 
 
@@ -508,7 +521,7 @@ namespace Excavator
 
                 Rectangle _Rectangle = new Rectangle(0, 0, 10, 10);
 
-                if (A.Width * A.Height == 0) ;
+                if (A.Width * A.Height == 0) { }
                 else if (A.Width * B.Height > B.Width * A.Height)
                 {
                     _Rectangle.Width = B.Width;
@@ -673,6 +686,8 @@ namespace Excavator
 
         private void buttonTrialNew_Click(object sender, EventArgs e)
         {
+            Trial.SetupNone();
+            this.RefreshTrial(null);
             new FormPickTrial().ShowDialog();
         }
 
@@ -900,9 +915,9 @@ namespace Excavator
             FormBase._HeadLocationCurrent = FormBase._HeadLocationOther;
             FormBase._HeadLocationOther = temp;
 
-            FormBase._FormBase.BeginInvoke((MethodInvoker)delegate
+            FormBase.Instance.BeginInvoke((MethodInvoker)delegate
             {
-                FormBase._FormBase.updatePinkTV2();
+                FormBase.Instance.updatePinkTV2();
             });
         }
 
@@ -935,10 +950,9 @@ namespace Excavator
         }
 
 
-        public static Boolean _BoolMute { get; private set; }
         private void checkBoxMute_CheckedChanged(object sender, EventArgs e)
         {
-            FormBase._BoolMute = this.checkBoxMute.Checked;
+            ExcavatorSound.Mute = this.checkBoxMute.Checked;
         }
 
 
@@ -1031,7 +1045,79 @@ namespace Excavator
             Trial.f4 = (float)this.numericUpDown4.Value;
         }
 
+        private void buttonResetSoil_Click(object sender, EventArgs e)
+        {
+            Trial.ResetSoilModelS();
 
+        }
 
+        private void nudCabK_ValueChanged(object sender, EventArgs e)
+        {
+            CabRotater.setGainValues(
+                (float)this.nudCabKp.Value,
+                (float)this.nudCabKd.Value);
+        }
+
+        private void textBoxSavePath_TextChanged(object sender, EventArgs e)
+        {
+            if (Directory.Exists(this.textBoxSavePath.Text))
+            {
+                this.textBoxSavePath.ForeColor = Color.Black;
+                Properties.Settings.Default.SavePath = this.textBoxSavePath.Text;
+            }
+            else this.textBoxSavePath.ForeColor = Color.Red;
+
+            this.nudSessionSubject_ValueChanged(sender, e);
+        }
+
+        private void buttonSavePath_Click(object sender, EventArgs e)
+        {
+            switch(this.fbdSavePath.ShowDialog())
+            {
+                case System.Windows.Forms.DialogResult.OK:
+                    this.textBoxSavePath.Text = this.fbdSavePath.SelectedPath;
+                    break;
+            }
+
+        }
+
+        private string getSavePath()
+        {
+            return Path.Combine(new String[]{this.textBoxSavePath.Text,
+                "Subject_" + ((int)(this.nudSubject.Value)).ToString("00"),  
+                "Session_" + ((int)(this.nudSession.Value)).ToString()});
+        }
+
+        private void nudSessionSubject_ValueChanged(object sender, EventArgs e)
+        {
+            if ((this.nudSubject.Value > 0) && (this.nudSession.Value > 0) && !Directory.Exists(this.getSavePath()))
+            {
+                this.buttonBeginSave.Enabled = true;
+
+                int subj = (int)(this.nudSubject.Value);
+                int sess = (int)(this.nudSession.Value);
+
+                this.numericUpDownEyeSeperation.Value = (((subj + sess) % 2 == 0) || sess == 3) ? Config.EyeDist : 0;
+                this.numericUpDownEyeSeperation_ValueChanged(sender, e);
+            }
+            else
+            {
+                this.buttonBeginSave.Enabled = false;
+            }
+        }
+
+        private void buttonBeginSave_Click(object sender, EventArgs e)
+        {
+            if (TrialSaver.FromFile(this.getSavePath()))
+            {
+                this.buttonBeginSave.Enabled = false;
+                Console.WriteLine("Starting Save");
+            }
+            else
+            {
+                Console.WriteLine("Save File Error");
+            }
+
+        }
     }
 }

@@ -29,37 +29,32 @@ namespace Excavator
 {
     public partial class Trial : UserControl
     {
-        public static Trial _Trial { get; private set; }
+        private static Trial _Trial = null;
+        private static object _TrialLock = new object();
 
-        internal Bobcat.BobcatAngles ActualAnglesMatlabThread = new Bobcat.BobcatAngles();
-        internal Bobcat.BobcatAngles ActualAngles = new Bobcat.BobcatAngles();
-        internal Bobcat.BobcatAngles GhostAngles = new Bobcat.BobcatAngles();
+        protected Bobcat.BobcatAngles ActualAngles = new Bobcat.BobcatAngles();
+        protected Bobcat.BobcatAngles GhostAngles = new Bobcat.BobcatAngles();
 
-        public NumericUpDown nudCab;
-        public NumericUpDown nudSwing;
-        public NumericUpDown nudBoom;
-        public NumericUpDown nudArm;
-        public NumericUpDown nudBucket;
-        public Label labelFPS;
-
+        public static float FPS = 0;
         private float fpsGL = 0;
         private float fpsGLF = 0;
         public float _TimeSpanF = 0;
         private int accumulatorCounter = 0;
         public Stopwatch _StopWatchSimulateTotal = new Stopwatch();
         private Stopwatch _StopWatchSimulateDelta = new Stopwatch();
-        private Stopwatch _StopWatchFPS = new Stopwatch();
+        private Stopwatch _StopWatch30 = new Stopwatch();
         private Label labelFuelEfficiency;
         private Label labelSimUpdate;
-        private Stopwatch _StopWatchGui = new Stopwatch();
+        private Stopwatch _StopWatch300 = new Stopwatch();
 
         const float FuelMin = 0.864f;
         const float FuelMax = 2.182f;
         const float FuelRange = Trial.FuelMax - Trial.FuelMin;
 
-        private volatile float _FuelInstant = Trial.FuelMin;
-        private volatile float _FuelFiltered = Trial.FuelMin;
-        private ExcavatorSound _ExcavatorSound;
+        private object FuelLock = new object();
+        private float _FuelInstant = Trial.FuelMin;
+        private float _FuelFiltered = Trial.FuelMin;
+        private bool _FuelValid = true;
 
         private float delayF = 0;
 
@@ -75,115 +70,46 @@ namespace Excavator
         const float dim_arm_length_meters = StaticMethods.Conversion_Inches_To_Meters * 54;
         const float a5 = StaticMethods.Conversion_Inches_To_Meters * 34.6133f;
 
-        const float _FrictionCab = 1000;
-        static readonly float _FrictionCutoff = StaticMethods.toRadiansF(20);
-
         /// <summary>
         /// Gets total time from start of trial
         /// </summary>
-        public double ElapsedTime { get { return this._StopWatchSimulateTotal.Elapsed.TotalSeconds; } }
-
-        /// <summary>
-        /// ONLY FOR INTERFACE BUILDER NEVER USE THIS SUCKER
-        /// </summary>
-        public Trial()
-        {
-            this.InitializeComponent();
-        }
+        public float ElapsedTime { get { return (float) this._StopWatchSimulateTotal.Elapsed.TotalSeconds; } }
 
         ~Trial()
         {
             Console.WriteLine("Garbage Collecting Trial");
         }
 
-        public float QS_Max = 0, QS_Min = 0;
-        public float Q1_Max = 0, Q1_Min = 0;
-        public float Q2_Max = 0, Q2_Min = 0;
-        public float Q3_Max = 0, Q3_Min = 0;
-        public float Q4_Max = 0, Q4_Min = 0;
-
-        
-        public Trial(
-            FormBase fb,
-            bool nudAcess,
-            string saveFile,
-            int minutes)
+       
+        public Trial()
         {
             this.InitializeComponent();
 
             if (this.DesignMode) return;
-              
+
             Trial.staticInit();
-
-            this.nudCab = fb.numericUpDownCabRotation;
-            this.nudSwing = fb.numericUpDownSwing;
-            this.nudBoom = fb.numericUpDownBoom;
-            this.nudArm = fb.numericUpDownArm;
-            this.nudBucket = fb.numericUpDownBucket;
-            this.labelFPS = fb.labelFPS;
-
-            this.QS_Max = (float)this.nudSwing.Maximum; this.QS_Min = (float)this.nudSwing.Minimum;
-            this.Q1_Max = (float)this.nudCab.Maximum; this.Q1_Min = (float)this.nudCab.Minimum;
-            this.Q2_Max = (float)this.nudBoom.Maximum; this.Q2_Min = (float)this.nudBoom.Minimum;
-            this.Q3_Max = (float)this.nudArm.Maximum; this.Q3_Min = (float)this.nudArm.Minimum;
-            this.Q4_Max = (float)this.nudBucket.Maximum; this.Q4_Min = (float)this.nudBucket.Minimum;
-
-            this.Q2_Max_Radians = StaticMethods.toRadiansD(this.nudBoom.Maximum);
-            this.Q2_Min_Radians = StaticMethods.toRadiansD(this.nudBoom.Minimum);
-            this.Q3_Max_Radians = StaticMethods.toRadiansD(this.nudArm.Maximum);
-            this.Q3_Min_Radians = StaticMethods.toRadiansD(this.nudArm.Minimum);
-            this.Q4_Max_Radians = StaticMethods.toRadiansD(this.nudBucket.Maximum);
-            this.Q4_Min_Radians = StaticMethods.toRadiansD(this.nudBucket.Minimum);
 
             this.GhostAngles.swi = 0;
             this.GhostAngles.cab = 0;
             this.GhostAngles.boo = 40;
             this.GhostAngles.arm = -90;
             this.GhostAngles.buc = 0;
-
-            StaticMethods.setNudValue(this.nudSwing, this.GhostAngles.swi);
-            StaticMethods.setNudValue(this.nudCab, this.GhostAngles.cab);
-            StaticMethods.setNudValue(this.nudBoom, this.GhostAngles.boo);
-            StaticMethods.setNudValue(this.nudArm, this.GhostAngles.arm);
-            StaticMethods.setNudValue(this.nudBucket, this.GhostAngles.buc);
-
-            this.ActualAngles.copy(this.GhostAngles);
+            this.ActualAngles = this.GhostAngles;
 
             this._StopWatchSimulateTotal.Start();
             this._StopWatchSimulateDelta.Start();
-            this._StopWatchFPS.Start();
-            this._StopWatchGui.Start();
+            this._StopWatch30.Start();
+            this._StopWatch300.Start();
 
-            if (saveFile != null)
-            {
-                this._TimeSavingSeconds = -minutes * 60;
-                this._TrialSaver = TrialSaver.FromFile(saveFile, minutes);
-            }
+            Trial.ResetSoilModelS();
 
-            this.nudArm.Enabled = nudAcess;
-            this.nudBoom.Enabled = nudAcess;
-            this.nudBucket.Enabled = nudAcess;
-            this.nudCab.Enabled = nudAcess;
-            this.nudSwing.Enabled = false;
+            GL_Handler.DrawGhost = false;
 
-            StaticMethods.setNudValue(this.nudBoom, 0.0f);
-
-            this.updateTime();
-
-            this._ExcavatorSound = new ExcavatorSound();
-            this._EmbeddedSoilModel = new EmbeddedSoilModel();
-            this.setupPhysics();
+            FormBase.Instance.RefreshTrial(this);
 
 
-            Trial last = Trial._Trial;
-            Trial._Trial = this;
-            FormBase._FormBase.RefreshTrial();
-
-            if (last != null)
-            {
-                last.GLDelete();
-                last.Deconstruct();
-            }
+            lock (Trial._TrialLock)
+                Trial._Trial = this;
 
             new Thread(new ThreadStart(this.MultiThread)).Start();
         }
@@ -191,25 +117,6 @@ namespace Excavator
 
 
 
-        public float clampQS(float val) { return Math.Max(this.QS_Min, Math.Min(this.QS_Max, val)); }
-        public float clampQ1(float val) { return Math.Max(this.Q1_Min, Math.Min(this.Q1_Max, val)); }
-        public float clampQ2(float val) { return Math.Max(this.Q2_Min, Math.Min(this.Q2_Max, val)); }
-        public float clampQ3(float val) { return Math.Max(this.Q3_Min, Math.Min(this.Q3_Max, val)); }
-        public float clampQ4(float val) { return Math.Max(this.Q4_Min, Math.Min(this.Q4_Max, val)); }
-
-        public double clampQ2_Radians(Double val)
-        {
-            return Math.Max(this.Q2_Min_Radians, Math.Min(this.Q2_Max_Radians, val));
-        }
-
-        public double clampQ3_Radians(Double val)
-        {
-            return Math.Max(this.Q3_Min_Radians, Math.Min(this.Q3_Max_Radians, val));
-        }
-
-        private double Q2_Max_Radians = 0, Q2_Min_Radians = 0;
-        private double Q3_Max_Radians = 0, Q3_Min_Radians = 0;
-        private double Q4_Max_Radians = 0, Q4_Min_Radians = 0;
 
 
 
@@ -225,14 +132,6 @@ namespace Excavator
 
 
 
-
-        /// <summary>
-        /// When overrode, do not call base
-        /// </summary>
-        public virtual bool hasGhost()
-        {
-            return false;
-        }
 
         /// <summary>
         /// When overrode, do not call base
@@ -242,102 +141,100 @@ namespace Excavator
             return "Unnamed";
         }
 
-        public void updateTime()
+        public static bool UpdateMainThreadS()
         {
+            var t = Trial._Trial;
+            if (t != null) return t.UpdateMainThread();
+            else return false;
+        }
+
+        public bool UpdateMainThread()
+        {
+            bool ret = false;
+
             this._TimeSpanF = (float)this._StopWatchSimulateDelta.Elapsed.TotalSeconds;
             this._StopWatchSimulateDelta.Restart();
 
             this.accumulatorCounter++;
 
-            if (this._StopWatchFPS.ElapsedMilliseconds > 300)
+            if (this._StopWatch30.ElapsedMilliseconds > 30)
             {
-                this.Gui_Label_Tick((float)this._StopWatchFPS.Elapsed.TotalSeconds);
-                this._StopWatchFPS.Restart();
+                ret = true;
+                this.Gui_30MS_Tick((float)this._StopWatch30.Elapsed.TotalSeconds);
+                this._StopWatch30.Restart();
             }
 
-            if (this._StopWatchGui.ElapsedMilliseconds > 30)
+            if (this._StopWatch300.ElapsedMilliseconds > 300)
             {
-                this._StopWatchGui.Restart();
-                this.Gui_Draw_Tick();
+                this.Gui_300MS_Tick((float)this._StopWatch300.Elapsed.TotalSeconds);
+                this._StopWatch300.Restart();
             }
+
+            this.updateSim();
+
+            return ret;
         }
-
-        /// <summary>
-        /// Called every 300 ms.  When overrode, call base
-        /// </summary>
-        public virtual void Gui_Draw_Tick()
-        {
-            float fuel = this._FuelInstant;
-            float filt = this._FuelFiltered;
-
-            if (FormBase._BoolThreadAlive)
-            {
-                if (this._ExcavatorSound != null)
-                {
-                    if (FormBase._BoolMute)
-                    {
-                        this._ExcavatorSound.setVolume(0.0f);
-                    }
-                    else
-                    {
-                        float adj1 = (fuel - Trial.FuelMin) / Trial.FuelRange;
-                        this._ExcavatorSound.setVolume(0.6f +  0.4f * adj1);
-                        float adj2 = (filt - Trial.FuelMin) / Trial.FuelRange;
-                        this._ExcavatorSound.setSpeed(1.0f + 0.5f * adj2);
-                    }
-                }
-            }
-            else
-            {
-                if (this._ExcavatorSound != null)
-                {
-                    this._ExcavatorSound.Stop();
-                    this._ExcavatorSound = null;
-                }
-            }
-
-
-            float act = (float)(this._StopWatchSimulateTotal.Elapsed.TotalSeconds);
-            act += this._TimeSavingSeconds;
-
-            this.delayF = (act - this._FloatSimTime);
-
-            this.labelSimUpdate.Text =
-                "Delay: " + Math.Max(0, this.delayF).ToString("0.000  ") +
-                "Time: " + act.ToString("0.00");
-
-            this.labelFuelEfficiency.Text = "Fuel Consumption: " + (fuel * 1000).ToString("0.00");
-        }
-
-        /// <summary>
-        /// Called every 30 ms.  When overrode, call base
-        /// </summary>
-        public virtual void Gui_Label_Tick(float accumulator)
-        {
-            this.fpsGL = this.accumulatorCounter / accumulator;
-
-            const float alpha = 0.05f;
-
-            this.fpsGL = this.accumulatorCounter / accumulator;
-            if (this.fpsGL > this.fpsGLF * 1.1 || this.fpsGL < this.fpsGLF * 0.9) this.fpsGLF = this.fpsGL;
-            else this.fpsGLF = this.fpsGLF * (1 - alpha) + this.fpsGL * alpha;
-            this.labelFPS.Text = this.fpsGLF.ToString("00");
-
-            this.accumulatorCounter = 0;
-        }
-
-
 
         /// <summary>
         /// Called On Main Thread
         /// </summary>
         public virtual void updateSim()
         {
-            lock (this.ActualAnglesMatlabThread)
-            {
-                this.ActualAngles.copy(this.ActualAnglesMatlabThread);
-            }
         }
+
+
+
+        /// <summary>
+        /// Called every 300 ms
+        /// </summary>
+        public virtual void Gui_300MS_Tick(float accumulator)
+        {
+            this.fpsGL = this.accumulatorCounter / accumulator;
+            const float alpha = 0.05f;
+            this.fpsGL = this.accumulatorCounter / accumulator;
+            if (this.fpsGL > this.fpsGLF * 1.1 || this.fpsGL < this.fpsGLF * 0.9) this.fpsGLF = this.fpsGL;
+            else this.fpsGLF = this.fpsGLF * (1 - alpha) + this.fpsGL * alpha;
+            Trial.FPS = this.fpsGLF;
+            this.accumulatorCounter = 0;
+        }
+
+        /// <summary>
+        /// Called every 30 ms.  When overrode, call base
+        /// </summary>
+        public virtual void Gui_30MS_Tick(float accumulator)
+        {
+            float fuel, filt;
+            bool valid;
+
+            lock (FuelLock)
+            {
+                fuel = this._FuelInstant;
+                filt = this._FuelFiltered;
+                valid = this._FuelValid;
+            }
+
+            if (FormBase._BoolThreadAlive)
+            {
+                float adj1 = (fuel - Trial.FuelMin) / Trial.FuelRange;
+                ExcavatorSound.Instance.setVolume(valid ? 0.6f + 0.4f * adj1 : 0);
+                float adj2 = (filt - Trial.FuelMin) / Trial.FuelRange;
+                ExcavatorSound.Instance.setSpeed(1.0f + 0.5f * adj2);
+            }
+            else
+            {
+                ExcavatorSound.Stop();
+            }
+
+            float act = (float)(this._StopWatchSimulateTotal.Elapsed.TotalSeconds);
+            this.delayF = (act - this._FloatSimTime);
+            this.labelSimUpdate.Text =
+                "Delay: " + Math.Max(0, this.delayF).ToString("0.000  ") +
+                "Time: " + act.ToString("0.00");
+            this.labelFuelEfficiency.Text = "Fuel Consumption: " + (fuel * 1000).ToString("0.00");
+        }
+
+
+
 
 
 
@@ -345,74 +242,37 @@ namespace Excavator
         public const float _FloatGroundPlaneDim2 = _FloatGroundPlaneDim * 2;
         public const int _IntTextureDensity = 32;
 
-
-        private EmbeddedSoilModel _EmbeddedSoilModel = null;
-        public virtual void drawObjectsInShadow(bool ShadowBufferDraw)
-        {
-            if (FormBase._BoolDrawPhysX) this.drawPhysX();
-            else
-            {
-                this._EmbeddedSoilModel.drawTrench(ShadowBufferDraw);
-                this._EmbeddedSoilModel.drawBins(ShadowBufferDraw);
-            }
-            this._EmbeddedSoilModel.drawPiles((float)this._StopWatchSimulateTotal.Elapsed.TotalSeconds);
-        }
-
-        public virtual void drawObjectsNotInShadow()
-        {
-            float skyboxd = FormBase._FloatSkyBoxDim;
-
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Ambient, Trial.colorA);
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Diffuse, Trial.colorD);
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Emission, Trial.color0);
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, Trial.color0);
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Shininess, new float[] { 0 });
-
-            Trial._Heightmap.GLDraw(this.ActualAngles.cab + 180, Trial.AnglecutOff);
-
-            GL.Disable(EnableCap.CullFace);
-            Trial.staticInitTrees();
-            foreach (TreeObject to in Trial._Trees) to.GLDraw(ref this.ActualAngles.cab);
-            GL.Enable(EnableCap.CullFace);
-
-        }
-
-        public virtual void drawOrtho()
-        {
-            this._EmbeddedSoilModel.drawTrenchOrtho();
-        }
-
         public volatile bool _BoolAlive = true;
+
+        internal static float getTime()
+        {
+            Trial t = Trial._Trial;
+            if (t != null) return t.ElapsedTime;
+            else return 0;            
+        }
+
+        internal static void DeconstructS()
+        {
+            lock (Trial._TrialLock)
+            {
+                if (Trial._Trial != null)
+                {
+                    Trial._Trial.Deconstruct();
+                    Trial._Trial = null;
+                }
+            }
+        }
+
         public virtual void Deconstruct()
         {
             if (this._BoolAlive)
             {
-                // Sometimes Called Before Close
-                if (this._ExcavatorSound != null)
-                {
-                    this._ExcavatorSound.Stop();
-                    this._ExcavatorSound = null;
-                }
-
-                // Sometimes no Trial Saver
-                if (this._TrialSaver != null)
-                {
-                    this._TrialSaver.Stop();
-                    this._TrialSaver = null;
-                }
-
-//                this._Scene.Dispose();
+                ExcavatorSound.Stop();
                 this._BoolAlive = false;
             }
         }
 
-        public virtual void GLDelete()
-        {
-            this._EmbeddedSoilModel.GLDelete();
-        }
 
-        private TrialSaver _TrialSaver = null;
-        private float _TimeSavingSeconds = 0;
 
 
 
@@ -444,540 +304,8 @@ namespace Excavator
 
 
 
-        private SamSeifert.GLE.Color_GL _ColorGL = new Color_GL(Color.White);
 
-        private Scene _Scene;
 
-        RigidDynamic xCab, xBoom, xArm, xBucketLink, xBucket;
-
-        FixedJoint jntCabBoom1, jntCabBoom2;
-        RigidDynamic actorCabBoom1, actorCabBoom2;
-
-        FixedJoint jntBoomArm1, jntBoomArm2;
-        RigidDynamic actorBoomArm1, actorBoomArm2;
-
-        FixedJoint jntArmBucketLink1, jntArmBucketLink2;
-        RigidDynamic actorArmBucketLink1, actorArmBucketLink2;
-
-
-//         RigidDynamic actorTEMP; FixedJoint fixedJOINTEMP;
-
-        DistanceJoint jntBucketLinkBucket;
-
-        private void setupPhysics()
-        {
-            this._Scene = Trial._Physics.CreateScene(new SceneDesc()
-            {
-                Gravity = new Vector3_PhysX(0, -9.8f, 0),
-            });
-
-            Vector3[] vss;
-            int[] iss;
-            var cat_material = Trial._Physics.CreateMaterial(0.1f, 0.1f, 0.0f);
-            var bin_material = Trial._Physics.CreateMaterial(1.0f, 1.0f, 0);
-            var grnd_material = Trial._Physics.CreateMaterial(1.0f, 1.0f, 0);
-            var cooking = Trial._Physics.CreateCooking();
-
-            var tw = EmbeddedSoilModel.TRENCH_WIDTH * StaticMethods.Conversion_Inches_To_Meters * 1.2f; // 1.2 IS SAFETY BUFFER
-            const int depth = 1;
-            const int hw = 10; // Half Width of The Covered Area
-
-            var ground = Trial._Physics.CreateRigidStatic();
-            ground.CreateShape(new BoxGeometry((hw - tw) / 2, depth, hw), grnd_material, Matrix_PhysX.Translation(hw / 2, -depth, 0));
-            ground.CreateShape(new BoxGeometry((hw - tw) / 2, depth, hw), grnd_material, Matrix_PhysX.Translation(-hw / 2, -depth, 0));
-            ground.CreateShape(new BoxGeometry(tw, depth, hw / 2), grnd_material, Matrix_PhysX.Translation(0, -depth, hw / 2));
-            this._Scene.AddActor(ground);
-
-
-
-
-
-            var vec1 = Bobcat.vecOffsetCab_Inches;
-            var vec2 = Bobcat.vecOffsetSwing1_Inches;
-            var vec3 = Bobcat.vecOffsetSwing2_Inches;
-            var vec4 = Bobcat.vecOffsetSwing3Rot_Inches;
-
-            float height = (vec1.Y + vec2.Y + vec3.Y + vec4.Y) * StaticMethods.Conversion_Inches_To_Meters;
-            float xset = (vec1.X + vec2.X + vec3.X + vec4.X) * StaticMethods.Conversion_Inches_To_Meters;
-            const float dim_cab_thickness = 0.1f;
-            const float dim_cab_thickness_o2 = dim_cab_thickness / 2;
-            float dim_cab_radius = -(vec1.Z + vec2.Z + vec3.Z + vec4.Z) * StaticMethods.Conversion_Inches_To_Meters;
-            float dim_cab_radius_o2 = dim_cab_radius / 2;
-
-            float zset = -dim_cab_radius;
-
-            this.xCab = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, height - dim_cab_thickness_o2, 0));
-            this.xCab.CreateShape(
-                new CapsuleGeometry(dim_cab_radius, dim_cab_thickness_o2),
-                cat_material,
-                Matrix_PhysX.RotationZ(StaticMethods._PIF / 2));
-            this.xCab.CreateShape(
-                new BoxGeometry(dim_cab_radius_o2, dim_cab_thickness_o2, dim_cab_radius_o2),
-                cat_material,
-                Matrix_PhysX.Translation(0, 0, -dim_cab_radius_o2));
-            var jnt1 = this._Scene.CreateJoint<RevoluteJoint>(
-                this.xCab,
-                Matrix_PhysX.RotationZ(StaticMethods._PIF / 2),
-                null,
-                Matrix_PhysX.Multiply(
-                     Matrix_PhysX.RotationZ(StaticMethods._PIF / 2),
-                     Matrix_PhysX.Translation(xset, height - dim_cab_thickness_o2, 0)));
-            this.xCab.SetMassAndUpdateInertia(Trial.m1);
-            this._Scene.AddActor(this.xCab);
-
-
-
-
-            const float middleDist = 0.5f * dim_boom_length_meters;
-            const float middleHeight = 0.25f * dim_boom_length_meters;
-            float ang1 = (float)Math.Atan2(middleHeight, middleDist);
-            float ang2 = (float)Math.Atan2(middleHeight, dim_boom_length_meters - middleDist);
-            float ang3 = 180 - ang1 - ang2;
-            float leg1 = (float)Math.Sqrt(Math.Pow(middleHeight, 2) + Math.Pow(middleDist, 2));
-            float leg2 = (float)Math.Sqrt(Math.Pow(middleHeight, 2) + Math.Pow((dim_boom_length_meters - middleDist), 2));
-            const float boomdim = 0.1f;
-            float boomdimsq2 = boomdim * (float) Math.Sqrt(2);
-            this.xBoom = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset));
-            this.xBoom.CreateShape(
-                new BoxGeometry(boomdim, boomdimsq2 / 2, boomdimsq2 / 2),
-                cat_material,
-                Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
-                    Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
-                    Matrix_PhysX.Translation(0, 0, -boomdim)),
-                    Matrix_PhysX.RotationX(ang1)));
-            this.xBoom.CreateShape(
-                new BoxGeometry(boomdim, boomdim, (leg1 - boomdim) / 2),
-                cat_material,
-                Matrix_PhysX.Multiply(
-                     Matrix_PhysX.Translation(0, 0, -(boomdim + leg1) / 2),
-                     Matrix_PhysX.RotationX(ang1)));
-            this.xBoom.CreateShape(
-                new CapsuleGeometry(boomdim, boomdim),
-                cat_material,
-                Matrix_PhysX.Translation(0, middleHeight, -middleDist));
-            this.xBoom.CreateShape(
-                new BoxGeometry(boomdim, boomdim, (leg2 - boomdim) / 2),
-                cat_material,
-                Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
-                     Matrix_PhysX.Translation(0, 0, -(leg2 - boomdim) / 2),
-                     Matrix_PhysX.RotationX(-ang2)),
-                     Matrix_PhysX.Translation(0, middleHeight, -middleDist)
-                     ));
-/*            this.xBoom.CreateShape( // Boom - Arm Square on Boom
-                new BoxGeometry(boomdim, boomdimsq2 / 2, boomdimsq2 / 2),
-                cat_material,
-                Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
-                    Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
-                    Matrix_PhysX.Translation(0, 0, boomdim)),
-                    Matrix_PhysX.RotationX(-ang2)),
-                    Matrix_PhysX.Translation(0,0,-dim_boom_length_meters)));*/
-            var jnt2 = this._Scene.CreateJoint<RevoluteJoint>(
-                this.xBoom,
-                Matrix_PhysX.Identity,
-                this.xCab,
-                Matrix_PhysX.Translation(xset, dim_cab_thickness_o2, -dim_cab_radius));
-            jnt2.Limit = new JointAngularLimitPair(-(float)this.Q2_Max_Radians, -(float)this.Q2_Min_Radians);
-            jnt2.Flags |= RevoluteJointFlag.LimitEnabled;
-            this.xBoom.SetMassAndUpdateInertia(Trial.m2);
-            this._Scene.AddActor(xBoom);
-
-            zset -= dim_boom_length_meters;
-            const float armdim = boomdim;
-            float armdimsq2 = armdim * (float) Math.Sqrt(2);
-            const float dim_arm_length_meters_o2 = dim_arm_length_meters / 2;
-            this.xArm = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset));
-            this.xArm.CreateShape(
-                new BoxGeometry(armdim, armdim, dim_arm_length_meters_o2 - armdim),
-                cat_material,
-                Matrix_PhysX.Translation(0, 0, - dim_arm_length_meters_o2));
-            this.xArm.CreateShape(
-                new BoxGeometry(armdim, armdimsq2 / 2, armdimsq2 / 2),
-                cat_material,
-                Matrix_PhysX.Multiply(
-                     Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
-                     Matrix_PhysX.Translation(0, 0, armdim - dim_arm_length_meters)));
-/*            this.xArm.CreateShape(// Boom - Arm Square on Arm
-                new BoxGeometry(armdim, armdimsq2 / 2, armdimsq2 / 2),
-                cat_material,
-                Matrix_PhysX.Multiply(
-                     Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
-                     Matrix_PhysX.Translation(0, 0, - armdim)));*/
-            var jnt3 = this._Scene.CreateJoint<RevoluteJoint>(
-                this.xArm,
-                Matrix_PhysX.Identity,
-                this.xBoom,
-                Matrix_PhysX.Translation(0, 0, -dim_boom_length_meters));
-            jnt3.Limit = new JointAngularLimitPair(-(float)this.Q3_Max_Radians, -(float)this.Q3_Min_Radians);
-            jnt3.Flags |= RevoluteJointFlag.LimitEnabled;
-            this.xArm.SetMassAndUpdateInertia(Trial.m3);
-            this._Scene.AddActor(this.xArm);
-
-            zset -= dim_arm_length_meters;
-            this.xBucket = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset));
-            CadObjectGenerator.TrianglesFromXAML(
-                out vss,
-                out iss,
-                Properties.Resources.BucketSimple,
-                xScale: StaticMethods.Conversion_Inches_To_Meters,
-                yScale: StaticMethods.Conversion_Inches_To_Meters,
-                zScale: StaticMethods.Conversion_Inches_To_Meters,
-                xOff: 0,
-                yOff: 0,
-                zOff: 0);
-            var stream = new System.IO.MemoryStream();
-            var meshde = new ConvexMeshDesc() { Flags = ConvexFlag.ComputeConvex };
-            var vss2 = new Vector3_PhysX[vss.Length];
-            for (int i = 0; i < vss.Length; i++) vss2[i] = vss[i].toPhysX();
-            meshde.SetPositions(vss2);
-            meshde.SetTriangles(iss);
-            cooking.CookConvexMesh(meshde, stream);
-            stream.Position = 0;
-            var convexMeshGeom = this.xBucket.CreateShape(
-                new ConvexMeshGeometry(Trial._Physics.CreateConvexMesh(stream))
-                {
-                    Scale = new MeshScale(new PhysX.Math.Vector3(1f, 1f, 1f), PhysX.Math.Quaternion.Identity)
-                },
-                cat_material,
-                Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
-                    Matrix_PhysX.RotationY(StaticMethods._PIF / 2),
-                    Matrix_PhysX.Translation(StaticMethods.Conversion_Inches_To_Meters * new Vector3_PhysX(0, (Bobcat.slidey / 2 + 2.11f), -(Bobcat.slidex / 2 - 0.365f)))),
-                    Matrix_PhysX.RotationX(StaticMethods.toRadiansF(135 - 15 + 35))));
-            var jnt4 = this._Scene.CreateJoint<RevoluteJoint>(
-                this.xBucket,
-                Matrix_PhysX.Identity,
-                this.xArm,
-                Matrix_PhysX.Translation(0, 0, -dim_arm_length_meters));
-            jnt4.Limit = new JointAngularLimitPair(-(float)this.Q4_Max_Radians, -(float)this.Q4_Min_Radians);
-            jnt4.Flags |= RevoluteJointFlag.LimitEnabled;
-            this.xBucket.SetMassAndUpdateInertia(Trial.m3);
-            this._Scene.AddActor(this.xBucket);
-
-            float linkOffset = 0.23f;
-            const float linkLength = 0.33f;
-            this.xBucketLink = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset + linkOffset));
-            this.xBucketLink.CreateShape(
-                new SphereGeometry(linkLength * 0.14f),
-                cat_material,
-                Matrix_PhysX.Translation(0, linkLength * 0.65f, 0));
-            var jnt5 = this._Scene.CreateJoint<RevoluteJoint>(
-                this.xBucketLink,
-                Matrix_PhysX.Identity,
-                this.xArm,
-                Matrix_PhysX.Translation(0, 0, linkOffset - dim_arm_length_meters));
-            jnt5.Limit = new JointAngularLimitPair(-StaticMethods._PIF / 3, StaticMethods._PIF / 3);
-            jnt5.Flags |= RevoluteJointFlag.LimitEnabled;
-            this.xBucketLink.SetMassAndUpdateInertia(5);
-            this._Scene.AddActor(this.xBucketLink);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            var driveMass = 5.5f;
-            var bg = new SphereGeometry(0.06f);
-
-            // Boom Driver
-            this.actorCabBoom1 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 0, 0)); ;
-            this.actorCabBoom1.CreateShape(bg, cat_material, Matrix_PhysX.Identity);
-            this.actorCabBoom1.SetMassAndUpdateInertia(driveMass);
-            this._Scene.AddActor(actorCabBoom1);
-            this.actorCabBoom2 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 0, -1));
-            this.actorCabBoom2.CreateShape(bg, cat_material, Matrix_PhysX.Identity);
-            this.actorCabBoom2.SetMassAndUpdateInertia(driveMass);
-            this._Scene.AddActor(actorCabBoom2);
-            this.jntCabBoom1 = this._Scene.CreateJoint<FixedJoint>(
-                this.actorCabBoom1,
-                Matrix_PhysX.Identity,
-                this.xCab,
-                Matrix_PhysX.Translation(xset, -.288f, -.914f)
-                );
-            this.jntCabBoom2 = this._Scene.CreateJoint<FixedJoint>(
-                this.actorCabBoom2,
-                Matrix_PhysX.Identity,
-                this.xBoom,
-                Matrix_PhysX.Translation(0, 0.438f, -1.386f)
-                );
-
-            // Arm Driver
-            this.actorBoomArm1 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, 0));
-            this.actorBoomArm1.CreateShape(bg, /*new SphereGeometry(driveRad),//*/
-                cat_material,
-                Matrix_PhysX.Identity);
-            this.actorBoomArm1.SetMassAndUpdateInertia(driveMass);
-            this._Scene.AddActor(actorBoomArm1);
-            this.actorBoomArm2 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -1));
-            this.actorBoomArm2.CreateShape(bg, /*new SphereGeometry(driveRad),//*/
-                cat_material,
-                Matrix_PhysX.Identity);
-            this.actorBoomArm2.SetMassAndUpdateInertia(driveMass);
-            this._Scene.AddActor(actorBoomArm2);
-            this.jntBoomArm1 = this._Scene.CreateJoint<FixedJoint>(
-                this.actorBoomArm1,
-                Matrix_PhysX.Identity,
-                this.xBoom,
-                Matrix_PhysX.Translation(0, 0.828f, -1.570f)
-                );
-            this.jntBoomArm2 = this._Scene.CreateJoint<FixedJoint>(
-                this.actorBoomArm2,
-                Matrix_PhysX.Identity,
-                this.xArm,
-                Matrix_PhysX.Translation(0, 0.229f, 0.282f)
-                );
-
-            // Bucket Link Driver
-            this.actorArmBucketLink1 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -2));
-            this.actorArmBucketLink1.CreateShape(bg,
-                cat_material,
-                Matrix_PhysX.Identity);
-            this.actorArmBucketLink1.SetMassAndUpdateInertia(driveMass);
-            this._Scene.AddActor(actorArmBucketLink1);
-            this.actorArmBucketLink2 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -3));
-            this.actorArmBucketLink2.CreateShape(bg,
-                cat_material,
-                Matrix_PhysX.Identity);
-            this.actorArmBucketLink2.SetMassAndUpdateInertia(driveMass);
-            this._Scene.AddActor(actorArmBucketLink2);
-            this.jntArmBucketLink1 = this._Scene.CreateJoint<FixedJoint>(
-                this.actorArmBucketLink1,
-                Matrix_PhysX.Identity,
-                this.xArm,
-                Matrix_PhysX.Translation(0, 0.313f, -0.137f)
-                );
-            this.jntArmBucketLink2 = this._Scene.CreateJoint<FixedJoint>(
-                this.actorArmBucketLink2,
-                Matrix_PhysX.Identity,
-                this.xBucketLink,
-                Matrix_PhysX.Translation(0, linkLength, 0)
-                );
-
-            /*
-            this.actorTEMP = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -3));
-            this.actorTEMP.CreateShape(bg,
-                cat_material,
-                Matrix_PhysX.Identity);
-            this.actorTEMP.SetMassAndUpdateInertia(driveMass);
-            this._Scene.AddActor(actorTEMP);
-            this.fixedJOINTEMP = this._Scene.CreateJoint<FixedJoint>(
-                this.actorTEMP,
-                Matrix_PhysX.Identity,
-                this.xBucket,
-                Matrix_PhysX.Translation(0, 0.165f, 0.148f)
-                );*/
-
-            this.jntBucketLinkBucket = this._Scene.CreateJoint<DistanceJoint>(
-                this.actorArmBucketLink2,
-                Matrix_PhysX.Identity,
-                this.xBucket,
-                Matrix_PhysX.Translation(0, 0.165f, 0.148f)
-                );
-            this.jntBucketLinkBucket.Flags = (DistanceJointFlag.MinimumDistanceEnabled | DistanceJointFlag.MaximumDistanceEnabled);
-            this.jntBucketLinkBucket.MinimumDistance = 0.25f;
-            this.jntBucketLinkBucket.MaximumDistance = 0.25f;
-
-
-
-
-
-
-
-
-            for (int i = 0; i < 2; i++)
-            {
-                var conv2 = StaticMethods.Conversion_Inches_To_Meters / 2;
-                var bin = Trial._Physics.CreateRigidStatic(
-                    Matrix_PhysX.Translation(
-                        EmbeddedSoilModel.dimBoxX_Inches * StaticMethods.Conversion_Inches_To_Meters * (i * 2 - 1),
-                        EmbeddedSoilModel.dimBoxHeight_Inches * conv2,
-                        - EmbeddedSoilModel.dimBoxZ_Inches * StaticMethods.Conversion_Inches_To_Meters
-                    ));
-
-                for (int j = 0; j < 4; j++)
-                {
-                    bin.CreateShape(
-                        new BoxGeometry(
-                            EmbeddedSoilModel.dimBoxWidth_Inches * conv2,
-                            EmbeddedSoilModel.dimBoxHeight_Inches * conv2,
-                            EmbeddedSoilModel.dimBoxThickness_Inches * conv2
-                            ),
-                        bin_material,
-                        Matrix_PhysX.Multiply(
-                            Matrix_PhysX.Translation(
-                                0,
-                                0,
-                                (EmbeddedSoilModel.dimBoxWidth_Inches - EmbeddedSoilModel.dimBoxThickness_Inches) * conv2),
-                            Matrix_PhysX.RotationY(j * StaticMethods._PIF / 2)));
-                }
-                this._Scene.AddActor(bin);               
-            }
-
-            var ls = new RigidDynamic[]
-            {
-                this.actorBoomArm1,
-                this.actorBoomArm2,
-                this.actorCabBoom1,
-                this.actorCabBoom2,
-                this.actorArmBucketLink1,
-                this.actorArmBucketLink2,
-                this.xCab,
-                this.xBoom,
-                this.xArm,
-                this.xBucketLink,
-                this.xBucket
-            };
-
-            foreach (var rig in ls)
-            {
-                rig.LinearDamping = 0;
-                rig.AngularDamping = 0;
-            }
-
-            for (int j = 0; j < 5; j++)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    this._Scene.Simulate(TimeStepPhysX);
-                    this._Scene.FetchResults(true);
-                }
-                foreach (var rig in ls)
-                {
-                    rig.LinearVelocity = Vector3_PhysX.Zero;
-                    rig.AngularVelocity = Vector3_PhysX.Zero;
-                }
-            }
-
-//            this.xBucketLink.AngularDamping = 100;
-//            this.xBoom.AngularDamping = 100;
-//            this.xArm.AngularDamping = 80;
-//            this.xBucket.AngularDamping = 40;
-        }
-        public static volatile float f1 = 1, f2 = -1, f3, f4;
-
-
-        const float damping_cab_boom = 25000;
-        const float damping_boom_arm = 25000;
-        const float damping_arm_bucket = 25000;
-        const float maxf_cab_boom = 0;
-        const float maxf_boom_arm = 0;
-        const float maxf_arm_bucket = 0;
-
-        private void updatePhysXJoints(float[] JOINT_FORCES, float[] CAB_TORQUE)
-        {
-//            this.jntBucketLinkBucket.MinimumDistance = Trial.f1;
-//            this.jntBucketLinkBucket.MaximumDistance = Trial.f1;
-
-//            this.jntDArmBucket1.LocalPose1 = Matrix_PhysX.Translation(new Vector3_PhysX(0, Trial.f1, Trial.f2));
-//            this.jntDArmBucket2.LocalPose1 = Matrix_PhysX.Translation(new Vector3_PhysX(0, Trial.f3, Trial.f4));
-
-//            this.fixedJOINTEMP.LocalPose1 = Matrix_PhysX.Translation(new Vector3_PhysX(0, Trial.f1, Trial.f2));
-
-            Vector3_PhysX frcedir;
-
-            frcedir = this.actorCabBoom1.GlobalPose.xyz() - this.actorCabBoom2.GlobalPose.xyz();
-            frcedir.Normalize();
-            this.actorCabBoom1.AddForce(frcedir * JOINT_FORCES[1]);
-            this.actorCabBoom2.AddForce(-frcedir * JOINT_FORCES[1]);
-
-            frcedir = this.actorBoomArm1.GlobalPose.xyz() - this.actorBoomArm2.GlobalPose.xyz();
-            frcedir.Normalize();
-            this.actorBoomArm1.AddForce(frcedir * JOINT_FORCES[2]);
-            this.actorBoomArm2.AddForce(-frcedir * JOINT_FORCES[2]);
-
-            frcedir = this.actorArmBucketLink1.GlobalPose.xyz() - this.actorArmBucketLink2.GlobalPose.xyz();
-            frcedir.Normalize();
-            this.actorArmBucketLink1.AddForce(frcedir * JOINT_FORCES[3]);
-            this.actorArmBucketLink2.AddForce(-frcedir * JOINT_FORCES[3]);
-
-            var cab = this.xCab.GlobalPose;
-            this.xCab.AddTorque(new Vector3_PhysX(0, CAB_TORQUE[0], 0));
-
-//            this.xArm.AddTorque(Vector4_PhysX.Transform(new Vector4_PhysX(JOINT_TORQUES[2], 0, 0, 0), cab).xyz());
-            
-            /*this.xBucket.AddTorque(Vector4_PhysX.Transform(
-                new Vector4_PhysX(JOINT_TORQUES[3], 0, 0, 0), cab).xyz());
-
-            this.xCab.AddTorque(new Vector3_PhysX(
-                0,
-                -_FrictionCab * Math.Sign(Qd[0]) * Math.Max(Math.Abs(Qd[0]),
-                _FrictionCutoff), 0));*/
-                        
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void drawPhysX()
-        {
-            this._ColorGL.SendToGL();
-
-            lock (Trial._Physics)
-            {
-                this._Scene.FetchResults(true);
-                foreach (var a in this._Scene.Actors)
-                {
-                    var v = a as RigidActor;
-                    if (v != null)
-                    this.draw(v.Shapes);
-                }
-            }
-        }
-
-        private void draw(IEnumerable<Shape> enumerable)
-        {
-            foreach (var shp in enumerable)
-            {
-                GL_Handler.PushMatrix();
-                {
-                    var arg = shp.GlobalPose.ToArray();
-                    arg[12] *= StaticMethods.Conversion_Meters_To_Inches;
-                    arg[13] *= StaticMethods.Conversion_Meters_To_Inches;
-                    arg[14] *= StaticMethods.Conversion_Meters_To_Inches;
-                    GL_Handler.MultiplyMatrix(arg);
-
-                    switch (shp.GeometryType)
-                    {
-                        case GeometryType.Box:
-                            var b = shp.GetBoxGeometry().HalfExtents;
-                            SamSeifert.GLE.Draw.RectangularPrism(b.X, b.Y, b.Z, StaticMethods.Conversion_Meters_To_Inches);
-                            break;
-                        case GeometryType.Capsule:
-                            var c = shp.GetCapsuleGeometry();
-                            SamSeifert.GLE.Draw.CylinderPrism(c.Radius, c.HalfHeight, StaticMethods.Conversion_Meters_To_Inches);
-                            break;
-                        case GeometryType.Sphere:
-                            var s = shp.GetSphereGeometry();
-                            SamSeifert.GLE.Draw.Sphere(s.Radius * StaticMethods.Conversion_Meters_To_Inches);
-                            break;   
-                        case GeometryType.Plane:
-                            const float p = 100 * StaticMethods.Conversion_Meters_To_Inches;
-                            GL.Begin(BeginMode.Quads);
-                            GL.Normal3(Vector3.UnitX);
-                            GL.Vertex3(0, p, p);  
-                            GL.Vertex3(0, -p, p);  
-                            GL.Vertex3(0, -p, -p);  
-                            GL.Vertex3(0, p, -p);  
-                            GL.End();
-                            break;
-                        case GeometryType.ConvexMesh:
-                            Bobcat.DrawSimpleBucket();
-//                            var m = shp.GetConvexMeshGeometry();
-//                            var vrts = m.GetVertices();
-//                            var inds = m.GetIndexBuffer();
-//                            Console.WriteLine(inds.Length);
-                            break;
-                    }
-                }
-                GL_Handler.PopMatrix();
-            }
-        }
 
 
 
@@ -1066,6 +394,8 @@ namespace Excavator
             float[] CAB_TORQUE = new float[] { 0 };
             float[] JOINT_FORCES = new float[] { 0, 0, 0, 0 };
 
+            int WaitJustOneMinute = -1;
+
             fixed (float *
                 Q_P = Q,
                 QD_P = Qd,
@@ -1080,9 +410,6 @@ namespace Excavator
                 CYL_VEL_P = CYL_VEL
                 )
             {
-                float fBucketVolumeLoad = 0;
-                float fBucketMassLoad = 0;
-
                 float fuelInstant;
                 float fuelFiltered = Trial.FuelMin;
 
@@ -1090,41 +417,29 @@ namespace Excavator
                 int centiSecondsNew = 0;
                 float simTime = 0;
 
-                this.UpdateMatlabInputs(ref Q, ref Qd, ref CYL_POS, ref CYL_VEL);
+                lock (Trial._Physics) Trial.UpdateMatlabInputs(ref Q, ref Qd, ref CYL_POS, ref CYL_VEL);
+
+                TrialSaver.File2_DataType f2dt = new TrialSaver.File2_DataType()  { Size = 0 };
 
                 while (FormBase._BoolThreadAlive && this._BoolAlive)
                 {
                     if (this._FloatSimTime < wtch.Elapsed.TotalSeconds)
                     {
-                        this.MatlabUpdateSimInputs(
+                        bool skip = WaitJustOneMinute < 0 ? false : (Environment.TickCount - WaitJustOneMinute < 60000);                       
+
+                        if (skip)
+                        {
+                            FLOW[0] = 0;
+                            FLOW[1] = 0;
+                            FLOW[2] = 0;
+                            FLOW[3] = 0;
+                        }
+                        else this.MatlabUpdateSimInputs(
                             ref Q,
                             ref Qd,
                             ref CYL_POS,
                             ref CYL_VEL,
                             ref FLOW);
-
-                        Bobcat.JointToTask435(
-                            ref Ybh,
-                            ref Vbh,
-                            ref Q,
-                            ref Qd);
-
-                        var pl = this._EmbeddedSoilModel.ForceModel_ReturnDump(
-                            ref Ybh,
-                            ref Vbh,
-                            ref Q,
-                            ref Qd,
-                            ref SD_FORCE,
-                            ref SD_MOMENT,
-                            ref SW_FORCE,
-                            out fBucketVolumeLoad,
-                            this._FloatSimTime
-                            );
-
-//                        if (pl.Size > 0) if (this._TrialSaver != null) this._TrialSaver.update2(pl);
-
-                        Bobcat._FloatBucketSoilVolume = fBucketVolumeLoad;
-                        fBucketMassLoad = fBucketVolumeLoad * 0.03149594f;
 
                         simTime = sim.SamUpdateClass(
                             CYL_POS_P,
@@ -1137,35 +452,55 @@ namespace Excavator
 
                         lock (Trial._Physics)
                         {
-                            this.updatePhysXJoints(JOINT_FORCES, CAB_TORQUE);
+                            Trial.updatePhysXJoints(JOINT_FORCES, CAB_TORQUE);
+                            Trial.updatePhysXCenterCab(Q[0]);
 
-                            this._Scene.Simulate(TimeStepPhysX);
-                            this._Scene.FetchResults(true);
+                            f2dt = EmbeddedSoilModel.Instance.ForceModel_ReturnDump(
+                                Trial.xBucket,
+                                Trial.xBucketTip,
+                                Trial.xCab,
+                                Trial._Scene,
+                                this._FloatSimTime);                                                    
 
-                            this.UpdateMatlabInputs(ref Q, ref Qd, ref CYL_POS, ref CYL_VEL);
+                            Trial._Scene.Simulate(TimeStepPhysX);
+                            Trial._Scene.FetchResults(true);
+
+                            Trial.UpdateMatlabInputs(ref Q, ref Qd, ref CYL_POS, ref CYL_VEL);
+
+                            // Prevents Bucket Link and Bucket From Switching Sides
+                            Trial._RevoluteJoint_Arm_BucketLink.Limit = new JointAngularLimitPair(-StaticMethods._PIF / 3,  Math.Max(0,
+                                (StaticMethods.toRadiansF(-65) - Q[3]) * 0.7f + StaticMethods.toRadiansF(5)));
                         }
 
 
-                        lock (this.ActualAnglesMatlabThread)
+                        Bobcat.ActualAngles = new Bobcat.BobcatAngles()
                         {
-                            this.ActualAnglesMatlabThread.cab = Q[0] * Trial.QSCALE;
-                            this.ActualAnglesMatlabThread.boo = Q[1] * Trial.QSCALE;
-                            this.ActualAnglesMatlabThread.arm = Q[2] * Trial.QSCALE;
-                            this.ActualAnglesMatlabThread.buc = Q[3] * Trial.QSCALE;
-                        }
+                            swi = 0,
+                            cab = Q[0] * Trial.QSCALE,
+                            boo = Q[1] * Trial.QSCALE,
+                            arm = Q[2] * Trial.QSCALE,
+                            buc = Q[3] * Trial.QSCALE
+                        };
+
+                        CabRotater.setAngleValues(Q[0], Qd[0]);
 
                         fuelInstant = FUEL[0];
                         const float alpha = 0.007f;
                         fuelFiltered = fuelFiltered * (1 - alpha) + alpha * fuelInstant;
 
-                        this._FuelInstant = fuelInstant;
-                        this._FuelFiltered = fuelFiltered;
+                        lock (FuelLock)
+                        {
+                            this._FuelInstant = fuelInstant;
+                            this._FuelFiltered = fuelFiltered;
+                            this._FuelValid = !skip;
+                        }
+
                         this._FloatSimTime = simTime;
 
-                        if (this._TrialSaver != null)
+                        if (!skip)
                         {
+                            if (f2dt.Size > 0) TrialSaver.update2(f2dt);
                             centiSecondsNew = (int)(simTime * 100);
-
                             if (centiSecondsNew != centiSeconds)
                             {
                                 centiSeconds = centiSecondsNew;
@@ -1179,15 +514,18 @@ namespace Excavator
                                 dat.QD[1] = Qd[1];
                                 dat.QD[2] = Qd[2];
                                 dat.QD[3] = Qd[3];
-                                dat.BucketSoil = fBucketVolumeLoad;
-                                dat.BinSoilRight = this._EmbeddedSoilModel._VolumeRightBin;
-                                dat.BinSoilLeft = this._EmbeddedSoilModel._VolumeLeftBin;
-                                dat.BinSoilNone = this._EmbeddedSoilModel._VolumeNoBin;
+                                dat.BucketSoil = Bobcat._FloatBucketSoilVolume;
+                                dat.BinSoilRight = EmbeddedSoilModel._VolumeRightBin;
+                                dat.BinSoilLeft = EmbeddedSoilModel._VolumeLeftBin;
+                                dat.BinSoilNone = EmbeddedSoilModel._VolumeNoBin;
                                 dat.Fuel[0] = FUEL[0];
                                 dat.Fuel[1] = FUEL[1];
                                 this.fillControlFloats(dat.JoyStick);
 
-                                if (this._TrialSaver.update1_ReturnContinue(dat)) this._TrialSaver = null;
+                                if (TrialSaver.update1(dat))
+                                {
+                                    WaitJustOneMinute = Environment.TickCount;
+                                }
                             }
                         }
                     }
@@ -1202,21 +540,21 @@ namespace Excavator
             FormBase.subThread();
         }
 
-        private void UpdateMatlabInputs(ref float[] Q, ref float[] Qd, ref float[] CYL_POS, ref float[] CYL_VEL)
+        private static void UpdateMatlabInputs(ref float[] Q, ref float[] Qd, ref float[] CYL_POS, ref float[] CYL_VEL)
         {
             // UPDATE Q
 
-            Vector4_PhysX targ1, targ2, cabPerp = Vector4_PhysX.Transform(Vector4_PhysX.UnitX, this.xCab.GlobalPose);
+            Vector4_PhysX targ1, targ2, cabPerp = Vector4_PhysX.Transform(Vector4_PhysX.UnitX, Trial.xCab.GlobalPose);
             Vector3_PhysX cross;
             float newQ;
 
-            targ1 = Vector4_PhysX.Transform(Vector4_PhysX.UnitX, this.xCab.GlobalPose);
+            targ1 = Vector4_PhysX.Transform(Vector4_PhysX.UnitX, Trial.xCab.GlobalPose);
             Q[0] = -(float)Math.Atan2(targ1.Z, targ1.X); ;
 
             var cabX = (targ1.xyz());
 
-            targ1 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xCab.GlobalPose);
-            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xBoom.GlobalPose);
+            targ1 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, Trial.xCab.GlobalPose);
+            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, Trial.xBoom.GlobalPose);
             cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
             if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
             else newQ = (float)Math.Acos(Vector4_PhysX.Dot(targ1, targ2)) *
@@ -1224,7 +562,7 @@ namespace Excavator
             Q[1] = newQ;
 
             targ1 = targ2;
-            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xArm.GlobalPose);
+            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, Trial.xArm.GlobalPose);
             cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
             if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
             else newQ = (float)Math.Acos(Vector4_PhysX.Dot(targ1, targ2)) *
@@ -1232,7 +570,7 @@ namespace Excavator
             Q[2] = newQ;
 
             targ1 = targ2;
-            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, this.xBucket.GlobalPose);
+            targ2 = Vector4_PhysX.Transform(Vector4_PhysX.UnitZ, Trial.xBucket.GlobalPose);
             cross = PhysX.Math.Vector3.Cross(targ1.xyz(), targ2.xyz());
             if (Single.IsNaN(cross.LengthSquared())) newQ = 0;
             else newQ = (float)
@@ -1242,16 +580,16 @@ namespace Excavator
 
             // Update Qd
 
-            Qd[0] = Vector3_PhysX.Dot(this.xCab.AngularVelocity, Vector3_PhysX.UnitY);
-            Qd[1] = Vector3_PhysX.Dot(this.xBoom.AngularVelocity, cabX);
-            Qd[2] = Vector3_PhysX.Dot(this.xArm.AngularVelocity, cabX);
-            Qd[3] = Vector3_PhysX.Dot(this.xBucket.AngularVelocity, cabX);
+            Qd[0] = Vector3_PhysX.Dot(Trial.xCab.AngularVelocity, Vector3_PhysX.UnitY);
+            Qd[1] = Vector3_PhysX.Dot(Trial.xBoom.AngularVelocity, cabX);
+            Qd[2] = Vector3_PhysX.Dot(Trial.xArm.AngularVelocity, cabX);
+            Qd[3] = Vector3_PhysX.Dot(Trial.xBucket.AngularVelocity, cabX);
 
             // Udate Cyl_Pos
 
-            Vector3_PhysX v3pos1 = this.actorCabBoom1.GlobalPose.xyz() - this.actorCabBoom2.GlobalPose.xyz();
-            Vector3_PhysX v3pos2 = this.actorBoomArm1.GlobalPose.xyz() - this.actorBoomArm2.GlobalPose.xyz();
-            Vector3_PhysX v3pos3 = this.actorArmBucketLink1.GlobalPose.xyz() - this.actorArmBucketLink2.GlobalPose.xyz();
+            Vector3_PhysX v3pos1 = Trial.actorCabBoom1.GlobalPose.xyz() - Trial.actorCabBoom2.GlobalPose.xyz();
+            Vector3_PhysX v3pos2 = Trial.actorBoomArm1.GlobalPose.xyz() - Trial.actorBoomArm2.GlobalPose.xyz();
+            Vector3_PhysX v3pos3 = Trial.actorArmBucketLink1.GlobalPose.xyz() - Trial.actorArmBucketLink2.GlobalPose.xyz();
 
             CYL_POS[0] = Q[0];
             CYL_POS[1] = v3pos1.Normalize() * StaticMethods.Conversion_Meters_To_Inches;
@@ -1262,11 +600,12 @@ namespace Excavator
 
             CYL_VEL[0] = Qd[0];
             CYL_VEL[1] = StaticMethods.Conversion_Meters_To_Inches *
-                Vector3_PhysX.Dot(this.actorCabBoom1.LinearVelocity - this.actorCabBoom2.LinearVelocity, v3pos1);
+                Vector3_PhysX.Dot(Trial.actorCabBoom1.LinearVelocity - Trial.actorCabBoom2.LinearVelocity, v3pos1);
             CYL_VEL[2] = StaticMethods.Conversion_Meters_To_Inches *
-                Vector3_PhysX.Dot(this.actorBoomArm1.LinearVelocity - this.actorBoomArm2.LinearVelocity, v3pos2);
+                Vector3_PhysX.Dot(Trial.actorBoomArm1.LinearVelocity - Trial.actorBoomArm2.LinearVelocity, v3pos2);
             CYL_VEL[3] = StaticMethods.Conversion_Meters_To_Inches *
-                Vector3_PhysX.Dot(this.actorArmBucketLink1.LinearVelocity - this.actorArmBucketLink2.LinearVelocity, v3pos3);
+                Vector3_PhysX.Dot(Trial.actorArmBucketLink1.LinearVelocity - Trial.actorArmBucketLink2.LinearVelocity, v3pos3);
+
         }
 
 
@@ -1290,7 +629,52 @@ namespace Excavator
 
 
 
+        private void InitializeComponent()
+        {
+            this.labelFuelEfficiency = new System.Windows.Forms.Label();
+            this.labelSimUpdate = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // labelFuelEfficiency
+            // 
+            this.labelFuelEfficiency.AutoSize = true;
+            this.labelFuelEfficiency.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelFuelEfficiency.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFuelEfficiency.Location = new System.Drawing.Point(0, 0);
+            this.labelFuelEfficiency.Margin = new System.Windows.Forms.Padding(0);
+            this.labelFuelEfficiency.Name = "labelFuelEfficiency";
+            this.labelFuelEfficiency.Padding = new System.Windows.Forms.Padding(4);
+            this.labelFuelEfficiency.Size = new System.Drawing.Size(54, 26);
+            this.labelFuelEfficiency.TabIndex = 0;
+            this.labelFuelEfficiency.Text = "label1";
+            // 
+            // labelSimUpdate
+            // 
+            this.labelSimUpdate.AutoSize = true;
+            this.labelSimUpdate.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelSimUpdate.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSimUpdate.Location = new System.Drawing.Point(0, 26);
+            this.labelSimUpdate.Margin = new System.Windows.Forms.Padding(0);
+            this.labelSimUpdate.Name = "labelSimUpdate";
+            this.labelSimUpdate.Padding = new System.Windows.Forms.Padding(4);
+            this.labelSimUpdate.Size = new System.Drawing.Size(54, 26);
+            this.labelSimUpdate.TabIndex = 1;
+            this.labelSimUpdate.Text = "label2";
+            // 
+            // Trial
+            // 
+            this.Controls.Add(this.labelSimUpdate);
+            this.Controls.Add(this.labelFuelEfficiency);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(0);
+            this.MaximumSize = new System.Drawing.Size(210, 0);
+            this.MinimumSize = new System.Drawing.Size(210, 0);
+            this.Name = "Trial";
+            this.Size = new System.Drawing.Size(210, 332);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
+        }
 
 
 
@@ -1424,10 +808,37 @@ namespace Excavator
 
 
 
+
+
+        public const float QS_Max = 90, QS_Min = -90;
+        public const float Q2_Max = 66, Q2_Min = -63;
+        public const float Q3_Max = -35, Q3_Min = -145;
+//        public const float Q4_Max = 33, Q4_Min = -154;
+        public const float Q4_Max = 23, Q4_Min = -144;
+
+        public static float clampQS(float val) { return Math.Max(Trial.QS_Min, Math.Min(Trial.QS_Max, val)); }
+        public static float clampQ2(float val) { return Math.Max(Trial.Q2_Min, Math.Min(Trial.Q2_Max, val)); }
+        public static float clampQ3(float val) { return Math.Max(Trial.Q3_Min, Math.Min(Trial.Q3_Max, val)); }
+        public static float clampQ4(float val) { return Math.Max(Trial.Q4_Min, Math.Min(Trial.Q4_Max, val)); }
+
+        public static double clampQ2_Radians(Double val)
+        {
+            return Math.Max(Trial.Q2_Min_Radians, Math.Min(Trial.Q2_Max_Radians, val));
+        }
+
+        public static double clampQ3_Radians(Double val)
+        {
+            return Math.Max(Trial.Q3_Min_Radians, Math.Min(Trial.Q3_Max_Radians, val));
+        }
+
+        private static readonly double Q2_Max_Radians = StaticMethods.toRadiansD(Q2_Max), Q2_Min_Radians = StaticMethods.toRadiansD(Q2_Min);
+        private static readonly double Q3_Max_Radians = StaticMethods.toRadiansD(Q3_Max), Q3_Min_Radians = StaticMethods.toRadiansD(Q3_Min);
+        private static readonly double Q4_Max_Radians = StaticMethods.toRadiansD(Q4_Max), Q4_Min_Radians = StaticMethods.toRadiansD(Q4_Min);
 
         public static HeightMap _Heightmap = null;
 
-        private static readonly Color colorC = Color.FromArgb(89, 113, 38);
+//        private static readonly Color colorC = Color.FromArgb(89, 113, 38);
+        private static readonly Color colorC = Color.FromArgb(76, 96, 35);
         private static float[] colorA = new float[] { 0.25f, 0.25f, 0.25f, 1.0f };
         private static float[] colorD = new float[] { 0.50f, 0.50f, 0.50f, 1.0f };
         private static float[] color0 = new float[] { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -1441,8 +852,30 @@ namespace Excavator
         private static CadObject _CadObjectTree6 = null;
 
         private static TreeObject[] _Trees;
+        private const int TreeAnglecutOff = 80;
 
-        private const int AnglecutOff = 80;
+        private static SamSeifert.GLE.Color_GL _ColorGL = new Color_GL(Color.White);
+        
+        private static Scene _Scene;
+        protected static Foundation _Foundation = new Foundation(new UserOutput());
+        private static Physics _Physics = new Physics(Trial._Foundation, false);
+        private static RigidDynamic xCab, xBoom, xArm, xBucketLink, xBucket;
+        private static FixedJoint jntCabBoom1, jntCabBoom2;
+        private static RigidDynamic actorCabBoom1, actorCabBoom2;
+        private static FixedJoint jntBoomArm1, jntBoomArm2;
+        private static RigidDynamic actorBoomArm1, actorBoomArm2;
+        private static FixedJoint jntArmBucketLink1, jntArmBucketLink2;
+        private static RigidDynamic actorArmBucketLink1, actorArmBucketLink2;
+        private static DistanceJoint jntBucketLinkBucket;
+        private static Shape xBucketTip;
+        private static RevoluteJoint _RevoluteJoint_Arm_BucketLink;
+
+        private static Dictionary<RigidDynamic, Matrix_PhysX> StartingPoses = new Dictionary<RigidDynamic, Matrix_PhysX>();
+
+
+//        private static FixedJoint TEST_FIX_JOINT;
+
+        public static volatile float f1 = 1, f2 = -1, f3, f4;
 
         public class TreeObject
         {
@@ -1452,18 +885,18 @@ namespace Excavator
 
             public TreeObject(float a, float d, CadObject o) { this.angle = a; this.distance = d; this.co = o; }
 
-            public void GLDraw(ref float cab)
+            public void GLDraw(float cab)
             {
                 float dif = Math.Abs(this.angle - cab);
-                if (dif < Trial.AnglecutOff || dif > (360 - Trial.AnglecutOff))
+                if (dif < Trial.TreeAnglecutOff || dif > (360 - Trial.TreeAnglecutOff))
                 {
-                    GL.PushMatrix();
+                    GL_Handler.PushMatrix();
                     {
-                        GL.Rotate(angle, OpenTK.Vector3.UnitY);
-                        GL.Translate(0, 0, -distance);
+                        GL_Handler.Rotate(angle, OpenTK.Vector3.UnitY);
+                        GL_Handler.Translate(0, 0, -distance);
                         co.draw(true);
                     }
-                    GL.PopMatrix();
+                    GL_Handler.PopMatrix();
                 }
             }
         }
@@ -1491,6 +924,423 @@ namespace Excavator
                     Trial.colorA[i] *= 0.2f;
                     Trial.colorD[i] *= 1.0f;
                 }
+
+                Trial._Scene = Trial._Physics.CreateScene(new SceneDesc()
+                {
+                    Gravity = new Vector3_PhysX(0, -9.8f, 0),
+                });
+
+                Vector3[] vss;
+                int[] iss;
+                var cat_material = Trial._Physics.CreateMaterial(0.0f, 0.0f, 0.0f);
+                var bin_material = Trial._Physics.CreateMaterial(1.0f, 1.0f, 0);
+                var grnd_material = Trial._Physics.CreateMaterial(1.0f, 1.0f, 0);
+
+                cat_material.FrictionCombineMode = CombineMode.Max;
+                bin_material.FrictionCombineMode = CombineMode.Max;
+                grnd_material.FrictionCombineMode = CombineMode.Max;
+
+
+                var cooking = Trial._Physics.CreateCooking();
+
+                var tw = EmbeddedSoilModel.TrenchWidth * StaticMethods.Conversion_Inches_To_Meters * 1.2f; // 1.2 IS SAFETY BUFFER
+                const int depth = 3;
+                const int hw = 10; // Half Width of The Covered Area
+
+                var ground = Trial._Physics.CreateRigidStatic();
+                ground.CreateShape(new BoxGeometry((hw - tw) / 2, depth, hw), grnd_material, Matrix_PhysX.Translation(hw / 2, -depth, 0));
+                ground.CreateShape(new BoxGeometry((hw - tw) / 2, depth, hw), grnd_material, Matrix_PhysX.Translation(-hw / 2, -depth, 0));
+                ground.CreateShape(new BoxGeometry(tw, depth, hw / 2), grnd_material, Matrix_PhysX.Translation(0, -depth, hw / 2));
+                Trial._Scene.AddActor(ground);
+
+
+
+
+
+                var vec1 = Bobcat.vecOffsetCab_Inches;
+                var vec2 = Bobcat.vecOffsetSwing1_Inches;
+                var vec3 = Bobcat.vecOffsetSwing2_Inches;
+                var vec4 = Bobcat.vecOffsetSwing3Rot_Inches;
+
+                float height = (vec1.Y + vec2.Y + vec3.Y + vec4.Y) * StaticMethods.Conversion_Inches_To_Meters;
+                float xset = (vec1.X + vec2.X + vec3.X + vec4.X) * StaticMethods.Conversion_Inches_To_Meters;
+                const float dim_cab_thickness = 0.1f;
+                const float dim_cab_thickness_o2 = dim_cab_thickness / 2;
+                float dim_cab_radius = -(vec1.Z + vec2.Z + vec3.Z + vec4.Z) * StaticMethods.Conversion_Inches_To_Meters;
+                float dim_cab_radius_o2 = dim_cab_radius / 2;
+
+                float zset = -dim_cab_radius;
+
+                Trial.xCab = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, height - dim_cab_thickness_o2, 0));
+                Trial.xCab.CreateShape(
+                    new CapsuleGeometry(dim_cab_radius, dim_cab_thickness_o2),
+                    cat_material,
+                    Matrix_PhysX.RotationZ(StaticMethods._PIF / 2));
+                Trial.xCab.CreateShape(
+                    new BoxGeometry(dim_cab_radius_o2, dim_cab_thickness_o2, dim_cab_radius_o2),
+                    cat_material,
+                    Matrix_PhysX.Translation(0, 0, -dim_cab_radius_o2));
+                var jnt1 = Trial._Scene.CreateJoint<RevoluteJoint>(
+                    Trial.xCab,
+                    Matrix_PhysX.RotationZ(StaticMethods._PIF / 2),
+                    null,
+                    Matrix_PhysX.Multiply(
+                         Matrix_PhysX.RotationZ(StaticMethods._PIF / 2),
+                         Matrix_PhysX.Translation(xset, height - dim_cab_thickness_o2, 0)));
+                Trial.xCab.SetMassAndUpdateInertia(Trial.m1);
+                Trial._Scene.AddActor(Trial.xCab);
+
+
+
+
+                const float middleDist = 0.5f * dim_boom_length_meters;
+                const float middleHeight = 0.25f * dim_boom_length_meters;
+                float ang1 = (float)Math.Atan2(middleHeight, middleDist);
+                float ang2 = (float)Math.Atan2(middleHeight, dim_boom_length_meters - middleDist);
+                float ang3 = 180 - ang1 - ang2;
+                float leg1 = (float)Math.Sqrt(Math.Pow(middleHeight, 2) + Math.Pow(middleDist, 2));
+                float leg2 = (float)Math.Sqrt(Math.Pow(middleHeight, 2) + Math.Pow((dim_boom_length_meters - middleDist), 2));
+                const float boomdim = 0.1f;
+                float boomdimsq2 = boomdim * (float)Math.Sqrt(2);
+                Trial.xBoom = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset));
+                Trial.xBoom.CreateShape(
+                    new BoxGeometry(boomdim, boomdimsq2 / 2, boomdimsq2 / 2),
+                    cat_material,
+                    Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
+                        Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
+                        Matrix_PhysX.Translation(0, 0, -boomdim)),
+                        Matrix_PhysX.RotationX(ang1)));
+                Trial.xBoom.CreateShape(
+                    new BoxGeometry(boomdim, boomdim, (leg1 - boomdim) / 2),
+                    cat_material,
+                    Matrix_PhysX.Multiply(
+                         Matrix_PhysX.Translation(0, 0, -(boomdim + leg1) / 2),
+                         Matrix_PhysX.RotationX(ang1)));
+                Trial.xBoom.CreateShape(
+                    new CapsuleGeometry(boomdim, boomdim),
+                    cat_material,
+                    Matrix_PhysX.Translation(0, middleHeight, -middleDist));
+                Trial.xBoom.CreateShape(
+                    new BoxGeometry(boomdim, boomdim, (leg2 - boomdim) / 2),
+                    cat_material,
+                    Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
+                         Matrix_PhysX.Translation(0, 0, -(leg2 - boomdim) / 2),
+                         Matrix_PhysX.RotationX(-ang2)),
+                         Matrix_PhysX.Translation(0, middleHeight, -middleDist)
+                         ));
+                /*            this.xBoom.CreateShape( // Boom - Arm Square on Boom
+                                new BoxGeometry(boomdim, boomdimsq2 / 2, boomdimsq2 / 2),
+                                cat_material,
+                                Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
+                                    Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
+                                    Matrix_PhysX.Translation(0, 0, boomdim)),
+                                    Matrix_PhysX.RotationX(-ang2)),
+                                    Matrix_PhysX.Translation(0,0,-dim_boom_length_meters)));*/
+                var jnt2 = Trial._Scene.CreateJoint<RevoluteJoint>(
+                    Trial.xBoom,
+                    Matrix_PhysX.Identity,
+                    Trial.xCab,
+                    Matrix_PhysX.Translation(xset, dim_cab_thickness_o2, -dim_cab_radius));
+                jnt2.Limit = new JointAngularLimitPair(-(float)Trial.Q2_Max_Radians, -(float)Trial.Q2_Min_Radians);
+                jnt2.Flags |= RevoluteJointFlag.LimitEnabled;
+                Trial.xBoom.SetMassAndUpdateInertia(Trial.m2);
+                Trial._Scene.AddActor(xBoom);
+
+                zset -= dim_boom_length_meters;
+                const float armdim = boomdim;
+                float armdimsq2 = armdim * (float)Math.Sqrt(2);
+                const float dim_arm_length_meters_o2 = dim_arm_length_meters / 2;
+                Trial.xArm = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset));
+                Trial.xArm.CreateShape(
+                    new BoxGeometry(armdim, armdim, dim_arm_length_meters_o2 - armdim),
+                    cat_material,
+                    Matrix_PhysX.Translation(0, 0, -dim_arm_length_meters_o2));
+                Trial.xArm.CreateShape(
+                    new BoxGeometry(armdim, armdimsq2 / 2, armdimsq2 / 2),
+                    cat_material,
+                    Matrix_PhysX.Multiply(
+                         Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
+                         Matrix_PhysX.Translation(0, 0, armdim - dim_arm_length_meters)));
+                /*            this.xArm.CreateShape(// Boom - Arm Square on Arm
+                                new BoxGeometry(armdim, armdimsq2 / 2, armdimsq2 / 2),
+                                cat_material,
+                                Matrix_PhysX.Multiply(
+                                     Matrix_PhysX.RotationX(StaticMethods._PIF / 4),
+                                     Matrix_PhysX.Translation(0, 0, - armdim)));*/
+                var jnt3 = Trial._Scene.CreateJoint<RevoluteJoint>(
+                    Trial.xArm,
+                    Matrix_PhysX.Identity,
+                    Trial.xBoom,
+                    Matrix_PhysX.Translation(0, 0, -dim_boom_length_meters));
+                jnt3.Limit = new JointAngularLimitPair(-(float)Trial.Q3_Max_Radians, -(float)Trial.Q3_Min_Radians);
+                jnt3.Flags |= RevoluteJointFlag.LimitEnabled;
+                Trial.xArm.SetMassAndUpdateInertia(Trial.m3);
+                Trial._Scene.AddActor(Trial.xArm);
+
+                zset -= dim_arm_length_meters;
+                Trial.xBucket = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset));
+                CadObjectGenerator.TrianglesFromXAML(
+                    out vss,
+                    out iss,
+                    Properties.Resources.BucketSimple,
+                    xScale: StaticMethods.Conversion_Inches_To_Meters,
+                    yScale: StaticMethods.Conversion_Inches_To_Meters,
+                    zScale: StaticMethods.Conversion_Inches_To_Meters,
+                    xOff: 0,
+                    yOff: 0,
+                    zOff: 0);
+                var stream = new System.IO.MemoryStream();
+                var meshde = new ConvexMeshDesc() { Flags = ConvexFlag.ComputeConvex };
+                var vss2 = new Vector3_PhysX[vss.Length];
+                for (int i = 0; i < vss.Length; i++) vss2[i] = vss[i].toPhysX();
+                meshde.SetPositions(vss2);
+                meshde.SetTriangles(iss);
+                cooking.CookConvexMesh(meshde, stream);
+                stream.Position = 0;
+                var convexMeshGeom = Trial.xBucket.CreateShape(
+                    new ConvexMeshGeometry(Trial._Physics.CreateConvexMesh(stream))
+                    {
+                        Scale = new MeshScale(new PhysX.Math.Vector3(1f, 1f, 1f), PhysX.Math.Quaternion.Identity)
+                    },
+                    cat_material,
+                    Matrix_PhysX.Multiply(Matrix_PhysX.Multiply(
+                        Matrix_PhysX.RotationY(StaticMethods._PIF / 2),
+                        Matrix_PhysX.Translation(StaticMethods.Conversion_Inches_To_Meters * new Vector3_PhysX(0, (Bobcat.slidey / 2 + 2.11f), -(Bobcat.slidex / 2 - 0.365f)))),
+                        Matrix_PhysX.RotationX(StaticMethods.toRadiansF(135 - 15 + 35))));
+                var jnt4 = Trial._Scene.CreateJoint<RevoluteJoint>(
+                    Trial.xBucket,
+                    Matrix_PhysX.Identity,
+                    Trial.xArm,
+                    Matrix_PhysX.Translation(0, 0, -dim_arm_length_meters));
+                jnt4.Limit = new JointAngularLimitPair(-(float)Trial.Q4_Max_Radians, -(float)Trial.Q4_Min_Radians);
+                jnt4.Flags |= RevoluteJointFlag.LimitEnabled;
+                Trial.xBucket.SetMassAndUpdateInertia(Trial.m3);
+                Trial._Scene.AddActor(Trial.xBucket);
+
+                float linkOffset = 0.23f;
+                const float linkLength = 0.33f;
+                Trial.xBucketLink = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(xset, height, zset + linkOffset));
+                Trial.xBucketLink.CreateShape(
+                    new SphereGeometry(linkLength * 0.14f),
+                    cat_material,
+                    Matrix_PhysX.Translation(0, linkLength * 0.65f, 0));
+                Trial._RevoluteJoint_Arm_BucketLink = Trial._Scene.CreateJoint<RevoluteJoint>(
+                    Trial.xBucketLink,
+                    Matrix_PhysX.Identity,
+                    Trial.xArm,
+                    Matrix_PhysX.Translation(0, 0, linkOffset - dim_arm_length_meters));
+                Trial._RevoluteJoint_Arm_BucketLink.Limit = new JointAngularLimitPair(-StaticMethods._PIF / 3, 0);
+                Trial._RevoluteJoint_Arm_BucketLink.Flags |= RevoluteJointFlag.LimitEnabled;
+                Trial.xBucketLink.SetMassAndUpdateInertia(5);
+                Trial._Scene.AddActor(Trial.xBucketLink);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                var driveMass = 3.5f;
+                var bg = new SphereGeometry(0.02f);
+
+                // Boom Driver
+                Trial.actorCabBoom1 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 0, 0)); ;
+                Trial.actorCabBoom1.CreateShape(bg, cat_material, Matrix_PhysX.Identity);
+                Trial.actorCabBoom1.SetMassAndUpdateInertia(driveMass);
+                Trial._Scene.AddActor(actorCabBoom1);
+                Trial.actorCabBoom2 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 0, -1));
+                Trial.actorCabBoom2.CreateShape(bg, cat_material, Matrix_PhysX.Identity);
+                Trial.actorCabBoom2.SetMassAndUpdateInertia(driveMass);
+                Trial._Scene.AddActor(actorCabBoom2);
+                Trial.jntCabBoom1 = Trial._Scene.CreateJoint<FixedJoint>(
+                    Trial.actorCabBoom1,
+                    Matrix_PhysX.Identity,
+                    Trial.xCab,
+                    Matrix_PhysX.Translation(xset, -.288f, -.914f)
+                    );
+                Trial.jntCabBoom2 = Trial._Scene.CreateJoint<FixedJoint>(
+                    Trial.actorCabBoom2,
+                    Matrix_PhysX.Identity,
+                    Trial.xBoom,
+                    Matrix_PhysX.Translation(0, 0.438f, -1.386f)
+                    );
+
+                // Arm Driver
+                Trial.actorBoomArm1 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, 0));
+                Trial.actorBoomArm1.CreateShape(bg, /*new SphereGeometry(driveRad),//*/
+                    cat_material,
+                    Matrix_PhysX.Identity);
+                Trial.actorBoomArm1.SetMassAndUpdateInertia(driveMass);
+                Trial._Scene.AddActor(actorBoomArm1);
+                Trial.actorBoomArm2 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -1));
+                Trial.actorBoomArm2.CreateShape(bg, /*new SphereGeometry(driveRad),//*/
+                    cat_material,
+                    Matrix_PhysX.Identity);
+                Trial.actorBoomArm2.SetMassAndUpdateInertia(driveMass);
+                Trial._Scene.AddActor(actorBoomArm2);
+                Trial.jntBoomArm1 = Trial._Scene.CreateJoint<FixedJoint>(
+                    Trial.actorBoomArm1,
+                    Matrix_PhysX.Identity,
+                    Trial.xBoom,
+                    Matrix_PhysX.Translation(0, 0.828f, -1.570f)
+                    );
+                Trial.jntBoomArm2 = Trial._Scene.CreateJoint<FixedJoint>(
+                    Trial.actorBoomArm2,
+                    Matrix_PhysX.Identity,
+                    Trial.xArm,
+                    Matrix_PhysX.Translation(0, 0.229f, 0.282f)
+                    );
+
+                // Bucket Link Driver
+                Trial.actorArmBucketLink1 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -2));
+                Trial.actorArmBucketLink1.CreateShape(bg,
+                    cat_material,
+                    Matrix_PhysX.Identity);
+                Trial.actorArmBucketLink1.SetMassAndUpdateInertia(driveMass);
+                Trial._Scene.AddActor(actorArmBucketLink1);
+                Trial.actorArmBucketLink2 = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10, -3));
+                Trial.actorArmBucketLink2.CreateShape(bg,
+                    cat_material,
+                    Matrix_PhysX.Identity);
+                Trial.actorArmBucketLink2.SetMassAndUpdateInertia(driveMass);
+                Trial._Scene.AddActor(actorArmBucketLink2);
+                Trial.jntArmBucketLink1 = Trial._Scene.CreateJoint<FixedJoint>(
+                    Trial.actorArmBucketLink1,
+                    Matrix_PhysX.Identity,
+                    Trial.xArm,
+                    Matrix_PhysX.Translation(0, 0.313f, -0.137f)
+                    );
+                Trial.jntArmBucketLink2 = Trial._Scene.CreateJoint<FixedJoint>(
+                    Trial.actorArmBucketLink2,
+                    Matrix_PhysX.Identity,
+                    Trial.xBucketLink,
+                    Matrix_PhysX.Translation(0, linkLength, 0)
+                    );
+
+                Trial.jntBucketLinkBucket = Trial._Scene.CreateJoint<DistanceJoint>(
+                    Trial.actorArmBucketLink2,
+                    Matrix_PhysX.Identity,
+                    Trial.xBucket,
+                    Matrix_PhysX.Translation(0, 0.165f, 0.148f)
+                    );
+
+                Trial.jntBucketLinkBucket.Flags = DistanceJointFlag.MinimumDistanceEnabled | DistanceJointFlag.MaximumDistanceEnabled;
+                Trial.jntBucketLinkBucket.MinimumDistance = 0.25f;
+                Trial.jntBucketLinkBucket.MaximumDistance = 0.25f;
+
+                Trial.xBucketTip = Trial.xBucket.CreateShape(new BoxGeometry(0.01f, 0.01f, 0.01f),
+                    cat_material,
+                    Matrix_PhysX.Multiply(Matrix_PhysX.RotationX(StaticMethods._PIF * -0.13f), Matrix_PhysX.Translation(0, 0.442f, -0.605f))
+                    );
+
+
+/*                var temp_object = Trial._Physics.CreateRigidDynamic(Matrix_PhysX.Translation(0, 10f, -5));
+                temp_object.CreateShape(new SphereGeometry(0.1f), cat_material);
+                temp_object.SetMassAndUpdateInertia(1);
+                Trial._Scene.AddActor(temp_object);
+
+                Trial.TEST_FIX_JOINT = Trial._Scene.CreateJoint<FixedJoint>(
+                    temp_object,
+                    Matrix_PhysX.Identity,
+                    Trial.xBucketTip,
+                    Matrix_PhysX.Identity
+                    );
+                */
+
+
+
+
+
+
+                for (int i = 0; i < 2; i++)
+                {
+                    var conv2 = StaticMethods.Conversion_Inches_To_Meters / 2;
+                    var bin = Trial._Physics.CreateRigidStatic(
+                        Matrix_PhysX.Translation(
+                            EmbeddedSoilModel.dimBoxX_Inches * StaticMethods.Conversion_Inches_To_Meters * (i * 2 - 1),
+                            EmbeddedSoilModel.dimBoxHeight_Inches * conv2,
+                            EmbeddedSoilModel.dimBoxZ_Inches * StaticMethods.Conversion_Inches_To_Meters
+                        ));
+
+                    for (int j = 0; j < 4; j++)
+                    {
+                        bin.CreateShape(
+                            new BoxGeometry(
+                                EmbeddedSoilModel.dimBoxWidth_Inches * conv2,
+                                EmbeddedSoilModel.dimBoxHeight_Inches * conv2,
+                                EmbeddedSoilModel.dimBoxThickness_Inches * conv2
+                                ),
+                            bin_material,
+                            Matrix_PhysX.Multiply(
+                                Matrix_PhysX.Translation(
+                                    0,
+                                    0,
+                                    (EmbeddedSoilModel.dimBoxWidth_Inches - EmbeddedSoilModel.dimBoxThickness_Inches) * conv2),
+                                Matrix_PhysX.RotationY(j * StaticMethods._PIF / 2)));
+                    }
+                    Trial._Scene.AddActor(bin);
+                }
+
+                var ls = new RigidDynamic[]
+                {
+                    Trial.actorBoomArm1,
+                    Trial.actorBoomArm2,
+                    Trial.actorCabBoom1,
+                    Trial.actorCabBoom2,
+                    Trial.actorArmBucketLink1,
+                    Trial.actorArmBucketLink2,
+                    Trial.xCab,
+                    Trial.xBoom,
+                    Trial.xArm,
+                    Trial.xBucketLink,
+                    Trial.xBucket
+                };
+
+                foreach (var rig in ls)
+                {
+                    rig.LinearDamping = 0;
+                    rig.AngularDamping = 0;
+                }
+
+                for (int j = 0; j < 5; j++)
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Trial._Scene.Simulate(TimeStepPhysX);
+                        Trial._Scene.FetchResults(true);
+                    }
+                    foreach (var rig in ls)
+                    {
+                        rig.LinearVelocity = Vector3_PhysX.Zero;
+                        rig.AngularVelocity = Vector3_PhysX.Zero;
+                    }
+                }
+
+                Trial.xCab.AngularDamping = 175;
+                Trial.xBoom.AngularDamping = 150;
+                Trial.xArm.AngularDamping = 125;
+                Trial.xBucket.AngularDamping = 25;
+
+                foreach (Scene s in Trial._Physics.Scenes)
+                {
+                    foreach (var a in s.Actors)
+                    {
+                        var v = a as RigidDynamic;
+                        if (v != null)
+                        {
+                            Trial.StartingPoses[v] = v.GlobalPose;
+                        }
+                    }
+                }
+
+                EmbeddedSoilModel.InitializePhysX(Trial._Physics, Trial._Scene);
             }
         }
 
@@ -1602,64 +1452,169 @@ namespace Excavator
             if (Trial._CadObjectTree6 != null) Trial._CadObjectTree6.GLDelete();
         }
 
-        private void InitializeComponent()
+        public static void drawObjectsInShadow(bool ShadowBufferDraw, float draw_time)
         {
-            this.labelFuelEfficiency = new System.Windows.Forms.Label();
-            this.labelSimUpdate = new System.Windows.Forms.Label();
-            this.SuspendLayout();
-            // 
-            // labelFuelEfficiency
-            // 
-            this.labelFuelEfficiency.AutoSize = true;
-            this.labelFuelEfficiency.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelFuelEfficiency.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFuelEfficiency.Location = new System.Drawing.Point(0, 0);
-            this.labelFuelEfficiency.Margin = new System.Windows.Forms.Padding(0);
-            this.labelFuelEfficiency.Name = "labelFuelEfficiency";
-            this.labelFuelEfficiency.Padding = new System.Windows.Forms.Padding(4);
-            this.labelFuelEfficiency.Size = new System.Drawing.Size(54, 26);
-            this.labelFuelEfficiency.TabIndex = 0;
-            this.labelFuelEfficiency.Text = "label1";
-            // 
-            // labelSimUpdate
-            // 
-            this.labelSimUpdate.AutoSize = true;
-            this.labelSimUpdate.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelSimUpdate.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSimUpdate.Location = new System.Drawing.Point(0, 26);
-            this.labelSimUpdate.Margin = new System.Windows.Forms.Padding(0);
-            this.labelSimUpdate.Name = "labelSimUpdate";
-            this.labelSimUpdate.Padding = new System.Windows.Forms.Padding(4);
-            this.labelSimUpdate.Size = new System.Drawing.Size(54, 26);
-            this.labelSimUpdate.TabIndex = 1;
-            this.labelSimUpdate.Text = "label2";
-            // 
-            // Trial
-            // 
-            this.Controls.Add(this.labelSimUpdate);
-            this.Controls.Add(this.labelFuelEfficiency);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(0);
-            this.MaximumSize = new System.Drawing.Size(210, 0);
-            this.MinimumSize = new System.Drawing.Size(210, 0);
-            this.Name = "Trial";
-            this.Size = new System.Drawing.Size(210, 332);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            if (FormBase._BoolDrawPhysX) Trial.drawPhysX();
+            else
+            {
+                EmbeddedSoilModel.drawTrench(ShadowBufferDraw);
+                EmbeddedSoilModel.drawBins(ShadowBufferDraw);
+                EmbeddedSoilModel.drawPiles(draw_time);
+            }
+        }
+
+        public static void drawObjectsNotInShadow(Bobcat.BobcatAngles ActualAngles)
+        {
+            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Ambient, Trial.colorA);
+            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Diffuse, Trial.colorD);
+            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Emission, Trial.color0);
+            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, Trial.color0);
+            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Shininess, new float[] { 0 });
+
+            Trial._Heightmap.GLDraw(ActualAngles.cab + 180, Trial.TreeAnglecutOff);
+
+            GL.Disable(EnableCap.CullFace);
+            Trial.staticInitTrees();
+            foreach (TreeObject to in Trial._Trees) to.GLDraw(ActualAngles.cab);
+            GL.Enable(EnableCap.CullFace);
 
         }
 
-        protected static Foundation _Foundation = new Foundation(new UserOutput());
-        private static Physics _Physics = new Physics(Trial._Foundation, false);
         private class UserOutput : ErrorCallback
         {
             public override void ReportError(PhysX.ErrorCode errorCode, string message, string file, int lineNumber)
             {
-                Console.WriteLine("Phys X Error:");
-                Console.WriteLine(message);
-                Console.WriteLine(file);
-                Console.WriteLine(lineNumber);
+                if (FormBase._BoolThreadAlive)
+                {
+                    if (lineNumber != 187)
+                        Console.WriteLine("Phys X Error: " + lineNumber + " " + file + " " + message);
+                }
             }
         }
+
+        internal static void ResetSoilModelS()
+        {
+            EmbeddedSoilModel.Instance.Reset();
+
+            lock (Trial._Physics)
+            {
+                foreach (var ls in Trial.StartingPoses)
+                {
+                    ls.Key.LinearVelocity = Vector3_PhysX.Zero;
+                    ls.Key.AngularVelocity = Vector3_PhysX.Zero;
+                    ls.Key.GlobalPose = ls.Value;
+                }
+            }
+        }
+
+        internal static void SetupNone()
+        {
+            var t = Trial._Trial;
+            Trial._Trial = null;
+
+            if (t != null)
+            {
+                t.Deconstruct();
+            }
+        }
+
+        private static void updatePhysXJoints(float[] JOINT_FORCES, float[] CAB_TORQUE)
+        {
+//            Trial.TEST_FIX_JOINT.LocalPose0 = Matrix_PhysX.Translation(new Vector3_PhysX(0, Trial.f1, Trial.f2));
+
+            Vector3_PhysX frcedir;
+
+            frcedir = Trial.actorCabBoom1.GlobalPose.xyz() - Trial.actorCabBoom2.GlobalPose.xyz();
+            frcedir.Normalize();
+            Trial.actorCabBoom1.AddForce(frcedir * JOINT_FORCES[1]);
+            Trial.actorCabBoom2.AddForce(-frcedir * JOINT_FORCES[1]);
+
+            frcedir = Trial.actorBoomArm1.GlobalPose.xyz() - Trial.actorBoomArm2.GlobalPose.xyz();
+            frcedir.Normalize();
+            Trial.actorBoomArm1.AddForce(frcedir * JOINT_FORCES[2]);
+            Trial.actorBoomArm2.AddForce(-frcedir * JOINT_FORCES[2]);
+
+            frcedir = Trial.actorArmBucketLink1.GlobalPose.xyz() - Trial.actorArmBucketLink2.GlobalPose.xyz();
+            frcedir.Normalize();
+            Trial.actorArmBucketLink1.AddForce(frcedir * JOINT_FORCES[3]);
+            Trial.actorArmBucketLink2.AddForce(-frcedir * JOINT_FORCES[3]);
+
+            var cab = Trial.xCab.GlobalPose;
+            Trial.xCab.AddTorque(new Vector3_PhysX(0, CAB_TORQUE[0] * 20, 0));
+        }
+
+        private static void updatePhysXCenterCab(float Q)
+        {
+            float max_angle = StaticMethods.toRadiansF(4);
+            float max_angle2 = max_angle / 2;
+
+            var signQ = Math.Sign(Q);
+            Q *= signQ;
+
+            if (Q < max_angle)
+                Trial.xCab.AddTorque(new Vector3_PhysX(0, (Math.Abs(max_angle2 - Q) - max_angle2) * signQ * 500000, 0));
+            
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void drawPhysX()
+        {
+            Trial._ColorGL.SendToGL();
+
+            lock (Trial._Physics)
+            {
+                Trial._Scene.FetchResults(true);
+                foreach (var a in Trial._Scene.Actors)
+                {                    
+                    var v = a as RigidActor;
+                    if (v != null)
+                    {
+                        if (v.Scene != null)
+                        {
+                            Trial.draw(v.Shapes);
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void draw(IEnumerable<Shape> enumerable)
+        {
+            foreach (var shp in enumerable)
+            {
+                GL_Handler.PushMatrix();
+                {
+                    var arg = shp.GlobalPose.ToArray();
+                    arg[12] *= StaticMethods.Conversion_Meters_To_Inches;
+                    arg[13] *= StaticMethods.Conversion_Meters_To_Inches;
+                    arg[14] *= StaticMethods.Conversion_Meters_To_Inches;
+                    GL_Handler.MultiplyMatrix(arg);
+
+                    switch (shp.GeometryType)
+                    {
+                        case GeometryType.Box:
+                            var b = shp.GetBoxGeometry().HalfExtents;
+                            SamSeifert.GLE.Draw.RectangularPrism(b.X, b.Y, b.Z, StaticMethods.Conversion_Meters_To_Inches);
+                            break;
+                        case GeometryType.Capsule:
+                            var c = shp.GetCapsuleGeometry();
+                            SamSeifert.GLE.Draw.CylinderPrism(c.Radius, c.HalfHeight, StaticMethods.Conversion_Meters_To_Inches);
+                            break;
+                        case GeometryType.Sphere:
+                            var s = shp.GetSphereGeometry();
+                            SamSeifert.GLE.Draw.Sphere(s.Radius * StaticMethods.Conversion_Meters_To_Inches);
+                            break;
+                        case GeometryType.ConvexMesh:
+                            Bobcat.DrawBucketSimple();
+                            break;
+                    }
+                }
+                GL_Handler.PopMatrix();
+            }
+        }
+
     }
 }

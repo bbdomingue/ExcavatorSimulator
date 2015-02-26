@@ -20,18 +20,14 @@ namespace Excavator
         private ControlKeyboard controlKeyboard1 = new ControlKeyboard();
         private Panel panelSpacer1 = new Panel();
 
-        public TE_FlowKeyboard()
-        {
-        }
-
         public override void Deconstruct()
         {
             base.Deconstruct();
             this.controlKeyboard1.Deconstruct();
         }
 
-        public TE_FlowKeyboard(FormBase fb, string saveFile, int minutes)
-            : base(fb, false, saveFile, minutes)
+        public TE_FlowKeyboard()
+            : base()
         {
             if (this.DesignMode) return;
 
@@ -39,16 +35,11 @@ namespace Excavator
             this.Controls.Add(this.panelSpacer1);
             this.panelSpacer1.Dock = DockStyle.Top;
             this.panelSpacer1.SendToBack();
-            this.panelSpacer1.BackColor = fb.BackColor;
+            this.panelSpacer1.BackColor = FormBase.Instance.BackColor;
 
             this.Controls.Add(this.controlKeyboard1);
             this.controlKeyboard1.Dock = DockStyle.Top;
             this.controlKeyboard1.noSwing();
-        }
-
-        public override bool hasGhost()
-        {
-            return false;
         }
 
         public override string getName()
@@ -76,15 +67,9 @@ namespace Excavator
             Bobcat.PumpModelFlow(this.T4, ref flows, 3);
         }
 
-        public override void  Gui_Label_Tick(float accumulator)
+        public override void  Gui_30MS_Tick(float accumulator)
         {
- 	        base.Gui_Label_Tick(accumulator);
-
-            StaticMethods.setNudValue(this.nudCab, this.ActualAngles.cab);
-            StaticMethods.setNudValue(this.nudBoom, this.ActualAngles.boo);
-            StaticMethods.setNudValue(this.nudArm, this.ActualAngles.arm);
-            StaticMethods.setNudValue(this.nudBucket, this.ActualAngles.buc);
-
+ 	        base.Gui_30MS_Tick(accumulator);
             this.controlKeyboard1.updateGui();
         }
     }

@@ -34,12 +34,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.rb_E_Flow_Keyboard = new System.Windows.Forms.RadioButton();
             this.rb_E_Flow_Sticks = new System.Windows.Forms.RadioButton();
-            this.checkBoxSave = new System.Windows.Forms.CheckBox();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.nudMinutes = new System.Windows.Forms.NumericUpDown();
             this.rb_E_CylindricalVelocity_Keyboard = new System.Windows.Forms.RadioButton();
             this.rb_E_CylindricalVelocity_Sticks = new System.Windows.Forms.RadioButton();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMinutes)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -66,7 +62,6 @@
             this.rb_B_Pillar.TabStop = true;
             this.rb_B_Pillar.Text = "Pillar";
             this.rb_B_Pillar.UseVisualStyleBackColor = true;
-            this.rb_B_Pillar.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
             // 
             // buttonTrialReset
             // 
@@ -102,7 +97,6 @@
             this.rb_E_Flow_Keyboard.TabIndex = 82;
             this.rb_E_Flow_Keyboard.Text = "Flow - Keyboard";
             this.rb_E_Flow_Keyboard.UseVisualStyleBackColor = true;
-            this.rb_E_Flow_Keyboard.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
             // 
             // rb_E_Flow_Sticks
             // 
@@ -115,54 +109,6 @@
             this.rb_E_Flow_Sticks.TabIndex = 86;
             this.rb_E_Flow_Sticks.Text = "Flow - Sticks";
             this.rb_E_Flow_Sticks.UseVisualStyleBackColor = true;
-            this.rb_E_Flow_Sticks.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
-            // 
-            // checkBoxSave
-            // 
-            this.checkBoxSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxSave.AutoCheck = false;
-            this.checkBoxSave.AutoSize = true;
-            this.checkBoxSave.Enabled = false;
-            this.checkBoxSave.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxSave.ForeColor = System.Drawing.Color.Black;
-            this.checkBoxSave.Location = new System.Drawing.Point(169, 160);
-            this.checkBoxSave.Name = "checkBoxSave";
-            this.checkBoxSave.Size = new System.Drawing.Size(60, 22);
-            this.checkBoxSave.TabIndex = 87;
-            this.checkBoxSave.Text = "Save:";
-            this.checkBoxSave.UseVisualStyleBackColor = true;
-            this.checkBoxSave.CheckedChanged += new System.EventHandler(this.checkBoxSave_CheckedChanged);
-            this.checkBoxSave.Click += new System.EventHandler(this.checkBoxSave_Click);
-            // 
-            // saveFileDialog1
-            // 
-            this.saveFileDialog1.Filter = "Data File|*.dat";
-            this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
-            // 
-            // nudMinutes
-            // 
-            this.nudMinutes.Enabled = false;
-            this.nudMinutes.Font = new System.Drawing.Font("Calibri", 11.25F);
-            this.nudMinutes.Location = new System.Drawing.Point(235, 159);
-            this.nudMinutes.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.nudMinutes.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudMinutes.Name = "nudMinutes";
-            this.nudMinutes.Size = new System.Drawing.Size(58, 26);
-            this.nudMinutes.TabIndex = 88;
-            this.nudMinutes.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.nudMinutes.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
             // 
             // rb_E_CylindricalVelocity_Keyboard
             // 
@@ -175,7 +121,6 @@
             this.rb_E_CylindricalVelocity_Keyboard.TabIndex = 90;
             this.rb_E_CylindricalVelocity_Keyboard.Text = "Cylindrical Velocity - Keyboard";
             this.rb_E_CylindricalVelocity_Keyboard.UseVisualStyleBackColor = true;
-            this.rb_E_CylindricalVelocity_Keyboard.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
             // 
             // rb_E_CylindricalVelocity_Sticks
             // 
@@ -188,7 +133,6 @@
             this.rb_E_CylindricalVelocity_Sticks.TabIndex = 91;
             this.rb_E_CylindricalVelocity_Sticks.Text = "Cylindrical Velocity - Stick";
             this.rb_E_CylindricalVelocity_Sticks.UseVisualStyleBackColor = true;
-            this.rb_E_CylindricalVelocity_Sticks.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
             // 
             // FormPickTrial
             // 
@@ -197,8 +141,6 @@
             this.ClientSize = new System.Drawing.Size(571, 313);
             this.Controls.Add(this.rb_E_CylindricalVelocity_Sticks);
             this.Controls.Add(this.rb_E_CylindricalVelocity_Keyboard);
-            this.Controls.Add(this.nudMinutes);
-            this.Controls.Add(this.checkBoxSave);
             this.Controls.Add(this.rb_E_Flow_Sticks);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.rb_E_Flow_Keyboard);
@@ -208,7 +150,6 @@
             this.Name = "FormPickTrial";
             this.ShowIcon = false;
             this.Text = "Pick One";
-            ((System.ComponentModel.ISupportInitialize)(this.nudMinutes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -222,9 +163,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.RadioButton rb_E_Flow_Keyboard;
         private System.Windows.Forms.RadioButton rb_E_Flow_Sticks;
-        private System.Windows.Forms.CheckBox checkBoxSave;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.NumericUpDown nudMinutes;
         private System.Windows.Forms.RadioButton rb_E_CylindricalVelocity_Keyboard;
         private System.Windows.Forms.RadioButton rb_E_CylindricalVelocity_Sticks;
 
