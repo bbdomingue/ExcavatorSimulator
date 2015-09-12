@@ -28,6 +28,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccProvider>SAK</SccProvider>
     <ProjectName>PhysX.Net</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -40,7 +41,7 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CLRSupport>true</CLRSupport>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -54,7 +55,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -86,8 +87,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(NVIDIAPhysXSDK)\Include\PhysXProfileSDK;$(NVIDIAPhysXSDK)\Include\PhysXVisualDebuggerSDK;$(NVIDIAPhysXSDK)\Include\Vehicle;$(NVIDIAPhysXSDK)\Include\Particles;$(NVIDIAPhysXSDK)\Include\Geometry;$(NVIDIAPhysXSDK)\Include\Extensions;$(NVIDIAPhysXSDK)\Include\Cooking;$(NVIDIAPhysXSDK)\Include\Common;$(NVIDIAPhysXSDK)\Include\Characterkinematic;$(NVIDIAPhysXSDK)\Include\Cloth;$(NVIDIAPhysXSDK)\Include\Foundation;$(NVIDIAPhysXSDK)\Include\PxTask;$(NVIDIAPhysXSDK)\Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(NVIDIAPhysXSDK)\Lib\win64;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)..\..\..\..\Build\$(SolutionName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)..\..\..\..\Build\$(SolutionName)\$(Configuration)T\</IntDir>
+    <OutDir>$(SolutionDir)bin\x64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\x64\$(Configuration)T\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -98,8 +99,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\..\..\Build\$(SolutionName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)..\..\..\..\Build\$(SolutionName)\$(Configuration)T\</IntDir>
+    <OutDir>$(SolutionDir)bin\x64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\x64\$(Configuration)T\</IntDir>
     <LibraryPath>$(NVIDIAPhysXSDK)\Lib\win64;$(LibraryPath)</LibraryPath>
     <IncludePath>$(NVIDIAPhysXSDK)\Include\PhysXProfileSDK;$(NVIDIAPhysXSDK)\Include\PhysXVisualDebuggerSDK;$(NVIDIAPhysXSDK)\Include\Vehicle;$(NVIDIAPhysXSDK)\Include\Particles;$(NVIDIAPhysXSDK)\Include\Geometry;$(NVIDIAPhysXSDK)\Include\Extensions;$(NVIDIAPhysXSDK)\Include\Cooking;$(NVIDIAPhysXSDK)\Include\Common;$(NVIDIAPhysXSDK)\Include\Characterkinematic;$(NVIDIAPhysXSDK)\Include\Cloth;$(NVIDIAPhysXSDK)\Include\Foundation;$(NVIDIAPhysXSDK)\Include\PxTask;$(NVIDIAPhysXSDK)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>

@@ -65,9 +65,9 @@ while ischar(lineInp)
     outCount = outCount + 1;
 
     if max(size(strfind(lineOut, '<LinkIncremental>'))) ~= 0
-        textOut{outCount, 1} = '    <OutDir>$(SolutionDir)..\..\..\..\Build\Excavator\$(Configuration)\</OutDir>';
+        textOut{outCount, 1} = '    <OutDir>$(SolutionDir)bin\x64\$(Configuration)\</OutDir>';
         outCount = outCount + 1;
-        textOut{outCount, 1} = '    <IntDir>$(SolutionDir)..\..\..\..\Build\Excavator\$(Configuration)T\</IntDir>';
+        textOut{outCount, 1} = '    <IntDir>$(SolutionDir)bin\x64\$(Configuration)T\</IntDir>';
         outCount = outCount + 1;
     end     
 

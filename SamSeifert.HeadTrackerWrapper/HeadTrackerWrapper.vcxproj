@@ -15,6 +15,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>HeadTrackerWrapper</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -43,13 +44,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\..\..\Build\$(SolutionName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)..\..\..\..\Build\$(ProjectName)\$(Configuration)T\</IntDir>
+    <OutDir>$(SolutionDir)bin\x64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\x64\$(Configuration)T\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\..\..\Build\$(SolutionName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)..\..\..\..\Build\$(ProjectName)\$(Configuration)T\</IntDir>
+    <OutDir>$(SolutionDir)bin\x64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\x64\$(Configuration)T\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
