@@ -11,7 +11,7 @@ using OpenTK;
 
 namespace Excavator
 {
-    public class TE_VelocityCylinderSticks : Trial
+    public class TE_VelocityCylinderSticksBeau : Trial
     {
         private volatile float T1 = 0.0f;
         private volatile float T2 = 0.0f;
@@ -25,7 +25,7 @@ namespace Excavator
             base.Deconstruct();
         }
 
-        public TE_VelocityCylinderSticks()
+        public TE_VelocityCylinderSticksBeau()
             : base()
         {
             if (this.DesignMode) return;
@@ -69,9 +69,9 @@ namespace Excavator
             this.T1 = temp * Math.Abs(temp);
             temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_FB, true);
             this.T2 = temp * Math.Abs(temp);
-            temp = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
-            this.T3 = temp * Math.Abs(temp);
             temp = ControlStick._ControlStick.getValForStick(ControlStick.r_LR, true);
+            this.T3 = temp * Math.Abs(temp);
+            temp = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
             this.T4 = temp * Math.Abs(temp);
         }
 
@@ -164,5 +164,9 @@ namespace Excavator
 
             Bobcat.PumpModelFlow(-this.T2, ref flows, 3);
         }
+
+
+
+
     }
 }

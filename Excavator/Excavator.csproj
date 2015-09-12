@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Excavator</RootNamespace>
     <AssemblyName>Excavator</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -18,7 +18,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\..\Build\Excavator\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\Build\Excavator\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
@@ -28,9 +28,10 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <Prefer32Bit>false</Prefer32Bit>
+    <IntermediateOutputPath>C:\Users\Sam\AppData\Local\Temp\vs4356.tmp\x64\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\..\..\..\..\Build\Excavator\Release\</OutputPath>
+    <OutputPath>..\..\..\Build\Release\</OutputPath>
     <DefineConstants>
     </DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -41,6 +42,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <Prefer32Bit>false</Prefer32Bit>
+    <IntermediateOutputPath>C:\Users\Sam\AppData\Local\Temp\vs4356.tmp\x64\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +56,7 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
     <Prefer32Bit>false</Prefer32Bit>
+    <IntermediateOutputPath>C:\Users\Sam\AppData\Local\Temp\vs4356.tmp\x86\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -64,6 +67,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <Prefer32Bit>false</Prefer32Bit>
+    <IntermediateOutputPath>C:\Users\Sam\AppData\Local\Temp\vs4356.tmp\x86\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Excavator.Program</StartupObject>
@@ -129,6 +133,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="TE_VelocityCylinderSticks.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TE_VelocityCylinderSticksBeau.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="XPC.cs" />
@@ -335,8 +342,8 @@
       <Project>{fb145a7d-cdf2-417d-a006-f7591481d609}</Project>
       <Name>PhysX.Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser.csproj">
-      <Project>{2414F4DD-734E-4A0B-9C95-C24B2CEE25F7}</Project>
+    <ProjectReference Include="..\SamSeifert.ComplexFileParser\SamSeifert.ComplexFileParser.csproj">
+      <Project>{2414f4dd-734e-4a0b-9c95-c24b2cee25f7}</Project>
       <Name>SamSeifert.ComplexFileParser</Name>
     </ProjectReference>
     <ProjectReference Include="..\SamSeifert.DoubleBuffer\SamSeifert.DoubleBuffer.csproj">
@@ -347,8 +354,8 @@
       <Project>{012184d6-08e1-4152-b2bb-409d4b5d7785}</Project>
       <Name>SamSeifert.GLE.CadViewer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SamSeifert.GLE.Generics\SamSeifert.GLE.Generics\SamSeifert.GLE.Generics.csproj">
-      <Project>{FB6E9B5D-7A20-45F2-9ADA-DDD12E70A967}</Project>
+    <ProjectReference Include="..\SamSeifert.GLE.Generics\SamSeifert.GLE.Generics.csproj">
+      <Project>{fb6e9b5d-7a20-45f2-9ada-ddd12e70a967}</Project>
       <Name>SamSeifert.GLE.Generics</Name>
     </ProjectReference>
     <ProjectReference Include="..\SamSeifert.GlobalEvent\SamSeifert.GlobalEvent\SamSeifert.GlobalEvents.csproj">
@@ -364,7 +371,7 @@
       <Name>SamSeifert.ScreenPicker</Name>
     </ProjectReference>
     <ProjectReference Include="Matlab Model\WrapperLibrary\WrapperLibrary.vcxproj">
-      <Project>{33CE8AFC-E1C5-4A04-9204-9CD6F0C1F306}</Project>
+      <Project>{33ce8afc-e1c5-4a04-9204-9cd6f0c1f306}</Project>
       <Name>MatlabExcavatorWrapper</Name>
     </ProjectReference>
   </ItemGroup>

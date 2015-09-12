@@ -25,6 +25,12 @@ bld/
 [Bb]in/
 [Oo]bj/
 
+#MATLAB
+MatlabExcavatorModel_ert_rtw/
+*.mexw32
+*.mexw64
+slprj/
+
 # Visual Studo 2015 cache/options directory
 .vs/
 

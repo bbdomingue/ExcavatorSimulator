@@ -48,6 +48,7 @@ namespace Excavator
         {
             this.InitializeComponent();
 
+
             if (this.DesignMode) return;
 
             FormPickScreen._BottomPix = Bobcat._BoolLaptop ? 0 : 1;

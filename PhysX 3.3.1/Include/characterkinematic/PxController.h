@@ -334,8 +334,8 @@ protected:
 	\brief constructor sets to default.
 	*/
 	PX_INLINE										PxControllerDesc(PxControllerShapeType::Enum);
-	PX_INLINE virtual								~PxControllerDesc();
 public:
+	PX_INLINE virtual								~PxControllerDesc(); // SFS was protected
 	//*********************************************************************
 	// DEPRECATED MEMBERS:
 	//

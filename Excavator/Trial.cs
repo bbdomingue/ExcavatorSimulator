@@ -1477,7 +1477,6 @@ namespace Excavator
             Trial.staticInitTrees();
             foreach (TreeObject to in Trial._Trees) to.GLDraw(ActualAngles.cab);
             GL.Enable(EnableCap.CullFace);
-
         }
 
         private class UserOutput : ErrorCallback

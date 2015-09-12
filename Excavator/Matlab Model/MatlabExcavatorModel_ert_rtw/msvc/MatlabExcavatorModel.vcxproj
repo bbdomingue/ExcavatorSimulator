@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\Applications\Matlab\2013b\rtw\c\src\rt_matrx.c" />
-    <ClCompile Include="..\..\..\..\..\..\..\Applications\Matlab\2013b\rtw\c\src\rt_printf.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files\MATLAB\R2013b\rtw\c\src\rt_matrx.c" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files\MATLAB\R2013b\rtw\c\src\rt_printf.c" />
     <ClCompile Include="..\..\cylmodel_435_ryder.c" />
     <ClCompile Include="..\..\p2torq1_435_brake.c" />
     <ClCompile Include="..\..\WrapperLibrary\SamFunc.cpp" />
@@ -51,27 +51,27 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>NotSet</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -129,14 +129,14 @@
       <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;MODEL=MatlabExcavatorModel;NUMST=2;NCSTATES=0;HAVESTDIO=;ONESTEPFCN=1;TERMFCN=1;MAT_FILE=0;MULTI_INSTANCE_CODE=0;INTEGER_CODE=0;MT=0;CLASSIC_INTERFACE=0;RT=;USE_RTMODEL=;ERT=;TID01EQ=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Dropbox\Programming\C-Sharp\Excavator\Matlab Model\MatlabExcavatorModel_ert_rtw;E:\Dropbox\Programming\C-Sharp\Excavator\Matlab Model;E:\Applications\Matlab\2013b\extern\include;E:\Applications\Matlab\2013b\simulink\include;E:\Applications\Matlab\2013b\rtw\c\src;E:\Applications\Matlab\2013b\rtw\c\src\ext_mode\common;E:\Applications\Matlab\2013b\rtw\c\ert;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Sam\Dropbox\Programming\C-Sharp\Excavator\Matlab Model\MatlabExcavatorModel_ert_rtw;C:\Users\Sam\Dropbox\Programming\C-Sharp\Excavator\Matlab Model;C:\Program Files\MATLAB\R2013b\extern\include;C:\Program Files\MATLAB\R2013b\simulink\include;C:\Program Files\MATLAB\R2013b\rtw\c\src;C:\Program Files\MATLAB\R2013b\rtw\c\src\ext_mode\common;C:\Program Files\MATLAB\R2013b\rtw\c\ert;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <Version>1.263</Version>
-      <AdditionalLibraryDirectories>E:\Dropbox\Programming\C-Sharp\Excavator\Matlab Model\MatlabExcavatorModel_ert_rtw\msvc\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Sam\Dropbox\Programming\C-Sharp\Excavator\Matlab Model\MatlabExcavatorModel_ert_rtw\msvc\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -165,7 +165,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;MODEL=MatlabExcavatorModel;NUMST=2;NCSTATES=0;HAVESTDIO=;ONESTEPFCN=1;TERMFCN=1;MAT_FILE=0;MULTI_INSTANCE_CODE=0;INTEGER_CODE=0;MT=0;CLASSIC_INTERFACE=0;RT=;USE_RTMODEL=;ERT=;TID01EQ=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Dropbox\Programming\C-Sharp\Excavator\Matlab Model\MatlabExcavatorModel_ert_rtw;E:\Dropbox\Programming\C-Sharp\Excavator\Matlab Model;E:\Applications\Matlab\2013b\extern\include;E:\Applications\Matlab\2013b\simulink\include;E:\Applications\Matlab\2013b\rtw\c\src;E:\Applications\Matlab\2013b\rtw\c\src\ext_mode\common;E:\Applications\Matlab\2013b\rtw\c\ert;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Sam\Dropbox\Programming\C-Sharp\Excavator\Matlab Model\MatlabExcavatorModel_ert_rtw;C:\Users\Sam\Dropbox\Programming\C-Sharp\Excavator\Matlab Model;C:\Program Files\MATLAB\R2013b\extern\include;C:\Program Files\MATLAB\R2013b\simulink\include;C:\Program Files\MATLAB\R2013b\rtw\c\src;C:\Program Files\MATLAB\R2013b\rtw\c\src\ext_mode\common;C:\Program Files\MATLAB\R2013b\rtw\c\ert;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
