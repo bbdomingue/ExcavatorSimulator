@@ -26,7 +26,7 @@ bld/
 [Oo]bj/
 
 #MATLAB
-MatlabExcavatorModel_ert_rtw/
+*_ert_rtw/
 *.mexw32
 *.mexw64
 slprj/
