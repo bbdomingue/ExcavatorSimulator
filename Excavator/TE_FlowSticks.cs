@@ -71,7 +71,7 @@ namespace Excavator
             this.T4 = temp * Math.Abs(temp);
         }
 
-        public override unsafe void fillControlFloats(float* f)
+        public override unsafe void fillControlFloats(float* f) //Creates an array 
         {
             f[0] = this.T1;
             f[1] = this.T2;

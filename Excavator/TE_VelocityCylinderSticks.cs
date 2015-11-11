@@ -25,7 +25,7 @@ namespace Excavator
             base.Deconstruct();
         }
 
-        public TE_VelocityCylinderSticks()
+        public TE_VelocityCylinderSticks() //A method with the same name as the class..
             : base()
         {
             if (this.DesignMode) return;
@@ -64,8 +64,9 @@ namespace Excavator
             base.updateSim();
 
             float temp;
-
-            temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
+            
+            //Note that in TE_FlowStick the negative are placed in front of temp1 and temp4, here it is temp1 and temp2
+            temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);   //I believe ControlStick.l_LR = 1
             this.T1 = temp * Math.Abs(temp);
             temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_FB, true);
             this.T2 = temp * Math.Abs(temp);
@@ -75,6 +76,7 @@ namespace Excavator
             this.T4 = temp * Math.Abs(temp);
         }
 
+        //I believe everything that follow this point is the inverse kinematics calc. Thus, it is absent form TE_FlowSticks
         private Vector2 _LastDelta = new Vector2();
         private float[] CYL_POS_DESIRED = new float[4];
         private float[] CYL_VEL_DESIRED = new float[4];

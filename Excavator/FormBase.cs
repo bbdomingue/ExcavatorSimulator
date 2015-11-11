@@ -25,7 +25,7 @@ using SamSeifert.ScreenPicker;
 
 namespace Excavator
 {
-    public partial class FormBase : Form
+    public partial class FormBase : Form        //FormBase inherits from .NET base class library, class Form
     {
         private static FormBase _Instance = null;
         internal static FormBase Instance

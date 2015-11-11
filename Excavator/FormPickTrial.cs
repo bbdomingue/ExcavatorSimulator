@@ -16,11 +16,11 @@ namespace Excavator
             InitializeComponent();
         }
 
-        private void buttonTrialReset_Click(object sender, EventArgs e)
+        private void buttonTrialReset_Click(object sender, EventArgs e)  //If the New Trial button from FormBase is clicked..
         {
             if (false) { }
-            else if (this.rb_E_Flow_Keyboard.Checked)
-                new TE_FlowKeyboard();
+            else if (this.rb_E_Flow_Keyboard.Checked)                   //I'm not sure exactly where these are coming from. seems like consise way
+                new TE_FlowKeyboard();                                  //to determine which radio button is 'checked'. But where are instances created
             else if (this.rb_E_Flow_Sticks.Checked)
                 new TE_FlowSticks();
             else if (this.rb_E_CylindricalVelocity_Keyboard.Checked)
