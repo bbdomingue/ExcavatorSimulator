@@ -56,7 +56,7 @@ namespace Excavator
         {
  	        base.updateSim();
 
-            var fts = this.controlKeyboard1.getInts();
+            var fts = this.controlKeyboard1.getInts(); //an array with 4 elements, but where does it get initialzied? can var just be used for arrays? that would make sense
 
             this.T1 = fts[1];
             this.T2 = fts[2];
