@@ -43,7 +43,8 @@ namespace Excavator
 
         public override string getName()
         {
-            return "Cylinder Flow with Sticks";
+            //return "Cylinder Flow with Sticks - BEAU";
+            return " BEAU";
         }
 
         public override void Gui_30MS_Tick(float accumulator)
