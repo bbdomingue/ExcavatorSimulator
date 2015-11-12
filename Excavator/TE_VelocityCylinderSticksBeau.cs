@@ -64,24 +64,12 @@ namespace Excavator
             base.updateSim();
 
             float temp;
-            
-            /*
-            Sam's mapping
+
             temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
             this.T1 = temp * Math.Abs(temp);
             temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_FB, true);
             this.T2 = temp * Math.Abs(temp);
             temp = ControlStick._ControlStick.getValForStick(ControlStick.r_LR, true);
-            this.T3 = temp * Math.Abs(temp);
-            temp = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
-            this.T4 = temp * Math.Abs(temp);
-            */
-
-            temp = -ControlStick._ControlStick.getValForStick(ControlStick.r_LR, true);
-            this.T1 = temp * Math.Abs(temp);
-            temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
-            this.T2 = temp * Math.Abs(temp);
-            temp = ControlStick._ControlStick.getValForStick(ControlStick.l_FB, true);
             this.T3 = temp * Math.Abs(temp);
             temp = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
             this.T4 = temp * Math.Abs(temp);
