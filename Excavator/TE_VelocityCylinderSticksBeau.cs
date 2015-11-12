@@ -44,7 +44,7 @@ namespace Excavator
         public override string getName()
         {
             //return "Cylinder Flow with Sticks - BEAU";
-            return " BEAU";
+            return "BEAU's mapping";
         }
 
         public override void Gui_30MS_Tick(float accumulator)
@@ -65,6 +65,8 @@ namespace Excavator
             base.updateSim();
 
             float temp;
+            /*
+            Sam's Mapping
 
             temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
             this.T1 = temp * Math.Abs(temp);
@@ -74,6 +76,17 @@ namespace Excavator
             this.T3 = temp * Math.Abs(temp);
             temp = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
             this.T4 = temp * Math.Abs(temp);
+            */
+
+            temp = -ControlStick._ControlStick.getValForStick(ControlStick.r_LR, true);
+            this.T1 = temp * Math.Abs(temp);
+            temp = -ControlStick._ControlStick.getValForStick(ControlStick.l_LR, true);
+            this.T2 = temp * Math.Abs(temp);
+            temp = ControlStick._ControlStick.getValForStick(ControlStick.l_FB, true);
+            this.T3 = temp * Math.Abs(temp);
+            temp = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
+            this.T4 = temp * Math.Abs(temp);
+
         }
 
         private Vector2 _LastDelta = new Vector2();

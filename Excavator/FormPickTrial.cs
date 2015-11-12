@@ -27,7 +27,7 @@ namespace Excavator
                 new TE_VelocityCylinderKeyboard();
             else if (this.rb_E_CylindricalVelocity_Sticks.Checked)
                 new TE_VelocityCylinderSticks();
-            else if (this.rb_E_CylindricalVelocityFlipped_Sticks.Checked) ;
+            else if (this.rb_E_CylindricalVelocityFlipped_Sticks.Checked)
                 new TE_VelocityCylinderSticksBeau();
 
             this.Close();
