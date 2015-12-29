@@ -46,9 +46,9 @@ namespace Excavator
 
         private TrialSaver(out bool safe)
         {
-            var fn = TrialSaver.direct();
+            var fn = TrialSaver.direct(); //direct is a helper method that creates a bath name based on trial num....
 
-            Directory.CreateDirectory(fn);
+            Directory.CreateDirectory(fn); //creates a directory using a path described by fn
 
             this._FileStream1 = File.Create(Path.Combine(fn, "main.dat"));
             this._FileStream2 = File.Create(Path.Combine(fn, "main.bin"));
@@ -57,8 +57,8 @@ namespace Excavator
 
             safe = true;
 
-            if (this._FileStream1 == null) safe = false;
-            else if (!this._FileStream1.CanWrite) safe = false;
+            if (this._FileStream1 == null) safe = false;   //If it is a stream of nulls, safe  = false
+            else if (!this._FileStream1.CanWrite) safe = false; //If the file stream cannot write, safe = false
 
             if (this._FileStream2 == null) safe = false;
             else if (!this._FileStream2.CanWrite) safe = false;

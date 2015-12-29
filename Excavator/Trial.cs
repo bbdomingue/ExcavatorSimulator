@@ -814,7 +814,8 @@ namespace Excavator
         public const float Q2_Max = 66, Q2_Min = -63;
         public const float Q3_Max = -35, Q3_Min = -145;
 //        public const float Q4_Max = 33, Q4_Min = -154;
-        public const float Q4_Max = 23, Q4_Min = -144;
+//        public const float Q4_Max = 23, Q4_Min = -144;  this is what Sam was using
+        public const float Q4_Max = -1, Q4_Min = -144;  //this fixes the 'bucket glitch' where it would get stuck.
 
         public static float clampQS(float val) { return Math.Max(Trial.QS_Min, Math.Min(Trial.QS_Max, val)); }
         public static float clampQ2(float val) { return Math.Max(Trial.Q2_Min, Math.Min(Trial.Q2_Max, val)); }

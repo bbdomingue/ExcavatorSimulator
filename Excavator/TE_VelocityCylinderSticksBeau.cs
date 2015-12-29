@@ -87,6 +87,15 @@ namespace Excavator
             temp = ControlStick._ControlStick.getValForStick(ControlStick.r_FB, true);
             this.T4 = temp * Math.Abs(temp);
 
+            /*
+             
+                   T3
+                    |             |
+             T2 --- o ---     --- o --- T1
+                    |             |
+                                   T4
+            */
+
         }
 
         private Vector2 _LastDelta = new Vector2();
@@ -107,29 +116,31 @@ namespace Excavator
             const float LIM_SPEED = 0.5f * ABSMX;
 
             Vector2 p, partialA = Vector2.Zero, partialB = Vector2.Zero;
-            Vector2 travel = new Vector2(-this.T3 * TRAVEL_SPEED, this.T4 * TRAVEL_SPEED);
+            Vector2 travel = new Vector2(-this.T3 * TRAVEL_SPEED, this.T4 * TRAVEL_SPEED); //B: travel is a 2D vector with T3(foreward/back) and T4(up/down) * speed (.3), which are the joystick values from above... 
 
-            Single inBoom = Q[1];
-            Single inArm = Q[2];
-            Double A = inBoom; // Boom
-            Double B = inArm; // Arm
+            Single inBoom = Q[1];           //B: The first element : joint position of joint 1/Boom
+            Single inArm = Q[2];            //B: The second element: joint position of joint 2/arm
+            Double A = inBoom; // Boom        B: A=anglur pos joint 1
+            Double B = inArm; // Arm          B: B=anglur pos joint 2
 
-            p = Bobcat.CalcBucketPostition(A, B, ref partialA, ref partialB);
+            p = Bobcat.CalcBucketPostition(A, B, ref partialA, ref partialB); //B: calculates bucket position from joint1 and joint2 angles, and partial derivitives (for x and y) for joints 1 and 2.. but we set those to 0?.
+            //B: thus, p is a 2D vector with x,y pos of bucket 
+            //the partial derivitives are also calculated, and stored in the same name as given, partialA and partialB 
 
-            Matrix2 m = Matrix2.fromCols(partialA, partialB);
+            Matrix2 m = Matrix2.fromCols(partialA, partialB); //B: Matrix2 is a custom class used create methods for matrix algebra/operations. From cols creates 2x2 matrix from the two 2d vectors
             Matrix2 mInv;
 
-            if (m.invert(out mInv))
+            if (m.invert(out mInv))  //B: If the matrix is invertible (nonsingular)
             {
-                this._LastDelta = mInv.Transform(travel);
-                this._LastDelta = Vector2.Multiply(this._LastDelta, 180 / StaticMethods._PIF);
+                this._LastDelta = mInv.Transform(travel); //B:  LastDelta is [dTheta1;dTheta2]
+                this._LastDelta = Vector2.Multiply(this._LastDelta, 180 / StaticMethods._PIF); //B: changes into degrees?
             }
 
             var mx = Math.Max(Math.Abs(this._LastDelta.X), Math.Abs(this._LastDelta.Y));
 
             this._LastDelta = Vector2.Multiply(this._LastDelta, mx > ABSMX ? ABSMX / mx : 1);
 
-            double dA = Trial.clampQ2_Radians(A + this._LastDelta.X) - A;
+            double dA = Trial.clampQ2_Radians(A + this._LastDelta.X) - A;   //B: clamp method determines whether angle is greater than minimum angle for joint
             double dB = Trial.clampQ3_Radians(B + this._LastDelta.Y) - B;
 
             const float cutoff = 0.001f * ABSMX;
