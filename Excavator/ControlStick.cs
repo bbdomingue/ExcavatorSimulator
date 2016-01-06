@@ -25,7 +25,7 @@ namespace Excavator
         internal float getValForStick(int a, bool filtered)
         {
             float res = 0;
-            switch (Math.Abs(a)) //the int passed would be the corresponding int from above, either a 1,-2,3,-4, thus the absolute value
+            switch (Math.Abs(a)) //the int passed would be the corresponding int from above,thus the absolute value of either 1,-2,3,-4, 
             {
                 case 1: res = (filtered ? this._StickBackFloat0F : this._StickBackFloat0); break;
                 case 2: res = (filtered ? this._StickBackFloat1F : this._StickBackFloat1); break;

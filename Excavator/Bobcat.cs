@@ -1166,13 +1166,13 @@ namespace Excavator
 
         public static void PumpModelFlow(float cmd, ref float[] flow, int i)
         {
-            float pumpslope = maxPumpFlowArray[i] / 1;
-            float flowcmd = maxPumpFlowArray[i] * cmd;
-            float pumpflow = flow[i];
+            float pumpslope = maxPumpFlowArray[i] / 1;  //array with all maxPumpFlows for each joint. i specfies the joint/element in array
+            float flowcmd = maxPumpFlowArray[i] * cmd;  //cmd is just a number for joystick
+            float pumpflow = flow[i];                   //takes the corresponding flow to joint
 
             const float tstep = Ts;
 
-            float flowslope = tau * (flowcmd - pumpflow);
+            float flowslope = tau * (flowcmd - pumpflow); //tau = 13.33
             float deltaflow = flowslope * tstep;
 
             if (Math.Abs(flowslope) < pumpslope) deltaflow = pumpslope * Math.Sign(flowslope) * tstep;

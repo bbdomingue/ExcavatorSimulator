@@ -269,7 +269,7 @@ namespace Excavator
                 else // Not in trench x
                 {
                     this._ValidLastEntry = false;
-                    if (angle_of_attack > StaticMethods.toRadiansF(45) && (this.BucketVolume != 0))
+                    if (angle_of_attack > StaticMethods.toRadiansF(45) && (this.BucketVolume != 0))  //dumps soil at 45 degrees
                     {
                         this.NewPileDataComing(ref ret, tip_pos, simtime);
                     }
